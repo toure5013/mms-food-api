@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const auth_service_1 = require("./auth.service");
 const auth_dto_1 = require("./dto/auth.dto");
 const public_decorator_1 = require("../common/decorators/public.decorator");
+const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 let AuthController = class AuthController {
     authService;
     constructor(authService) {
@@ -34,6 +35,9 @@ let AuthController = class AuthController {
     }
     setPassword(dto) {
         return this.authService.setPassword(dto);
+    }
+    getProfile(user) {
+        return this.authService.getProfile(user.sub);
     }
 };
 exports.AuthController = AuthController;
@@ -77,6 +81,15 @@ __decorate([
     __metadata("design:paramtypes", [auth_dto_1.SetPasswordDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "setPassword", null);
+__decorate([
+    (0, common_1.Get)('profile'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Récupère le profil de l\'utilisateur connecté' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getProfile", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),

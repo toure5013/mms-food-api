@@ -18,8 +18,8 @@ export class AuthService {
   async login(dto: LoginDto) {
     const user = await this.userRepo.findOne({
       where: { email: dto.email, is_active: true },
-      select: ['id', 'email', 'password_hash', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login'],
-      relations: ['organisation'],
+      select: ['id', 'email', 'password_hash', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login', 'loyalty_points'],
+      relations: ['organisation', 'wallet'],
     });
 
     if (!user) throw new UnauthorizedException('Email ou mot de passe incorrect');
@@ -109,8 +109,21 @@ export class AuthService {
         role: user.role,
         organisation_id: user.organisation_id,
         is_first_login: user.is_first_login,
+        loyalty_points: user.loyalty_points,
+        wallet: user.wallet ? { solde: user.wallet.solde } : null,
       },
     };
+  }
+  
+  /** PROFILE: Récupère les infos de l'utilisateur connecté */
+  async getProfile(userId: string) {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: ['organisation', 'wallet'],
+    });
+
+    if (!user) throw new NotFoundException('Utilisateur introuvable');
+    return user;
   }
 
   /** Génère OTP à 6 chiffres */

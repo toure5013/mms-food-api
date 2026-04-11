@@ -62,8 +62,8 @@ let AuthService = class AuthService {
     async login(dto) {
         const user = await this.userRepo.findOne({
             where: { email: dto.email, is_active: true },
-            select: ['id', 'email', 'password_hash', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login'],
-            relations: ['organisation'],
+            select: ['id', 'email', 'password_hash', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login', 'loyalty_points'],
+            relations: ['organisation', 'wallet'],
         });
         if (!user)
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
@@ -135,8 +135,19 @@ let AuthService = class AuthService {
                 role: user.role,
                 organisation_id: user.organisation_id,
                 is_first_login: user.is_first_login,
+                loyalty_points: user.loyalty_points,
+                wallet: user.wallet ? { solde: user.wallet.solde } : null,
             },
         };
+    }
+    async getProfile(userId) {
+        const user = await this.userRepo.findOne({
+            where: { id: userId },
+            relations: ['organisation', 'wallet'],
+        });
+        if (!user)
+            throw new common_1.NotFoundException('Utilisateur introuvable');
+        return user;
     }
     generateOtp() {
         return Math.floor(100000 + Math.random() * 900000).toString();

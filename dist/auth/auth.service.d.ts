@@ -18,6 +18,10 @@ export declare class AuthService {
             role: UserRole | undefined;
             organisation_id: string | undefined;
             is_first_login: boolean | undefined;
+            loyalty_points: number | undefined;
+            wallet: {
+                solde: number;
+            } | null;
         };
     }>;
     requestOtp(dto: RequestOtpDto): Promise<{
@@ -39,8 +43,13 @@ export declare class AuthService {
             role: UserRole | undefined;
             organisation_id: string | undefined;
             is_first_login: boolean | undefined;
+            loyalty_points: number | undefined;
+            wallet: {
+                solde: number;
+            } | null;
         };
     }>;
     private generateTokens;
+    getProfile(userId: string): Promise<User>;
     private generateOtp;
 }

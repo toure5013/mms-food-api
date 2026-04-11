@@ -1,8 +1,9 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto } from './dto/auth.dto';
 import { Public } from '../common/decorators/public.decorator';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -39,5 +40,12 @@ export class AuthController {
   @ApiOperation({ summary: 'Définit ou réinitialise le mot de passe après OTP valide' })
   setPassword(@Body() dto: SetPasswordDto) {
     return this.authService.setPassword(dto);
+  }
+
+  @Get('profile')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Récupère le profil de l\'utilisateur connecté' })
+  getProfile(@CurrentUser() user: any) {
+    return this.authService.getProfile(user.sub);
   }
 }

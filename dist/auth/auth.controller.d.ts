@@ -14,6 +14,10 @@ export declare class AuthController {
             role: import("../common/enums").UserRole | undefined;
             organisation_id: string | undefined;
             is_first_login: boolean | undefined;
+            loyalty_points: number | undefined;
+            wallet: {
+                solde: number;
+            } | null;
         };
     }>;
     requestOtp(dto: RequestOtpDto): Promise<{
@@ -35,6 +39,11 @@ export declare class AuthController {
             role: import("../common/enums").UserRole | undefined;
             organisation_id: string | undefined;
             is_first_login: boolean | undefined;
+            loyalty_points: number | undefined;
+            wallet: {
+                solde: number;
+            } | null;
         };
     }>;
+    getProfile(user: any): Promise<import("../users/user.entity").User>;
 }

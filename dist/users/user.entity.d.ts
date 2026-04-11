@@ -1,5 +1,6 @@
 import { UserRole } from '../common/enums/index';
 import { Organisation } from '../organisations/organisation.entity';
+import { Wallet } from '../wallet/wallet.entity';
 export declare class User {
     id: string;
     prenom: string;
@@ -21,4 +22,5 @@ export declare class User {
     organisation_id: string;
     created_at: Date;
     updated_at: Date;
+    wallet: Wallet;
 }

@@ -13,6 +13,7 @@ exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 const organisation_entity_1 = require("../organisations/organisation.entity");
+const wallet_entity_1 = require("../wallet/wallet.entity");
 let User = class User {
     id;
     prenom;
@@ -34,6 +35,7 @@ let User = class User {
     organisation_id;
     created_at;
     updated_at;
+    wallet;
 };
 exports.User = User;
 __decorate([
@@ -117,6 +119,10 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], User.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => wallet_entity_1.Wallet, (wallet) => wallet.user),
+    __metadata("design:type", wallet_entity_1.Wallet)
+], User.prototype, "wallet", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);

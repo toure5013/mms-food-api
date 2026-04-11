@@ -1,9 +1,10 @@
 import {
   Entity, PrimaryGeneratedColumn, Column,
-  CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn,
+  CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne, JoinColumn,
 } from 'typeorm';
 import { UserRole } from '../common/enums/index';
 import { Organisation } from '../organisations/organisation.entity';
+import { Wallet } from '../wallet/wallet.entity';
 
 @Entity('users')
 export class User {
@@ -71,4 +72,7 @@ export class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToOne(() => Wallet, (wallet) => wallet.user)
+  wallet: Wallet;
 }
