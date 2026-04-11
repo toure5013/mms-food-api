@@ -1,0 +1,1336 @@
+{
+	"info": {
+		"_postman_id": "mms-api-collection-v3",
+		"name": "🍽 MMS Cantine API",
+		"description": "Collection complète et organisée de l'API MMS Cantine — Restauration Collective B2B SaaS.\n\nPrefix global: /api/v1\nDocumentation Swagger: http://localhost:3001/docs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🏠 Health Check",
+			"item": [
+				{
+					"name": "API Root",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}",
+							"host": [
+								"{{base_url}}"
+							]
+						},
+						"description": "Vérifie que l'API est en ligne."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔐 Auth",
+			"description": "Authentification JWT + OTP. Toutes les routes sont publiques (pas de token requis).",
+			"item": [
+				{
+					"name": "Login (Email + Password)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.access_token) {",
+									"        pm.collectionVariables.set('token', jsonData.access_token);",
+									"        console.log('✅ Token sauvegardé automatiquement');",
+									"    }",
+									"    if (jsonData.refresh_token) {",
+									"        pm.collectionVariables.set('refresh_token', jsonData.refresh_token);",
+									"    }",
+									"    if (jsonData.user && jsonData.user.id) {",
+									"        pm.collectionVariables.set('user_id', jsonData.user.id);",
+									"    }",
+									"    if (jsonData.user && jsonData.user.organisation_id) {",
+									"        pm.collectionVariables.set('org_id', jsonData.user.organisation_id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@mms.ci\",\n    \"password\": \"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Connexion avec email et mot de passe. Retourne un JWT access_token.\n\nLe token est automatiquement sauvegardé dans les variables de la collection."
+					},
+					"response": []
+				},
+				{
+					"name": "Request OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john.doe@entreprise.ci\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/otp/request",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"otp",
+								"request"
+							]
+						},
+						"description": "Demande d'envoi d'un code OTP par email. Utilisé pour la première connexion ou la réinitialisation de mot de passe."
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john.doe@entreprise.ci\",\n    \"otp\": \"482731\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/otp/verify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"otp",
+								"verify"
+							]
+						},
+						"description": "Vérifie le code OTP reçu par email."
+					},
+					"response": []
+				},
+				{
+					"name": "Set Password (après OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john.doe@entreprise.ci\",\n    \"otp\": \"482731\",\n    \"password\": \"NouveauMotDePasse123!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/password/set",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"password",
+								"set"
+							]
+						},
+						"description": "Définit ou réinitialise le mot de passe après validation OTP. Le mot de passe doit faire au minimum 8 caractères."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👥 Users",
+			"description": "Gestion des utilisateurs. Requiert un token JWT Bearer.\n\nRôles: SUPER_ADMIN, ADMIN_MMS, ADMIN_CLIENT, EMPLOYEE, COOK, PATIENT",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Liste les utilisateurs (Super Admin uniquement sans filtre). Retourne les super admins par défaut."
+					},
+					"response": []
+				},
+				{
+					"name": "List Users by Organisation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users?organisation_id={{org_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "organisation_id",
+									"value": "{{org_id}}",
+									"description": "UUID de l'organisation pour filtrer les utilisateurs"
+								}
+							]
+						},
+						"description": "Liste les utilisateurs filtrés par organisation. Accessible par SUPER_ADMIN et ADMIN_CLIENT."
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prenom\": \"Jean\",\n    \"nom\": \"Dupont\",\n    \"email\": \"jean.dupont@entreprise.ci\",\n    \"role\": \"EMPLOYEE\",\n    \"telephone\": \"+225 0102030405\",\n    \"service\": \"Comptabilité\",\n    \"organisation_id\": \"{{org_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Créer / Inviter un nouvel utilisateur.\n\nRôles possibles: SUPER_ADMIN, ADMIN_MMS, ADMIN_CLIENT, EMPLOYEE, COOK, PATIENT\n\nAccessible par SUPER_ADMIN et ADMIN_CLIENT."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Récupère les détails d'un utilisateur par son UUID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🏢 Organisations",
+			"description": "Gestion des entreprises clientes (multi-tenant). Requiert un token JWT Bearer.\n\nAccessible principalement par SUPER_ADMIN.",
+			"item": [
+				{
+					"name": "List All Organisations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/organisations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"organisations"
+							]
+						},
+						"description": "Liste toutes les organisations enregistrées. Super Admin uniquement."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Organisation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('org_id', jsonData.id);",
+									"        console.log('✅ org_id sauvegardé: ' + jsonData.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nom\": \"BMCE Bank Côte d'Ivoire\",\n    \"slug\": \"bmce-bank-ci\",\n    \"logo_url\": null,\n    \"couleur_primaire\": \"#E87722\",\n    \"couleur_secondaire\": \"#1A1A2E\",\n    \"mode_gestion_menu\": \"MMS\",\n    \"subvention_type\": \"FIXED\",\n    \"subvention_valeur\": 1500,\n    \"subvention_plafond_mensuel\": null,\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/organisations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"organisations"
+							]
+						},
+						"description": "Créer une nouvelle organisation.\n\nmode_gestion_menu: MMS | AUTONOME\nsubvention_type: FIXED | PERCENTAGE | CAPPED | HYBRID | FULL\n\nL'ID est automatiquement sauvegardé dans org_id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Organisation by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/organisations/{{org_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"organisations",
+								"{{org_id}}"
+							]
+						},
+						"description": "Récupère les détails d'une organisation par son UUID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🍛 Dishes (Plats)",
+			"description": "Catalogue des plats. Requiert un token JWT Bearer.\n\nLa création est réservée au SUPER_ADMIN.",
+			"item": [
+				{
+					"name": "List All Dishes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dishes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dishes"
+							]
+						},
+						"description": "Liste tous les plats du catalogue."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Dish",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('dish_id', jsonData.id);",
+									"        console.log('✅ dish_id sauvegardé: ' + jsonData.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nom\": \"Garba Royal\",\n    \"description\": \"Thon frit, attiéké de qualité avec piment frais\",\n    \"photo_url\": null,\n    \"categorie\": \"Plat principal\",\n    \"prix\": 1500,\n    \"sans_sel\": false,\n    \"sans_gras\": false,\n    \"sans_sucre\": false,\n    \"vegetarien\": false,\n    \"halal\": true,\n    \"allergenes\": [\"poisson\"],\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/dishes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dishes"
+							]
+						},
+						"description": "Ajouter un plat au catalogue (Super Admin MMS uniquement).\n\nCatégories: Plat principal, Entrée, Dessert, Boisson\nAttributs nutritionnels: sans_sel, sans_gras, sans_sucre, vegetarien, halal\n\nL'ID est automatiquement sauvegardé dans dish_id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dish by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dishes/{{dish_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dishes",
+								"{{dish_id}}"
+							]
+						},
+						"description": "Récupère les détails d'un plat par son UUID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📋 Menus",
+			"description": "Planification des menus. Module en cours de développement.\n\nCréneaux: MORNING | NOON | EVENING",
+			"item": [
+				{
+					"name": "List Menus",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/menus",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"menus"
+							]
+						},
+						"description": "Liste les menus. (À implémenter — le controller est vide pour le moment)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Menu (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2026-04-14\",\n    \"creneau\": \"NOON\",\n    \"organisation_id\": \"{{org_id}}\",\n    \"plats\": [\"{{dish_id}}\"],\n    \"is_published\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/menus",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"menus"
+							]
+						},
+						"description": "Créer un menu. Basé sur la structure de l'entity Menu.\n\nCréneaux possibles: MORNING | NOON | EVENING\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Menu by ID (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/menus/{{menu_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"menus",
+								"{{menu_id}}"
+							]
+						},
+						"description": "Récupère les détails d'un menu.\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🛒 Orders (Commandes)",
+			"description": "Commandes + QR Code. Module en cours de développement.\n\nStatuts: PENDING → CONFIRMED → PAID → PREPARING → READY → RETRIEVED | CANCELLED",
+			"item": [
+				{
+					"name": "List Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Liste les commandes. (À implémenter — le controller est vide pour le moment)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"employe_id\": \"{{user_id}}\",\n    \"organisation_id\": \"{{org_id}}\",\n    \"creneau\": \"NOON\",\n    \"date_livraison\": \"2026-04-14\",\n    \"plats\": [\"{{dish_id}}\"],\n    \"methode_paiement\": \"WAVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Créer une commande. Basé sur la structure de l'entity Order.\n\nCréneaux: MORNING | NOON | EVENING\nMéthodes de paiement: WAVE | ORANGE_MONEY | MTN | CINETPAY | PAYDUNYA | WALLET | EMPLOYER\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by ID (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								"{{order_id}}"
+							]
+						},
+						"description": "Récupère les détails d'une commande.\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"statut\": \"CONFIRMED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/{{order_id}}/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								"{{order_id}}",
+								"status"
+							]
+						},
+						"description": "Met à jour le statut d'une commande.\n\nStatuts: PENDING | CONFIRMED | PAID | PREPARING | READY | RETRIEVED | CANCELLED\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💳 Payments (Paiements)",
+			"description": "Paiements Mobile Money / Wallet. Module en cours de développement.\n\nMéthodes: WAVE | ORANGE_MONEY | MTN | CINETPAY | PAYDUNYA | WALLET | EMPLOYER\nStatuts: PENDING | SUCCESS | FAILED | REFUNDED",
+			"item": [
+				{
+					"name": "List Payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/payments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Liste les paiements. (À implémenter — le controller est vide pour le moment)"
+					},
+					"response": []
+				},
+				{
+					"name": "Initiate Payment (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"{{order_id}}\",\n    \"methode_paiement\": \"WAVE\",\n    \"montant\": 1500,\n    \"telephone\": \"+225 0102030405\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/payments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Initier un paiement pour une commande.\n\nMéthodes: WAVE | ORANGE_MONEY | MTN | CINETPAY | PAYDUNYA | WALLET | EMPLOYER\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment by ID (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/payments/{{payment_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payments",
+								"{{payment_id}}"
+							]
+						},
+						"description": "Récupère les détails d'un paiement.\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Webhook Callback (À implémenter)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transaction_id\": \"TXN-123456\",\n    \"status\": \"SUCCESS\",\n    \"provider\": \"WAVE\",\n    \"amount\": 1500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/payments/webhook",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payments",
+								"webhook"
+							]
+						},
+						"description": "Callback webhook appelé par le provider de paiement (Wave, Orange Money, etc.).\n\n⚠️ Route à implémenter dans le controller."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "⭐ Loyalty (Fidélité)",
+			"description": "Programme de fidélité. Module à développer.\n\nPoints accumulés par commande, avec expiration.",
+			"item": [
+				{
+					"name": "Get My Points (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/loyalty/points",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"loyalty",
+								"points"
+							]
+						},
+						"description": "Récupère les points de fidélité de l'utilisateur connecté.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Points History (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/loyalty/history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"loyalty",
+								"history"
+							]
+						},
+						"description": "Historique des points gagnés / dépensés.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔔 Notifications",
+			"description": "Notifications push / email / SMS. Module à développer.\n\nCanaux: PUSH | EMAIL | SMS",
+			"item": [
+				{
+					"name": "List Notifications (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications"
+							]
+						},
+						"description": "Liste les notifications de l'utilisateur.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				},
+				{
+					"name": "Mark as Read (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"read\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notifications/{{notification_id}}/read",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"{{notification_id}}",
+								"read"
+							]
+						},
+						"description": "Marquer une notification comme lue.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				},
+				{
+					"name": "Register FCM Token (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fcm_token\": \"firebase_cloud_messaging_token_here\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notifications/fcm-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"fcm-token"
+							]
+						},
+						"description": "Enregistre le token FCM pour les notifications push.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💰 Wallet (Porte-monnaie)",
+			"description": "Porte-monnaie électronique des employés. Module à développer.",
+			"item": [
+				{
+					"name": "Get My Wallet (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wallet",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wallet"
+							]
+						},
+						"description": "Récupère le solde du porte-monnaie de l'utilisateur.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				},
+				{
+					"name": "Credit Wallet (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"montant\": 5000,\n    \"methode_paiement\": \"ORANGE_MONEY\",\n    \"telephone\": \"+225 0102030405\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wallet/credit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wallet",
+								"credit"
+							]
+						},
+						"description": "Recharger le porte-monnaie via Mobile Money.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				},
+				{
+					"name": "Wallet Transactions History (À implémenter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wallet/transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wallet",
+								"transactions"
+							]
+						},
+						"description": "Historique des transactions du porte-monnaie.\n\n⚠️ Module à développer."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3001/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "org_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "dish_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "menu_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "order_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "payment_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "notification_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
