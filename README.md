@@ -1,98 +1,126 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🍽 MMS API — Matin Midi Soir
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend de la plateforme SaaS **Matin Midi Soir (MMS)**, une solution complète de gestion de restauration collective B2B en Afrique de l'Ouest.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 Vue d'Ensemble
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+L'API MMS centralise toute la logique métier de la plateforme, permettant la collaboration entre les entreprises clientes, leurs employés, les cuisiniers et les administrateurs MMS.
 
-## Project setup
+### 🌟 Fonctionnalités Clés
+- **📦 Multi-tenant** : Gestion isolée des organisations (entreprises clientes).
+- **🔐 Authentification Robuste** : JWT sécurisé + système d'OTP par email pour la première connexion et réinitialisation.
+- **📅 Gestion de Cantine** : Planification de menus, catalogue de plats avec flags nutritionnels (halal, végétarien, sans sel, etc.).
+- **🛒 Commandes & Logistique** : Passation de commandes via mobile, génération de QR Codes pour le retrait.
+- **💰 Fintech Intégrée** : Porte-monnaie électronique (`Wallet`) avec recharges via Mobile Money (Wave, Orange, MTN).
+- **⭐ Gamification** : Programme de fidélité avec gain de points et classement (Leaderboard).
+- **🔔 Notifications Multi-canal** : Alertes Push via Firebase (FCM), emails et notifications in-app.
+- **📦 Stockage Cloud** : Gestion des médias via MinIO (compatible S3).
 
+---
+
+## 🛠 Stack Technique
+- **Framework** : [NestJS](https://nestjs.com/) (Node.js)
+- **Langage** : TypeScript
+- **Base de Données** : PostgreSQL avec [TypeORM](https://typeorm.io/)
+- **Cache & Queue** : Redis
+- **Logging** : Winston (Console, Fichier, Elasticsearch)
+- **Documentation** : Swagger / OpenAPI
+- **Fichiers** : MinIO
+- **Notifications** : Firebase Admin SDK
+
+---
+
+## 📋 Prérequis
+- [Node.js](https://nodejs.org/) (v18 ou +)
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+
+---
+
+## ⚡ Installation & Démarrage
+
+### 1. Cloner le projet
 ```bash
-$ npm install
+git clone <url-du-repo>
+cd mms-api
 ```
 
-## Compile and run the project
-
+### 2. Configuration
+Copiez le fichier `.env.example` en `.env` et ajustez les variables (base de données, clés API, etc.).
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
-
+### 3. Démarrage avec Docker (Recommandé)
+Cette commande lance l'API, la base de données PostgreSQL, Redis, MinIO et PGAdmin.
 ```bash
-# unit tests
-$ npm run test
+docker compose up -d
+```
+L'API sera accessible sur `http://localhost:3001/api/v1`.
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+### 4. Démarrage Local (Développement)
+Si vous souhaitez lancer l'API hors Docker :
+```bash
+npm install
+npm run start:dev
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 📖 Documentation API
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+L'API est entièrement documentée via Swagger. Une interface interactive est disponible pour tester les différents endpoints.
 
+- **URL** : `http://localhost:3001/docs`
+
+> [!NOTE]
+> La documentation inclut les schémas de données, les codes de réponse (200, 401, 403, etc.) et les permissions requises par rôle.
+
+---
+
+## 🔍 Logging & Monitoring
+
+Le système de logs est configuré via Winston pour être à la fois lisible et exportable.
+
+- **Cibles** : Console (colorée), fichiers rotatifs (`/logs`) et Elasticsearch.
+- **Requêtes SQL** : Masquées par défaut pour un terminal propre, activables via `DB_LOG_QUERIES=true`.
+
+---
+
+## 🧪 Tests
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Tests unitaires
+npm run test
+
+# Tests E2E (End-to-End)
+npm run test:e2e
+
+# Couverture de code
+npm run test:cov
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🏗 Architecture des Dossiers
+```text
+src/
+├── auth/           # Authentification & OTP
+├── common/         # Decorators, Guards, Interceptors, Logger config
+├── database/       # Configuration TypeORM & Custom Logger
+├── dishes/         # Gestion du catalogue de plats
+├── loyalty/        # Système de points & fidélité
+├── menus/          # Planification des menus
+├── notifications/  # Logique Push, Email & In-App
+├── orders/         # Gestion des commandes & QR Codes
+├── organisations/  # Multi-tenancy & Config client
+├── payments/       # Webhooks & Mobile Money
+├── storage/        # Upload de fichiers (MinIO)
+├── users/          # Profils & Rôles
+└── wallet/         # Porte-monnaie & Transactions
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📄 Licence
+Ce projet est la propriété de **Matin Midi Soir**. Tous droits réservés.

@@ -33,9 +33,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateMenuDto.prototype, "creneau", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'http://localhost:9000/mms-cantine/menus/menu-1.jpg', description: 'URL de l\'image du menu' }),
+    (0, swagger_1.ApiPropertyOptional)({ example: 'http://localhost:9000/mms-cantine/menus/menu-1.jpg', description: 'URL de l\'image du menu' }),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateMenuDto.prototype, "image_url", void 0);
 __decorate([

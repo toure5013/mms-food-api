@@ -37,7 +37,8 @@ let DishesController = class DishesController {
 exports.DishesController = DishesController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Catalogue des plats' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Catalogue des plats', description: 'Retourne la liste complète des plats disponibles, avec leurs informations nutritionnelles et allergènes.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des plats retournée.' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -45,7 +46,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Ajouter un plat' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Ajouter un plat', description: 'Crée un nouveau plat dans le catalogue avec ses caractéristiques (catégorie, prix, allergènes, régimes alimentaires).' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Plat créé avec succès.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [dishes_dto_1.CreateDishDto]),
@@ -53,7 +56,10 @@ __decorate([
 ], DishesController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un plat' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un plat', description: 'Retourne les informations complètes d\'un plat (description, prix, photo, allergènes, flags nutritionnels).' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du plat' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Plat trouvé.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Plat non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -61,7 +67,7 @@ __decorate([
 ], DishesController.prototype, "findOne", null);
 exports.DishesController = DishesController = __decorate([
     (0, swagger_1.ApiTags)('Dishes'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('dishes'),
     __metadata("design:paramtypes", [dishes_service_1.DishesService])
 ], DishesController);

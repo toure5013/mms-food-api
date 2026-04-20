@@ -7,4 +7,6 @@ export declare class OrganisationsService {
     findAll(): Promise<Organisation[]>;
     findOne(id: string): Promise<Organisation>;
     create(dto: CreateOrganisationDto): Promise<Organisation>;
+    update(id: string, dto: any): Promise<Organisation>;
+    remove(id: string): Promise<Organisation>;
 }

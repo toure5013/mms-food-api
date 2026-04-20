@@ -22,9 +22,14 @@ let Organisation = class Organisation {
     couleur_secondaire;
     mode_gestion_menu;
     subvention_type;
+    financial_mode;
     subvention_valeur;
     subvention_plafond_mensuel;
     is_active;
+    prix_min_plats;
+    prix_max_plats;
+    prix_max_menu;
+    composition_menu;
     users;
     created_at;
     updated_at;
@@ -63,6 +68,10 @@ __decorate([
     __metadata("design:type", String)
 ], Organisation.prototype, "subvention_type", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: index_1.FinancialMode, default: index_1.FinancialMode.DEBT }),
+    __metadata("design:type", String)
+], Organisation.prototype, "financial_mode", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2, default: 0 }),
     __metadata("design:type", Number)
 ], Organisation.prototype, "subvention_valeur", void 0);
@@ -74,6 +83,22 @@ __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], Organisation.prototype, "is_active", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2, default: 0 }),
+    __metadata("design:type", Number)
+], Organisation.prototype, "prix_min_plats", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2, default: 0 }),
+    __metadata("design:type", Number)
+], Organisation.prototype, "prix_max_plats", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2, default: 0 }),
+    __metadata("design:type", Number)
+], Organisation.prototype, "prix_max_menu", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'simple-array', nullable: true }),
+    __metadata("design:type", Array)
+], Organisation.prototype, "composition_menu", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => user_entity_1.User, (user) => user.organisation),
     __metadata("design:type", Array)

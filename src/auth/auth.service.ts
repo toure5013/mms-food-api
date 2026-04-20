@@ -30,6 +30,11 @@ export class AuthService {
     const isValid = await bcrypt.compare(dto.password, user.password_hash);
     if (!isValid) throw new UnauthorizedException('Email ou mot de passe incorrect');
 
+    // Vérifier si l'organisation est active
+    if (user.organisation && !user.organisation.is_active) {
+      throw new UnauthorizedException('Votre entreprise est actuellement bloquée. Contactez le super-administrateur.');
+    }
+
     return this.generateTokens(user);
   }
 

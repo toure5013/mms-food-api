@@ -1,0 +1,39 @@
+1 - CREATION DE MENU
+
+Blocage d’une requête multiorigine (Cross-Origin Request) : la politique « Same Origin » ne permet pas de consulter la ressource distante située sur http://localhost:3001/api/v1/auth/login. Raison : échec de la requête CORS. Code d’état : (null). 10
+Failed to submit menu: AxiosError: Request failed with status code 400
+    AxiosError AxiosError.js:32
+    settle settle.js:20
+    onloadend xhr.js:62
+intercept-console-error.ts:48:26
+    error intercept-console-error.ts:48
+    handleSubmit page.tsx:129
+
+
+
+
+2 - APPLICATION MOBILE
+
+les fonctinnalités de l'applicaion, 
+
+Salarié : 
+
+4 onglets dans le bottom bar
+
+- choisir le menu
+- 
+
+le salarié d'une entreprise doit voir les menu du jour et choisir un menu, il peut communiqué le code de sa commande au  ou affiché son qr code  en cliquant sur le qr code dans la bottom bar 
+
+
+Le serveur / chef doit avoir 4 onglet :
+
+- La home affiche les stats
+
+- le second onglet affiche toutes les commades du jour avec une recherche pour trouver une commande 
+
+- le bouton scan qr qui permet de scanner le qr code pour afficher une commande (au milieu comme actuellement)
+
+- l'inventaire
+
+- un onglet profil

@@ -11,10 +11,10 @@ export class CreateMenuDto {
   @IsEnum(MealSlot)
   creneau: MealSlot;
 
-  @ApiProperty({ example: 'http://localhost:9000/mms-cantine/menus/menu-1.jpg', description: 'URL de l\'image du menu' })
+  @ApiPropertyOptional({ example: 'http://localhost:9000/mms-cantine/menus/menu-1.jpg', description: 'URL de l\'image du menu' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  image_url: string;
+  image_url?: string;
 
   @ApiProperty({ example: 'uuid-organisation', description: 'UUID de l\'organisation' })
   @IsUUID()

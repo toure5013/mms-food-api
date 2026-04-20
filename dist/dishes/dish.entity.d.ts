@@ -9,6 +9,7 @@ export declare class Dish {
     sans_sel: boolean;
     sans_gras: boolean;
     sans_sucre: boolean;
+    sans_huile: boolean;
     vegetarien: boolean;
     halal: boolean;
     allergenes: string[];

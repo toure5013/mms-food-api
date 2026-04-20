@@ -66,3 +66,8 @@ export enum NotificationChannel {
   EMAIL = 'EMAIL',
   SMS = 'SMS',
 }
+
+export enum FinancialMode {
+  DEBT = 'DEBT',     // Commandes enregistrées comme dette
+  WALLET = 'WALLET', // Commandes déduites du solde
+}

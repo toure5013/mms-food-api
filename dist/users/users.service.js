@@ -22,15 +22,14 @@ let UsersService = class UsersService {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    findAllByOrganisation(orgId) {
+    findAll(organisationId) {
+        const where = {};
+        if (organisationId)
+            where.organisation_id = organisationId;
         return this.userRepo.find({
-            where: { organisation_id: orgId },
+            where,
+            relations: ['organisation'],
             order: { created_at: 'DESC' },
-        });
-    }
-    findAllSuperAdmins() {
-        return this.userRepo.find({
-            where: { role: 'SUPER_ADMIN' },
         });
     }
     async findOne(id) {
@@ -49,6 +48,15 @@ let UsersService = class UsersService {
             is_active: true,
         });
         return this.userRepo.save(user);
+    }
+    async update(id, dto) {
+        const user = await this.findOne(id);
+        Object.assign(user, dto);
+        return this.userRepo.save(user);
+    }
+    async remove(id) {
+        const user = await this.findOne(id);
+        return this.userRepo.remove(user);
     }
 };
 exports.UsersService = UsersService;

@@ -1,6 +1,6 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsHexColor } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsHexColor, IsNumber, IsArray, Min } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { MenuMode, SubventionType } from '../../common/enums/index';
+import { MenuMode, SubventionType, DishCategory, FinancialMode } from '../../common/enums/index';
 
 export class CreateOrganisationDto {
   @ApiProperty({ example: 'BMCE Bank' })
@@ -23,15 +23,65 @@ export class CreateOrganisationDto {
   @IsHexColor()
   couleur_primaire?: string;
 
+  @ApiPropertyOptional({ example: '#1A1A2E' })
+  @IsOptional()
+  @IsHexColor()
+  couleur_secondaire?: string;
+
   @ApiPropertyOptional({ enum: MenuMode, example: MenuMode.AUTONOME })
   @IsOptional()
   @IsEnum(MenuMode)
-  mode_menu?: MenuMode;
+  mode_gestion_menu?: MenuMode;
 
   @ApiPropertyOptional({ enum: SubventionType, example: SubventionType.FIXED })
   @IsOptional()
   @IsEnum(SubventionType)
-  type_subvention?: SubventionType;
+  subvention_type?: SubventionType;
+
+  @ApiPropertyOptional({ example: 1000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  subvention_valeur?: number;
+
+  @ApiPropertyOptional({ example: 30000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  subvention_plafond_mensuel?: number;
+
+  @ApiPropertyOptional({ example: 500 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix_min_plats?: number;
+
+  @ApiPropertyOptional({ example: 5000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix_max_plats?: number;
+
+  @ApiPropertyOptional({ example: 6000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix_max_menu?: number;
+
+  @ApiPropertyOptional({ example: [DishCategory.RESISTANCE] })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(DishCategory, { each: true })
+  composition_menu?: DishCategory[];
+
+  @ApiPropertyOptional({ enum: FinancialMode, example: FinancialMode.DEBT })
+  @IsOptional()
+  @IsEnum(FinancialMode)
+  financial_mode?: FinancialMode;
+
+  @ApiPropertyOptional({ example: true })
+  @IsOptional()
+  is_active?: boolean;
 }
 
 export class UpdateOrganisationDto {
@@ -39,6 +89,11 @@ export class UpdateOrganisationDto {
   @IsOptional()
   @IsString()
   nom?: string;
+
+  @ApiPropertyOptional({ example: 'bmce-bank' })
+  @IsOptional()
+  @IsString()
+  slug?: string;
 
   @ApiPropertyOptional({ example: 'http://localhost:9000/mms-cantine/logos/bmce.png' })
   @IsOptional()
@@ -49,4 +104,64 @@ export class UpdateOrganisationDto {
   @IsOptional()
   @IsHexColor()
   couleur_primaire?: string;
+
+  @ApiPropertyOptional({ example: '#1A1A2E' })
+  @IsOptional()
+  @IsHexColor()
+  couleur_secondaire?: string;
+
+  @ApiPropertyOptional({ enum: MenuMode, example: MenuMode.AUTONOME })
+  @IsOptional()
+  @IsEnum(MenuMode)
+  mode_gestion_menu?: MenuMode;
+
+  @ApiPropertyOptional({ enum: SubventionType, example: SubventionType.FIXED })
+  @IsOptional()
+  @IsEnum(SubventionType)
+  subvention_type?: SubventionType;
+
+  @ApiPropertyOptional({ example: 1000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  subvention_valeur?: number;
+
+  @ApiPropertyOptional({ example: 30000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  subvention_plafond_mensuel?: number;
+
+  @ApiPropertyOptional({ example: 500 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix_min_plats?: number;
+
+  @ApiPropertyOptional({ example: 5000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix_max_plats?: number;
+
+  @ApiPropertyOptional({ example: 6000 })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix_max_menu?: number;
+
+  @ApiPropertyOptional({ example: [DishCategory.RESISTANCE] })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(DishCategory, { each: true })
+  composition_menu?: DishCategory[];
+
+  @ApiPropertyOptional({ enum: FinancialMode, example: FinancialMode.DEBT })
+  @IsOptional()
+  @IsEnum(FinancialMode)
+  financial_mode?: FinancialMode;
+
+  @ApiPropertyOptional({ example: true })
+  @IsOptional()
+  is_active?: boolean;
 }

@@ -2,7 +2,7 @@ import {
   Entity, PrimaryGeneratedColumn, Column,
   CreateDateColumn, UpdateDateColumn, OneToMany,
 } from 'typeorm';
-import { MenuMode, SubventionType } from '../common/enums/index';
+import { MenuMode, SubventionType, DishCategory, FinancialMode } from '../common/enums/index';
 import { User } from '../users/user.entity';
 
 @Entity('organisations')
@@ -31,6 +31,9 @@ export class Organisation {
   @Column({ type: 'enum', enum: SubventionType, default: SubventionType.FIXED })
   subvention_type: SubventionType;
 
+  @Column({ type: 'enum', enum: FinancialMode, default: FinancialMode.DEBT })
+  financial_mode: FinancialMode;
+
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   subvention_valeur: number; // FCFA ou %
 
@@ -39,6 +42,18 @@ export class Organisation {
 
   @Column({ default: true })
   is_active: boolean;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  prix_min_plats: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  prix_max_plats: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  prix_max_menu: number;
+
+  @Column({ type: 'simple-array', nullable: true })
+  composition_menu: DishCategory[];
 
   @OneToMany(() => User, (user) => user.organisation)
   users: User[];

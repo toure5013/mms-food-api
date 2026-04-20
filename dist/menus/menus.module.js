@@ -13,12 +13,13 @@ const menus_controller_1 = require("./menus.controller");
 const menus_service_1 = require("./menus.service");
 const menu_entity_1 = require("./menu.entity");
 const dish_entity_1 = require("../dishes/dish.entity");
+const organisation_entity_1 = require("../organisations/organisation.entity");
 let MenusModule = class MenusModule {
 };
 exports.MenusModule = MenusModule;
 exports.MenusModule = MenusModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([menu_entity_1.Menu, dish_entity_1.Dish])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([menu_entity_1.Menu, dish_entity_1.Dish, organisation_entity_1.Organisation])],
         controllers: [menus_controller_1.MenusController],
         providers: [menus_service_1.MenusService],
         exports: [menus_service_1.MenusService],

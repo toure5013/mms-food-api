@@ -44,10 +44,11 @@ let PaymentsController = class PaymentsController {
 exports.PaymentsController = PaymentsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Liste des paiements (filtrable par commande ou utilisateur)' }),
-    (0, swagger_1.ApiQuery)({ name: 'order_id', required: false }),
-    (0, swagger_1.ApiQuery)({ name: 'user_id', required: false }),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
+    (0, swagger_1.ApiOperation)({ summary: 'Liste des paiements', description: 'Retourne l\'historique des paiements, filtrable par commande ou utilisateur.' }),
+    (0, swagger_1.ApiQuery)({ name: 'order_id', required: false, description: 'UUID de la commande' }),
+    (0, swagger_1.ApiQuery)({ name: 'user_id', required: false, description: 'UUID de l\'utilisateur' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des paiements retournée.' }),
     __param(0, (0, common_1.Query)('order_id')),
     __param(1, (0, common_1.Query)('user_id')),
     __metadata("design:type", Function),
@@ -56,8 +57,11 @@ __decorate([
 ], PaymentsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un paiement' }),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
+    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un paiement', description: 'Retourne les informations d\'une transaction spécifique.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du paiement' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Paiement trouvé.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Paiement non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -65,9 +69,11 @@ __decorate([
 ], PaymentsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.EMPLOYEE, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.SUPER_ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Initier un paiement pour une commande' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Initier un paiement', description: 'Crée une transaction de paiement pour une commande (Wave, Orange Money, etc.).' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Paiement initié.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [payments_dto_1.CreatePaymentDto]),
@@ -76,7 +82,8 @@ __decorate([
 __decorate([
     (0, common_1.Post)('webhook'),
     (0, public_decorator_1.Public)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Callback webhook du provider de paiement (Wave, Orange Money, etc.)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Callback Webhook', description: 'Réception des notifications de succès/échec de la part du provider de paiement.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Webhook traité.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [payments_dto_1.WebhookPaymentDto]),
@@ -84,9 +91,12 @@ __decorate([
 ], PaymentsController.prototype, "handleWebhook", null);
 __decorate([
     (0, common_1.Patch)(':id/refund'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Rembourser un paiement' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Rembourser un paiement', description: 'Initie une procédure de remboursement pour une transaction donnée.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du paiement' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Remboursement traité.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Paiement non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

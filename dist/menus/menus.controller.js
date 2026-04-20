@@ -24,6 +24,10 @@ let MenusController = class MenusController {
     constructor(menusService) {
         this.menusService = menusService;
     }
+    findDaily(date, req) {
+        const organisationId = req.user?.organisation_id;
+        return this.menusService.findDailyDishes(date, organisationId);
+    }
     findAll(organisationId, date) {
         return this.menusService.findAll(organisationId, date);
     }
@@ -45,10 +49,22 @@ let MenusController = class MenusController {
 };
 exports.MenusController = MenusController;
 __decorate([
+    (0, common_1.Get)('daily'),
+    (0, swagger_1.ApiOperation)({ summary: 'Plats du jour', description: 'Retourne la liste complète des plats disponibles pour une date donnée (filtré par organisation).' }),
+    (0, swagger_1.ApiQuery)({ name: 'date', required: true, description: 'Date au format YYYY-MM-DD' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des plats retournée.' }),
+    __param(0, (0, common_1.Query)('date')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], MenusController.prototype, "findDaily", null);
+__decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Liste des menus (filtrable par organisation et date)' }),
-    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'Filtrer par organisation' }),
-    (0, swagger_1.ApiQuery)({ name: 'date', required: false, description: 'Filtrer par date (YYYY-MM-DD)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Liste des menus', description: 'Retourne la liste des menus planifiés, filtrable par organisation et/ou par date.' }),
+    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'Filtrer par organisation (UUID)' }),
+    (0, swagger_1.ApiQuery)({ name: 'date', required: false, description: 'Filtrer par date (format YYYY-MM-DD)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des menus retournée.' }),
     __param(0, (0, common_1.Query)('organisation_id')),
     __param(1, (0, common_1.Query)('date')),
     __metadata("design:type", Function),
@@ -57,7 +73,10 @@ __decorate([
 ], MenusController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un menu' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un menu', description: 'Retourne un menu avec la liste de ses plats associés.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Menu trouvé avec ses plats.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Menu non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -66,7 +85,10 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Créer un menu avec ses plats' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Créer un menu', description: 'Crée un nouveau menu pour une date et un créneau donné, et associe les plats sélectionnés.' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Menu créé avec succès.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides (date passée, créneau invalide, etc.).' }),
+    (0, swagger_1.ApiResponse)({ status: 409, description: 'Un menu existe déjà pour cette date/créneau/organisation.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [menus_dto_1.CreateMenuDto]),
@@ -75,7 +97,10 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un menu' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un menu', description: 'Remplace entièrement la configuration d\'un menu existant.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Menu mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Menu non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -85,7 +110,10 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id/publish'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Publier ou dépublier un menu' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Publier / dépublier un menu', description: 'Change la visibilité d\'un menu. Un menu publié est visible par les employés pour passer commande.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut de publication mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Menu non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -95,7 +123,10 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Supprimer un menu' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Supprimer un menu', description: 'Supprime définitivement un menu et ses associations aux plats.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Menu supprimé.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Menu non trouvé.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -103,7 +134,7 @@ __decorate([
 ], MenusController.prototype, "remove", null);
 exports.MenusController = MenusController = __decorate([
     (0, swagger_1.ApiTags)('Menus'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('menus'),
     __metadata("design:paramtypes", [menus_service_1.MenusService])
 ], MenusController);

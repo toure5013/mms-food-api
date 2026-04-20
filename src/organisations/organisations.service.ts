@@ -27,4 +27,15 @@ export class OrganisationsService {
     const org = this.organisationRepo.create(dto);
     return this.organisationRepo.save(org);
   }
+
+  async update(id: string, dto: any) {
+    const org = await this.findOne(id);
+    Object.assign(org, dto);
+    return this.organisationRepo.save(org);
+  }
+
+  async remove(id: string) {
+    const org = await this.findOne(id);
+    return this.organisationRepo.remove(org);
+  }
 }

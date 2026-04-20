@@ -46,7 +46,8 @@ let LoyaltyController = class LoyaltyController {
 exports.LoyaltyController = LoyaltyController;
 __decorate([
     (0, common_1.Get)('points'),
-    (0, swagger_1.ApiOperation)({ summary: 'Consulter mes points de fidélité' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Mes points', description: 'Retourne le solde actuel de points de fidélité de l\'utilisateur.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Solde de points retourné.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -54,7 +55,8 @@ __decorate([
 ], LoyaltyController.prototype, "getPoints", null);
 __decorate([
     (0, common_1.Get)('history'),
-    (0, swagger_1.ApiOperation)({ summary: 'Historique des points gagnés / dépensés' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Historique des points', description: 'Affiche toutes les transactions de gains et dépenses de points de fidélité.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Historique retourné.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -62,8 +64,9 @@ __decorate([
 ], LoyaltyController.prototype, "getHistory", null);
 __decorate([
     (0, common_1.Get)('leaderboard'),
-    (0, swagger_1.ApiOperation)({ summary: 'Classement des utilisateurs par points de fidélité' }),
-    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, description: 'Nombre max de résultats (défaut: 10)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Classement', description: 'Retourne le top des utilisateurs ayant le plus de points de fidélité.' }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, description: 'Nb max de résultats (défaut: 10)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Classement retourné.' }),
     __param(0, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -72,7 +75,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)('add'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Ajouter des points de fidélité à un utilisateur (admin)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Ajouter des points (Admin)', description: 'Crédite manuellement des points à un utilisateur (récompense exceptionnelle, etc.).' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Points ajoutés.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Interdit.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [loyalty_dto_1.AddPointsDto]),
@@ -80,7 +85,9 @@ __decorate([
 ], LoyaltyController.prototype, "addPoints", null);
 __decorate([
     (0, common_1.Post)('redeem'),
-    (0, swagger_1.ApiOperation)({ summary: 'Utiliser des points de fidélité' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Utiliser mes points', description: 'Convertit des points de fidélité en avantages ou bons (selon règles business).' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Points utilisés avec succès.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Points insuffisants ou offre invalide.' }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -89,7 +96,7 @@ __decorate([
 ], LoyaltyController.prototype, "redeemPoints", null);
 exports.LoyaltyController = LoyaltyController = __decorate([
     (0, swagger_1.ApiTags)('Loyalty'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('loyalty'),
     __metadata("design:paramtypes", [loyalty_service_1.LoyaltyService])
 ], LoyaltyController);

@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { WinstonModule } from 'nest-winston';
+
+import { getWinstonConfig } from './common/logger/logger.config';
+import { TypeOrmWinstonLogger } from './database/typeorm-logger';
+
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -39,6 +46,9 @@ import { LoyaltyTransaction } from './loyalty/loyalty-transaction.entity';
     // Rate limiting: 100 requêtes / 60 secondes
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
 
+    // Logger
+    WinstonModule.forRoot(getWinstonConfig()),
+
     // TypeORM PostgreSQL
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -52,7 +62,8 @@ import { LoyaltyTransaction } from './loyalty/loyalty-transaction.entity';
         password: config.get('DB_PASS', 'postgres'),
         entities: [User, Organisation, Dish, Menu, Order, Payment, Wallet, WalletTransaction, Notification, LoyaltyTransaction],
         synchronize: config.get('NODE_ENV') !== 'production', // migrations en prod
-        logging: config.get('NODE_ENV') === 'development',
+        logging: 'all',
+        logger: new TypeOrmWinstonLogger(),
       }),
     }),
 
@@ -74,6 +85,10 @@ import { LoyaltyTransaction } from './loyalty/loyalty-transaction.entity';
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
+    
+    // Logging & Erreur globaux
+    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
   ],
 })
 export class AppModule {}

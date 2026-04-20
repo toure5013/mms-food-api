@@ -20,7 +20,7 @@ export class Menu {
   @Column({ default: false })
   is_published: boolean;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   image_url: string;
 
   @Column({ nullable: true })

@@ -28,6 +28,7 @@ export class Dish {
   @Column({ default: false }) sans_sel: boolean;
   @Column({ default: false }) sans_gras: boolean;
   @Column({ default: false }) sans_sucre: boolean;
+  @Column({ default: false }) sans_huile: boolean;
   @Column({ default: false }) vegetarien: boolean;
   @Column({ default: false }) halal: boolean;
 

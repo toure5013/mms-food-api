@@ -37,6 +37,15 @@ let OrganisationsService = class OrganisationsService {
         const org = this.organisationRepo.create(dto);
         return this.organisationRepo.save(org);
     }
+    async update(id, dto) {
+        const org = await this.findOne(id);
+        Object.assign(org, dto);
+        return this.organisationRepo.save(org);
+    }
+    async remove(id) {
+        const org = await this.findOne(id);
+        return this.organisationRepo.remove(org);
+    }
 };
 exports.OrganisationsService = OrganisationsService;
 exports.OrganisationsService = OrganisationsService = __decorate([

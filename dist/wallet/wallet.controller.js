@@ -44,7 +44,9 @@ let WalletController = class WalletController {
 exports.WalletController = WalletController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Consulter mon porte-monnaie (solde)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Consulter mon solde', description: 'Retourne le solde actuel du porte-monnaie de l\'utilisateur connecté.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Porte-monnaie trouvé.' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Non authentifié.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -52,7 +54,9 @@ __decorate([
 ], WalletController.prototype, "getWallet", null);
 __decorate([
     (0, common_1.Post)('credit'),
-    (0, swagger_1.ApiOperation)({ summary: 'Recharger le porte-monnaie via Mobile Money' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Recharger le porte-monnaie', description: 'Initie une recharge via Mobile Money pour augmenter le solde.' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Recharge initiée.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -62,7 +66,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)('debit'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Débiter le porte-monnaie (usage interne)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Débiter le porte-monnaie', description: 'Effectue un débit manuel sur le solde d\'un utilisateur (usage administratif).' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Débit effectué.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Interdit.' }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -71,7 +77,8 @@ __decorate([
 ], WalletController.prototype, "debit", null);
 __decorate([
     (0, common_1.Get)('transactions'),
-    (0, swagger_1.ApiOperation)({ summary: 'Historique des transactions du porte-monnaie' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Historique des transactions', description: 'Liste toutes les opérations de crédit et débit passées sur le porte-monnaie.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des transactions retournée.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -79,7 +86,7 @@ __decorate([
 ], WalletController.prototype, "getTransactions", null);
 exports.WalletController = WalletController = __decorate([
     (0, swagger_1.ApiTags)('Wallet'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('wallet'),
     __metadata("design:paramtypes", [wallet_service_1.WalletService])
 ], WalletController);

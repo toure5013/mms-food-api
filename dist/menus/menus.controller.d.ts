@@ -3,6 +3,7 @@ import { CreateMenuDto, UpdateMenuDto, PublishMenuDto } from './dto/menus.dto';
 export declare class MenusController {
     private readonly menusService;
     constructor(menusService: MenusService);
+    findDaily(date: string, req: any): Promise<import("../dishes/dish.entity").Dish[]>;
     findAll(organisationId?: string, date?: string): Promise<import("./menu.entity").Menu[]>;
     findOne(id: string): Promise<import("./menu.entity").Menu>;
     create(dto: CreateMenuDto): Promise<import("./menu.entity").Menu>;

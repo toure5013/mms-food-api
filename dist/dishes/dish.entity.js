@@ -22,6 +22,7 @@ let Dish = class Dish {
     sans_sel;
     sans_gras;
     sans_sucre;
+    sans_huile;
     vegetarien;
     halal;
     allergenes;
@@ -66,6 +67,10 @@ __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], Dish.prototype, "sans_sucre", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Dish.prototype, "sans_huile", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

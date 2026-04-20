@@ -8,6 +8,7 @@ export declare class CreateDishDto {
     sans_sel?: boolean;
     sans_gras?: boolean;
     sans_sucre?: boolean;
+    sans_huile?: boolean;
     vegetarien?: boolean;
     halal?: boolean;
     allergenes?: string[];
@@ -21,6 +22,7 @@ export declare class UpdateDishDto {
     sans_sel?: boolean;
     sans_gras?: boolean;
     sans_sucre?: boolean;
+    sans_huile?: boolean;
     vegetarien?: boolean;
     halal?: boolean;
     allergenes?: string[];

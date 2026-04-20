@@ -46,10 +46,11 @@ let OrdersController = class OrdersController {
 exports.OrdersController = OrdersController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Liste des commandes (filtrable par organisation, employé, statut)' }),
-    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false }),
-    (0, swagger_1.ApiQuery)({ name: 'employe_id', required: false }),
-    (0, swagger_1.ApiQuery)({ name: 'statut', required: false }),
+    (0, swagger_1.ApiOperation)({ summary: 'Liste des commandes', description: 'Retourne la liste des commandes, filtrable par organisation, employé et statut.' }),
+    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation' }),
+    (0, swagger_1.ApiQuery)({ name: 'employe_id', required: false, description: 'UUID de l\'employé' }),
+    (0, swagger_1.ApiQuery)({ name: 'statut', required: false, description: 'Filtrer par statut (PENDING, CONFIRMED, PAID, etc.)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des commandes retournée.' }),
     __param(0, (0, common_1.Query)('organisation_id')),
     __param(1, (0, common_1.Query)('employe_id')),
     __param(2, (0, common_1.Query)('statut')),
@@ -60,7 +61,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)('stats/:organisationId'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Statistiques des commandes par organisation' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Statistiques des commandes', description: 'Retourne les statistiques de commandes pour une organisation donnée (Total, Aujourd\'hui, etc.).' }),
+    (0, swagger_1.ApiParam)({ name: 'organisationId', description: 'UUID de l\'organisation' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statistiques retournées.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Accès refusé.' }),
     __param(0, (0, common_1.Param)('organisationId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -68,7 +72,10 @@ __decorate([
 ], OrdersController.prototype, "getStats", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'une commande' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'une commande', description: 'Retourne les détails complets d\'une commande par son UUID.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Commande trouvée.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Commande non trouvée.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -77,7 +84,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.EMPLOYEE, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.SUPER_ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Créer une commande (génère QR code + numéro)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Créer une commande', description: 'Crée une nouvelle commande, génère un numéro unique et un token de QR code.' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Commande créée avec succès.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides ou solde insuffisant.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [orders_dto_1.CreateOrderDto]),
@@ -86,7 +95,10 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id/status'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.COOK),
-    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut d\'une commande' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Commande non trouvée.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -96,7 +108,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)('retrieve'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Retrait par scan QR code — marque la commande comme récupérée' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Retrait par scan QR code', description: 'Marque une commande comme récupérée en utilisant le token du QR code.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Commande marquée comme récupérée.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Token QR code invalide ou commande déjà récupérée/annulée.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [orders_dto_1.RetrieveOrderDto]),
@@ -104,7 +118,7 @@ __decorate([
 ], OrdersController.prototype, "retrieveByQrCode", null);
 exports.OrdersController = OrdersController = __decorate([
     (0, swagger_1.ApiTags)('Orders'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('orders'),
     __metadata("design:paramtypes", [orders_service_1.OrdersService])
 ], OrdersController);

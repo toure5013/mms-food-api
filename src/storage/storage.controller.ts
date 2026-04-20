@@ -3,20 +3,20 @@ import {
   BadRequestException, Body
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums';
 
 @ApiTags('Storage')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('storage')
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
   @Post('upload')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
-  @ApiOperation({ summary: 'Uploader un fichier (images, avatars, plats)' })
+  @ApiOperation({ summary: 'Uploader un fichier', description: 'Enregistre une image ou un document sur le stockage MinIO (S3).' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -25,16 +25,18 @@ export class StorageController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'Le fichier à uploader',
+          description: 'Le fichier à uploader (JPG, PNG, WEBP — Max 5 Mo)',
         },
         folder: {
           type: 'string',
           example: 'dishes',
-          description: 'dossier de destination cible (ex: dishes, avatars)',
+          description: 'dossier de destination (ex: dishes, avatars, logos)',
         },
       },
     },
   })
+  @ApiResponse({ status: 201, description: 'Fichier uploadé avec succès — Retourne l\'URL publique.' })
+  @ApiResponse({ status: 400, description: 'Fichier manquant, trop gros ou format invalide.' })
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,

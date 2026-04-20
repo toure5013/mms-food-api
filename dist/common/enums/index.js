@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NotificationChannel = exports.PaymentStatus = exports.PaymentMethod = exports.OrderStatus = exports.DishCategory = exports.MealSlot = exports.SubventionType = exports.MenuMode = exports.UserRole = void 0;
+exports.FinancialMode = exports.NotificationChannel = exports.PaymentStatus = exports.PaymentMethod = exports.OrderStatus = exports.DishCategory = exports.MealSlot = exports.SubventionType = exports.MenuMode = exports.UserRole = void 0;
 var UserRole;
 (function (UserRole) {
     UserRole["SUPER_ADMIN"] = "SUPER_ADMIN";
@@ -70,4 +70,9 @@ var NotificationChannel;
     NotificationChannel["EMAIL"] = "EMAIL";
     NotificationChannel["SMS"] = "SMS";
 })(NotificationChannel || (exports.NotificationChannel = NotificationChannel = {}));
+var FinancialMode;
+(function (FinancialMode) {
+    FinancialMode["DEBT"] = "DEBT";
+    FinancialMode["WALLET"] = "WALLET";
+})(FinancialMode || (exports.FinancialMode = FinancialMode = {}));
 //# sourceMappingURL=index.js.map

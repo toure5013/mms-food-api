@@ -58,3 +58,7 @@ export declare enum NotificationChannel {
     EMAIL = "EMAIL",
     SMS = "SMS"
 }
+export declare enum FinancialMode {
+    DEBT = "DEBT",
+    WALLET = "WALLET"
+}

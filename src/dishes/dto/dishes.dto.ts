@@ -46,6 +46,11 @@ export class CreateDishDto {
   @ApiPropertyOptional({ example: false })
   @IsOptional()
   @IsBoolean()
+  sans_huile?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
   vegetarien?: boolean;
 
   @ApiPropertyOptional({ example: true })
@@ -101,6 +106,11 @@ export class UpdateDishDto {
   @IsOptional()
   @IsBoolean()
   sans_sucre?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  sans_huile?: boolean;
 
   @ApiPropertyOptional({ example: false })
   @IsOptional()

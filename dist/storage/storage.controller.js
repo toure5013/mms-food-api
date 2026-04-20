@@ -47,7 +47,7 @@ exports.StorageController = StorageController;
 __decorate([
     (0, common_1.Post)('upload'),
     (0, roles_decorator_1.Roles)(enums_1.UserRole.SUPER_ADMIN, enums_1.UserRole.ADMIN_MMS, enums_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Uploader un fichier (images, avatars, plats)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Uploader un fichier', description: 'Enregistre une image ou un document sur le stockage MinIO (S3).' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiBody)({
         schema: {
@@ -56,16 +56,18 @@ __decorate([
                 file: {
                     type: 'string',
                     format: 'binary',
-                    description: 'Le fichier à uploader',
+                    description: 'Le fichier à uploader (JPG, PNG, WEBP — Max 5 Mo)',
                 },
                 folder: {
                     type: 'string',
                     example: 'dishes',
-                    description: 'dossier de destination cible (ex: dishes, avatars)',
+                    description: 'dossier de destination (ex: dishes, avatars, logos)',
                 },
             },
         },
     }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Fichier uploadé avec succès — Retourne l\'URL publique.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Fichier manquant, trop gros ou format invalide.' }),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Body)('folder')),
@@ -75,7 +77,7 @@ __decorate([
 ], StorageController.prototype, "uploadFile", null);
 exports.StorageController = StorageController = __decorate([
     (0, swagger_1.ApiTags)('Storage'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('storage'),
     __metadata("design:paramtypes", [storage_service_1.StorageService])
 ], StorageController);

@@ -56,7 +56,8 @@ let NotificationsController = class NotificationsController {
 exports.NotificationsController = NotificationsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Mes notifications' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Mes notifications', description: 'Liste toutes les notifications reçues par l\'utilisateur connecté.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des notifications retournée.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -64,7 +65,8 @@ __decorate([
 ], NotificationsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('unread-count'),
-    (0, swagger_1.ApiOperation)({ summary: 'Nombre de notifications non lues' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Compteur de non lues', description: 'Retourne le nombre total de notifications non encore consultées.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Compteur retourné.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -72,7 +74,10 @@ __decorate([
 ], NotificationsController.prototype, "getUnreadCount", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Détails d\'une notification' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Détails notification', description: 'Retourne le contenu détaillé d\'une notification spécifique.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la notification' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Notification trouvée.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Notification non trouvée.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -81,7 +86,8 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Envoyer une notification à un utilisateur' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Envoyer une notification', description: 'Envoie manuellement une notification à un utilisateur (admin uniquement).' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Notification envoyée.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [notifications_dto_1.CreateNotificationDto]),
@@ -89,7 +95,9 @@ __decorate([
 ], NotificationsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id/read'),
-    (0, swagger_1.ApiOperation)({ summary: 'Marquer une notification comme lue/non lue' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Changer statut lecture', description: 'Marque une notification comme lue ou non lue.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la notification' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut mis à jour.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -98,7 +106,8 @@ __decorate([
 ], NotificationsController.prototype, "markAsRead", null);
 __decorate([
     (0, common_1.Patch)('read-all'),
-    (0, swagger_1.ApiOperation)({ summary: 'Marquer toutes mes notifications comme lues' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Tout marquer comme lu', description: 'Marque instantanément toutes les notifications de l\'utilisateur comme lues.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Toutes les notifications marquées comme lues.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -106,7 +115,8 @@ __decorate([
 ], NotificationsController.prototype, "markAllAsRead", null);
 __decorate([
     (0, common_1.Post)('fcm-token'),
-    (0, swagger_1.ApiOperation)({ summary: 'Enregistrer le token FCM pour les notifications push' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Enregistrer token FCM', description: 'Associe un token Firebase Cloud Messaging à l\'utilisateur pour les notifications Push.' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Token enregistré.' }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -115,7 +125,9 @@ __decorate([
 ], NotificationsController.prototype, "registerFcmToken", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Supprimer une notification' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Supprimer une notification', description: 'Supprime définitivement une notification de l\'historique.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la notification' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Notification supprimée.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -123,7 +135,7 @@ __decorate([
 ], NotificationsController.prototype, "remove", null);
 exports.NotificationsController = NotificationsController = __decorate([
     (0, swagger_1.ApiTags)('Notifications'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('notifications'),
     __metadata("design:paramtypes", [notifications_service_1.NotificationsService])
 ], NotificationsController);

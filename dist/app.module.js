@@ -12,6 +12,11 @@ const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const core_1 = require("@nestjs/core");
 const throttler_1 = require("@nestjs/throttler");
+const nest_winston_1 = require("nest-winston");
+const logger_config_1 = require("./common/logger/logger.config");
+const typeorm_logger_1 = require("./database/typeorm-logger");
+const all_exceptions_filter_1 = require("./common/filters/all-exceptions.filter");
+const logging_interceptor_1 = require("./common/interceptors/logging.interceptor");
 const auth_module_1 = require("./auth/auth.module");
 const users_module_1 = require("./users/users.module");
 const organisations_module_1 = require("./organisations/organisations.module");
@@ -43,6 +48,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             throttler_1.ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
+            nest_winston_1.WinstonModule.forRoot((0, logger_config_1.getWinstonConfig)()),
             typeorm_1.TypeOrmModule.forRootAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
@@ -55,7 +61,8 @@ exports.AppModule = AppModule = __decorate([
                     password: config.get('DB_PASS', 'postgres'),
                     entities: [user_entity_1.User, organisation_entity_1.Organisation, dish_entity_1.Dish, menu_entity_1.Menu, order_entity_1.Order, payment_entity_1.Payment, wallet_entity_1.Wallet, wallet_transaction_entity_1.WalletTransaction, notification_entity_1.Notification, loyalty_transaction_entity_1.LoyaltyTransaction],
                     synchronize: config.get('NODE_ENV') !== 'production',
-                    logging: config.get('NODE_ENV') === 'development',
+                    logging: 'all',
+                    logger: new typeorm_logger_1.TypeOrmWinstonLogger(),
                 }),
             }),
             auth_module_1.AuthModule,
@@ -74,6 +81,8 @@ exports.AppModule = AppModule = __decorate([
             { provide: core_1.APP_GUARD, useClass: jwt_auth_guard_1.JwtAuthGuard },
             { provide: core_1.APP_GUARD, useClass: roles_guard_1.RolesGuard },
             { provide: core_1.APP_GUARD, useClass: throttler_1.ThrottlerGuard },
+            { provide: core_1.APP_INTERCEPTOR, useClass: logging_interceptor_1.LoggingInterceptor },
+            { provide: core_1.APP_FILTER, useClass: all_exceptions_filter_1.AllExceptionsFilter },
         ],
     })
 ], AppModule);

@@ -73,6 +73,9 @@ let AuthService = class AuthService {
         const isValid = await bcrypt.compare(dto.password, user.password_hash);
         if (!isValid)
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
+        if (user.organisation && !user.organisation.is_active) {
+            throw new common_1.UnauthorizedException('Votre entreprise est actuellement bloquée. Contactez le super-administrateur.');
+        }
         return this.generateTokens(user);
     }
     async requestOtp(dto) {

@@ -22,6 +22,7 @@ class CreateDishDto {
     sans_sel;
     sans_gras;
     sans_sucre;
+    sans_huile;
     vegetarien;
     halal;
     allergenes;
@@ -80,6 +81,12 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
+], CreateDishDto.prototype, "sans_huile", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: false }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
 ], CreateDishDto.prototype, "vegetarien", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: true }),
@@ -103,6 +110,7 @@ class UpdateDishDto {
     sans_sel;
     sans_gras;
     sans_sucre;
+    sans_huile;
     vegetarien;
     halal;
     allergenes;
@@ -158,6 +166,12 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], UpdateDishDto.prototype, "sans_sucre", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: false }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
+], UpdateDishDto.prototype, "sans_huile", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: false }),
     (0, class_validator_1.IsOptional)(),

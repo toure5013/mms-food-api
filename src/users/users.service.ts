@@ -11,16 +11,14 @@ export class UsersService {
     private readonly userRepo: Repository<User>,
   ) {}
 
-  findAllByOrganisation(orgId: string) {
+  findAll(organisationId?: string) {
+    const where: any = {};
+    if (organisationId) where.organisation_id = organisationId;
+    
     return this.userRepo.find({
-      where: { organisation_id: orgId },
+      where,
+      relations: ['organisation'],
       order: { created_at: 'DESC' },
-    });
-  }
-
-  findAllSuperAdmins() {
-    return this.userRepo.find({
-      where: { role: 'SUPER_ADMIN' as any },
     });
   }
 
@@ -40,5 +38,16 @@ export class UsersService {
       is_active: true,
     });
     return this.userRepo.save(user);
+  }
+
+  async update(id: string, dto: any) {
+    const user = await this.findOne(id);
+    Object.assign(user, dto);
+    return this.userRepo.save(user);
+  }
+
+  async remove(id: string) {
+    const user = await this.findOne(id);
+    return this.userRepo.remove(user);
   }
 }
