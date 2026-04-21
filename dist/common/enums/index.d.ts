@@ -20,7 +20,8 @@ export declare enum SubventionType {
 export declare enum MealSlot {
     MORNING = "MORNING",
     NOON = "NOON",
-    EVENING = "EVENING"
+    EVENING = "EVENING",
+    SNACK = "SNACK"
 }
 export declare enum DishCategory {
     ENTREE = "ENTREE",

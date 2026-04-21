@@ -24,6 +24,7 @@ export enum MealSlot {
   MORNING = 'MORNING',
   NOON = 'NOON',
   EVENING = 'EVENING',
+  SNACK = 'SNACK',
 }
 
 export enum DishCategory {

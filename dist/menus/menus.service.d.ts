@@ -12,7 +12,6 @@ export declare class MenusService {
     findOne(id: string): Promise<Menu>;
     create(dto: CreateMenuDto): Promise<Menu>;
     update(id: string, dto: UpdateMenuDto): Promise<Menu>;
-    private validateMenuSaaSRules;
     publish(id: string, isPublished: boolean): Promise<Menu>;
     remove(id: string): Promise<Menu>;
     findDailyDishes(date: string, organisationId?: string): Promise<Dish[]>;

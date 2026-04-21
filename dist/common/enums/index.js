@@ -28,6 +28,7 @@ var MealSlot;
     MealSlot["MORNING"] = "MORNING";
     MealSlot["NOON"] = "NOON";
     MealSlot["EVENING"] = "EVENING";
+    MealSlot["SNACK"] = "SNACK";
 })(MealSlot || (exports.MealSlot = MealSlot = {}));
 var DishCategory;
 (function (DishCategory) {

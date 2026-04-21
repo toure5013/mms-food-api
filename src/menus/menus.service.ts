@@ -51,8 +51,6 @@ export class MenusService {
       const plats = await this.dishRepo.find({
         where: { id: In(plats_ids) },
       });
-      
-      await this.validateMenuSaaSRules(organisation, plats);
       menu.plats = plats;
     }
 
@@ -63,51 +61,16 @@ export class MenusService {
     const menu = await this.findOne(id);
     const { plats_ids, ...updateData } = dto;
 
-    const organisation = menu.organisation || await this.orgRepo.findOne({ where: { id: menu.organisation_id } });
-
     Object.assign(menu, updateData);
 
     if (plats_ids) {
       const plats = await this.dishRepo.find({
         where: { id: In(plats_ids) },
       });
-      
-      await this.validateMenuSaaSRules(organisation, plats);
       menu.plats = plats;
     }
 
     return this.menuRepo.save(menu);
-  }
-
-  private async validateMenuSaaSRules(organisation: Organisation, plats: Dish[]) {
-    let totalMenuPrice = 0;
-
-    for (const dish of plats) {
-      // 1. Validation du prix maximum par plat
-      if (organisation.prix_max_plats > 0 && Number(dish.prix) > Number(organisation.prix_max_plats)) {
-        throw new BadRequestException(
-          `Le plat "${dish.nom}" dépasse le prix maximum autorisé par l'organisation (${organisation.prix_max_plats} FCFA).`
-        );
-      }
-
-      // 2. Validation de la composition du menu (catégories autorisées)
-      if (organisation.composition_menu && organisation.composition_menu.length > 0) {
-        if (!organisation.composition_menu.includes(dish.categorie as any)) {
-          throw new BadRequestException(
-            `La catégorie "${dish.categorie}" du plat "${dish.nom}" n'est pas autorisée par l'organisation.`
-          );
-        }
-      }
-
-      totalMenuPrice += Number(dish.prix);
-    }
-
-    // 3. Validation du prix total du menu
-    if (organisation.prix_max_menu > 0 && totalMenuPrice > Number(organisation.prix_max_menu)) {
-      throw new BadRequestException(
-        `Le prix total du menu (${totalMenuPrice} FCFA) dépasse le maximum autorisé (${organisation.prix_max_menu} FCFA).`
-      );
-    }
   }
 
   async publish(id: string, isPublished: boolean) {
