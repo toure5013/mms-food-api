@@ -24,7 +24,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: { id: payload.sub, is_active: true },
       relations: ['organisation'],
     });
-    if (!user) throw new UnauthorizedException('Utilisateur introuvable ou désactivé');
+
+    if (!user) {
+      throw new UnauthorizedException('Utilisateur introuvable ou désactivé');
+    }
+
     return user; // injecté dans request.user
   }
 }

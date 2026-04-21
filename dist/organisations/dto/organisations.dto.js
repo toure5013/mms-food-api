@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateOrganisationDto = exports.CreateOrganisationDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -29,6 +30,9 @@ class CreateOrganisationDto {
     composition_menu;
     financial_mode;
     is_active;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { nom: { required: true, type: () => String }, slug: { required: true, type: () => String }, logo_url: { required: false, type: () => String }, couleur_primaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, couleur_secondaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, mode_gestion_menu: { required: false, enum: require("../../common/enums/index").MenuMode }, subvention_type: { required: false, enum: require("../../common/enums/index").SubventionType }, subvention_valeur: { required: false, type: () => Number, minimum: 0 }, subvention_plafond_mensuel: { required: false, type: () => Number, minimum: 0 }, prix_min_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_menu: { required: false, type: () => Number, minimum: 0 }, composition_menu: { required: false, enum: require("../../common/enums/index").DishCategory, isArray: true }, financial_mode: { required: false, enum: require("../../common/enums/index").FinancialMode }, is_active: { required: false, type: () => Boolean } };
+    }
 }
 exports.CreateOrganisationDto = CreateOrganisationDto;
 __decorate([
@@ -142,6 +146,9 @@ class UpdateOrganisationDto {
     composition_menu;
     financial_mode;
     is_active;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { nom: { required: false, type: () => String }, slug: { required: false, type: () => String }, logo_url: { required: false, type: () => String }, couleur_primaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, couleur_secondaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, mode_gestion_menu: { required: false, enum: require("../../common/enums/index").MenuMode }, subvention_type: { required: false, enum: require("../../common/enums/index").SubventionType }, subvention_valeur: { required: false, type: () => Number, minimum: 0 }, subvention_plafond_mensuel: { required: false, type: () => Number, minimum: 0 }, prix_min_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_menu: { required: false, type: () => Number, minimum: 0 }, composition_menu: { required: false, enum: require("../../common/enums/index").DishCategory, isArray: true }, financial_mode: { required: false, enum: require("../../common/enums/index").FinancialMode }, is_active: { required: false, type: () => Boolean } };
+    }
 }
 exports.UpdateOrganisationDto = UpdateOrganisationDto;
 __decorate([

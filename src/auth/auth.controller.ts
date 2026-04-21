@@ -8,7 +8,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Public()
   @Post('login')
@@ -56,6 +56,9 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Profil utilisateur retourné.' })
   @ApiResponse({ status: 401, description: 'Token JWT manquant ou invalide.' })
   getProfile(@CurrentUser() user: any) {
-    return this.authService.getProfile(user.sub);
+    console.log("CurrentUser");
+    console.log(user);
+
+    return this.authService.getProfile(user.id);
   }
 }

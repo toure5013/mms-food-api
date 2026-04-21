@@ -10,11 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefreshTokenDto = exports.SetPasswordDto = exports.VerifyOtpDto = exports.RequestOtpDto = exports.LoginDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class LoginDto {
     email;
     password;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { email: { required: true, type: () => String, format: "email" }, password: { required: true, type: () => String } };
+    }
 }
 exports.LoginDto = LoginDto;
 __decorate([
@@ -30,6 +34,9 @@ __decorate([
 ], LoginDto.prototype, "password", void 0);
 class RequestOtpDto {
     email;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { email: { required: true, type: () => String, format: "email" } };
+    }
 }
 exports.RequestOtpDto = RequestOtpDto;
 __decorate([
@@ -40,6 +47,9 @@ __decorate([
 class VerifyOtpDto {
     email;
     otp;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { email: { required: true, type: () => String, format: "email" }, otp: { required: true, type: () => String } };
+    }
 }
 exports.VerifyOtpDto = VerifyOtpDto;
 __decorate([
@@ -57,6 +67,9 @@ class SetPasswordDto {
     email;
     otp;
     password;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { email: { required: true, type: () => String, format: "email" }, otp: { required: true, type: () => String }, password: { required: true, type: () => String, minLength: 8 } };
+    }
 }
 exports.SetPasswordDto = SetPasswordDto;
 __decorate([
@@ -78,6 +91,9 @@ __decorate([
 ], SetPasswordDto.prototype, "password", void 0);
 class RefreshTokenDto {
     refresh_token;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { refresh_token: { required: true, type: () => String } };
+    }
 }
 exports.RefreshTokenDto = RefreshTokenDto;
 __decorate([

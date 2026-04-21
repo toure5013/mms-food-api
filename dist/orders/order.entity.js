@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 const user_entity_1 = require("../users/user.entity");
@@ -36,6 +37,9 @@ let Order = class Order {
     plats;
     created_at;
     updated_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, numero_commande: { required: true, type: () => String }, qr_code_token: { required: true, type: () => String }, statut: { required: true, enum: require("../common/enums/index").OrderStatus }, creneau: { required: true, enum: require("../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, montant_total: { required: true, type: () => Number }, montant_subvention: { required: true, type: () => Number }, montant_employe: { required: true, type: () => Number }, methode_paiement: { required: true, enum: require("../common/enums/index").PaymentMethod }, points_gagnes: { required: true, type: () => Number }, date_recuperation: { required: true, type: () => Date }, recupere_par: { required: true, type: () => String }, employe: { required: true, type: () => require("../users/user.entity").User }, employe_id: { required: true, type: () => String }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, plats: { required: true, type: () => [require("../dishes/dish.entity").Dish] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+    }
 };
 exports.Order = Order;
 __decorate([

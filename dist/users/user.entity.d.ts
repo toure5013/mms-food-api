@@ -11,6 +11,8 @@ export declare class User {
     telephone: string;
     avatar_url: string;
     service: string;
+    regimes: string[];
+    allergies: string[];
     otp_code: string;
     otp_expires_at: Date;
     loyalty_points: number;

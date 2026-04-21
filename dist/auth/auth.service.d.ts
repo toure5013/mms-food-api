@@ -10,6 +10,7 @@ export declare class AuthService {
     login(dto: LoginDto): Promise<{
         access_token: string;
         refresh_token: string;
+        type_token: string;
         user: {
             id: string | undefined;
             email: string | undefined;
@@ -35,6 +36,7 @@ export declare class AuthService {
     setPassword(dto: SetPasswordDto): Promise<{
         access_token: string;
         refresh_token: string;
+        type_token: string;
         user: {
             id: string | undefined;
             email: string | undefined;

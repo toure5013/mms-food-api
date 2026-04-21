@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebhookPaymentDto = exports.CreatePaymentDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -19,6 +20,9 @@ class CreatePaymentDto {
     methode;
     montant;
     telephone;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { order_id: { required: true, type: () => String, format: "uuid" }, user_id: { required: true, type: () => String, format: "uuid" }, methode: { required: true, enum: require("../../common/enums/index").PaymentMethod }, montant: { required: true, type: () => Number, minimum: 1 }, telephone: { required: false, type: () => String } };
+    }
 }
 exports.CreatePaymentDto = CreatePaymentDto;
 __decorate([
@@ -56,6 +60,9 @@ class WebhookPaymentDto {
     status;
     provider;
     amount;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { transaction_id: { required: true, type: () => String }, reference: { required: true, type: () => String }, status: { required: true, type: () => String }, provider: { required: false, type: () => String }, amount: { required: false, type: () => Number } };
+    }
 }
 exports.WebhookPaymentDto = WebhookPaymentDto;
 __decorate([

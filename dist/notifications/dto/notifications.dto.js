@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterFcmTokenDto = exports.MarkReadDto = exports.CreateNotificationDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -20,6 +21,9 @@ class CreateNotificationDto {
     canal;
     action_url;
     metadata;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { titre: { required: true, type: () => String }, message: { required: true, type: () => String }, user_id: { required: true, type: () => String, format: "uuid" }, canal: { required: false, enum: require("../../common/enums/index").NotificationChannel }, action_url: { required: false, type: () => String }, metadata: { required: false, type: () => String } };
+    }
 }
 exports.CreateNotificationDto = CreateNotificationDto;
 __decorate([
@@ -60,6 +64,9 @@ __decorate([
 ], CreateNotificationDto.prototype, "metadata", void 0);
 class MarkReadDto {
     is_read;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { is_read: { required: true, type: () => Boolean } };
+    }
 }
 exports.MarkReadDto = MarkReadDto;
 __decorate([
@@ -69,6 +76,9 @@ __decorate([
 ], MarkReadDto.prototype, "is_read", void 0);
 class RegisterFcmTokenDto {
     fcm_token;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { fcm_token: { required: true, type: () => String } };
+    }
 }
 exports.RegisterFcmTokenDto = RegisterFcmTokenDto;
 __decorate([

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PublishMenuDto = exports.UpdateMenuDto = exports.CreateMenuDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -20,6 +21,9 @@ class CreateMenuDto {
     organisation_id;
     plats_ids;
     is_published;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { date: { required: true, type: () => String }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, image_url: { required: false, type: () => String }, organisation_id: { required: true, type: () => String, format: "uuid" }, plats_ids: { required: false, type: () => [String], format: "uuid" }, is_published: { required: false, type: () => Boolean } };
+    }
 }
 exports.CreateMenuDto = CreateMenuDto;
 __decorate([
@@ -63,6 +67,9 @@ class UpdateMenuDto {
     image_url;
     plats_ids;
     is_published;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { date: { required: false, type: () => String }, creneau: { required: false, enum: require("../../common/enums/index").MealSlot }, image_url: { required: false, type: () => String }, plats_ids: { required: false, type: () => [String], format: "uuid" }, is_published: { required: false, type: () => Boolean } };
+    }
 }
 exports.UpdateMenuDto = UpdateMenuDto;
 __decorate([
@@ -98,6 +105,9 @@ __decorate([
 ], UpdateMenuDto.prototype, "is_published", void 0);
 class PublishMenuDto {
     is_published;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { is_published: { required: true, type: () => Boolean } };
+    }
 }
 exports.PublishMenuDto = PublishMenuDto;
 __decorate([

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 const organisation_entity_1 = require("../organisations/organisation.entity");
@@ -24,6 +25,8 @@ let User = class User {
     telephone;
     avatar_url;
     service;
+    regimes;
+    allergies;
     otp_code;
     otp_expires_at;
     loyalty_points;
@@ -36,6 +39,9 @@ let User = class User {
     created_at;
     updated_at;
     wallet;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, prenom: { required: true, type: () => String }, nom: { required: true, type: () => String }, email: { required: true, type: () => String }, password_hash: { required: true, type: () => String }, role: { required: true, enum: require("../common/enums/index").UserRole }, telephone: { required: true, type: () => String }, avatar_url: { required: true, type: () => String }, service: { required: true, type: () => String }, regimes: { required: true, type: () => [String] }, allergies: { required: true, type: () => [String] }, otp_code: { required: true, type: () => String }, otp_expires_at: { required: true, type: () => Date }, loyalty_points: { required: true, type: () => Number }, loyalty_expires_at: { required: true, type: () => Date }, fcm_token: { required: true, type: () => String }, is_active: { required: true, type: () => Boolean }, is_first_login: { required: true, type: () => Boolean }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date }, wallet: { required: true, type: () => require("../wallet/wallet.entity").Wallet } };
+    }
 };
 exports.User = User;
 __decorate([
@@ -74,6 +80,14 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "service", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'simple-array', nullable: true }),
+    __metadata("design:type", Array)
+], User.prototype, "regimes", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'simple-array', nullable: true }),
+    __metadata("design:type", Array)
+], User.prototype, "allergies", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true, select: false }),
     __metadata("design:type", String)

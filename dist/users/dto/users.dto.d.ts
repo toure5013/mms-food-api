@@ -8,10 +8,14 @@ export declare class CreateUserDto {
     telephone?: string;
     avatar_url?: string;
     service?: string;
+    regimes?: string[];
+    allergies?: string[];
 }
 export declare class UpdateUserDto {
     prenom?: string;
     nom?: string;
     avatar_url?: string;
     telephone?: string;
+    regimes?: string[];
+    allergies?: string[];
 }

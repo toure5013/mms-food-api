@@ -27,7 +27,8 @@ export declare enum DishCategory {
     RESISTANCE = "RESISTANCE",
     DESSERT = "DESSERT",
     CAFE = "CAFE",
-    BOISSON = "BOISSON"
+    BOISSON = "BOISSON",
+    COLLATION = "COLLATION"
 }
 export declare enum OrderStatus {
     PENDING = "PENDING",
@@ -61,4 +62,29 @@ export declare enum NotificationChannel {
 export declare enum FinancialMode {
     DEBT = "DEBT",
     WALLET = "WALLET"
+}
+export declare enum DietaryRegime {
+    SANS_SEL = "SANS_SEL",
+    SANS_GRAS = "SANS_GRAS",
+    SANS_SUCRE = "SANS_SUCRE",
+    SANS_HUILE = "SANS_HUILE",
+    VEGETARIEN = "VEGETARIEN",
+    HALAL = "HALAL"
+}
+export declare enum Allergy {
+    ARACHIDES = "ARACHIDES",
+    CRUSTACES = "CRUSTACES",
+    OEUFS = "OEUFS",
+    POISSONS = "POISSONS",
+    SOJA = "SOJA",
+    LAIT = "LAIT",
+    FRUITS_A_COQUE = "FRUITS_A_COQUE",
+    CELERI = "CELERI",
+    MOUTARDE = "MOUTARDE",
+    SESAME = "SESAME",
+    SULFITES = "SULFITES",
+    LUPIN = "LUPIN",
+    MOLLUSQUES = "MOLLUSQUES",
+    GLUTEN = "GLUTEN",
+    AUCUNE = "AUCUNE"
 }

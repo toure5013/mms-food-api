@@ -35,6 +35,12 @@ export class User {
   @Column({ nullable: true })
   service: string; // département dans l'entreprise
 
+  @Column({ type: 'simple-array', nullable: true })
+  regimes: string[];
+
+  @Column({ type: 'simple-array', nullable: true })
+  allergies: string[];
+
   // OTP (email uniquement)
   @Column({ nullable: true, select: false })
   otp_code: string;

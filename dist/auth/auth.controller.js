@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const auth_service_1 = require("./auth.service");
@@ -37,7 +38,9 @@ let AuthController = class AuthController {
         return this.authService.setPassword(dto);
     }
     getProfile(user) {
-        return this.authService.getProfile(user.sub);
+        console.log("CurrentUser");
+        console.log(user);
+        return this.authService.getProfile(user.id);
     }
 };
 exports.AuthController = AuthController;

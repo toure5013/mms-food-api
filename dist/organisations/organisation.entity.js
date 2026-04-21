@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Organisation = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 const user_entity_1 = require("../users/user.entity");
@@ -33,6 +34,9 @@ let Organisation = class Organisation {
     users;
     created_at;
     updated_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, slug: { required: true, type: () => String }, nom: { required: true, type: () => String }, logo_url: { required: true, type: () => String }, couleur_primaire: { required: true, type: () => String }, couleur_secondaire: { required: true, type: () => String }, mode_gestion_menu: { required: true, enum: require("../common/enums/index").MenuMode }, subvention_type: { required: true, enum: require("../common/enums/index").SubventionType }, financial_mode: { required: true, enum: require("../common/enums/index").FinancialMode }, subvention_valeur: { required: true, type: () => Number }, subvention_plafond_mensuel: { required: true, type: () => Number }, is_active: { required: true, type: () => Boolean }, prix_min_plats: { required: true, type: () => Number }, prix_max_plats: { required: true, type: () => Number }, prix_max_menu: { required: true, type: () => Number }, composition_menu: { required: true, enum: require("../common/enums/index").DishCategory, isArray: true }, users: { required: true, type: () => [require("../users/user.entity").User] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+    }
 };
 exports.Organisation = Organisation;
 __decorate([

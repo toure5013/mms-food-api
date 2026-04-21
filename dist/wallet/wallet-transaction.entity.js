@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WalletTransaction = exports.TransactionType = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const wallet_entity_1 = require("./wallet.entity");
 var TransactionType;
@@ -27,6 +28,9 @@ let WalletTransaction = class WalletTransaction {
     wallet;
     wallet_id;
     created_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, type: { required: true, enum: require("./wallet-transaction.entity").TransactionType }, montant: { required: true, type: () => Number }, solde_apres: { required: true, type: () => Number }, description: { required: true, type: () => String }, reference: { required: true, type: () => String }, wallet: { required: true, type: () => require("./wallet.entity").Wallet }, wallet_id: { required: true, type: () => String }, created_at: { required: true, type: () => Date } };
+    }
 };
 exports.WalletTransaction = WalletTransaction;
 __decorate([

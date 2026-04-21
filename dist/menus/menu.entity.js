@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Menu = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 const organisation_entity_1 = require("../organisations/organisation.entity");
@@ -27,6 +28,9 @@ let Menu = class Menu {
     plats;
     created_at;
     updated_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, date: { required: true, type: () => String }, creneau: { required: true, enum: require("../common/enums/index").MealSlot }, is_published: { required: true, type: () => Boolean }, image_url: { required: true, type: () => String }, published_at: { required: true, type: () => Date }, publication_limite: { required: true, type: () => Date }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, plats: { required: true, type: () => [require("../dishes/dish.entity").Dish] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+    }
 };
 exports.Menu = Menu;
 __decorate([

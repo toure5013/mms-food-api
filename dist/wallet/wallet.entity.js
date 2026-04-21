@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Wallet = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("../users/user.entity");
 let Wallet = class Wallet {
@@ -20,6 +21,9 @@ let Wallet = class Wallet {
     user_id;
     created_at;
     updated_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, solde: { required: true, type: () => Number }, is_active: { required: true, type: () => Boolean }, user: { required: true, type: () => require("../users/user.entity").User }, user_id: { required: true, type: () => String }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+    }
 };
 exports.Wallet = Wallet;
 __decorate([

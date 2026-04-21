@@ -37,8 +37,9 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
             where: { id: payload.sub, is_active: true },
             relations: ['organisation'],
         });
-        if (!user)
+        if (!user) {
             throw new common_1.UnauthorizedException('Utilisateur introuvable ou désactivé');
+        }
         return user;
     }
 };

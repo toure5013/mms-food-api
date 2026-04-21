@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateUserDto = exports.CreateUserDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -22,6 +23,11 @@ class CreateUserDto {
     telephone;
     avatar_url;
     service;
+    regimes;
+    allergies;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { prenom: { required: true, type: () => String }, nom: { required: true, type: () => String }, email: { required: true, type: () => String, format: "email" }, role: { required: true, enum: require("../../common/enums/index").UserRole }, organisation_id: { required: false, type: () => String, format: "uuid" }, telephone: { required: false, type: () => String }, avatar_url: { required: false, type: () => String }, service: { required: false, type: () => String }, regimes: { required: false, type: () => [String] }, allergies: { required: false, type: () => [String] } };
+    }
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
@@ -70,11 +76,30 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "service", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: ['VEGETARIEN'], description: 'Liste des régimes alimentaires' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], CreateUserDto.prototype, "regimes", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: ['ARACHIDES'], description: 'Liste des allergies' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], CreateUserDto.prototype, "allergies", void 0);
 class UpdateUserDto {
     prenom;
     nom;
     avatar_url;
     telephone;
+    regimes;
+    allergies;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { prenom: { required: false, type: () => String }, nom: { required: false, type: () => String }, avatar_url: { required: false, type: () => String }, telephone: { required: false, type: () => String }, regimes: { required: false, type: () => [String] }, allergies: { required: false, type: () => [String] } };
+    }
 }
 exports.UpdateUserDto = UpdateUserDto;
 __decorate([
@@ -101,4 +126,18 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "telephone", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: ['VEGETARIEN'] }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], UpdateUserDto.prototype, "regimes", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: ['ARACHIDES'] }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], UpdateUserDto.prototype, "allergies", void 0);
 //# sourceMappingURL=users.dto.js.map

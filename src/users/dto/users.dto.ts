@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, IsOptional, IsEnum, IsUUID } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsOptional, IsEnum, IsUUID, IsArray } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserRole } from '../../common/enums/index';
 
@@ -40,6 +40,18 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   service?: string;
+
+  @ApiPropertyOptional({ example: ['VEGETARIEN'], description: 'Liste des régimes alimentaires' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  regimes?: string[];
+
+  @ApiPropertyOptional({ example: ['ARACHIDES'], description: 'Liste des allergies' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  allergies?: string[];
 }
 
 export class UpdateUserDto {
@@ -62,4 +74,16 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   telephone?: string;
+
+  @ApiPropertyOptional({ example: ['VEGETARIEN'] })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  regimes?: string[];
+
+  @ApiPropertyOptional({ example: ['ARACHIDES'] })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  allergies?: string[];
 }

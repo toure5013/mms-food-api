@@ -10,21 +10,8 @@ import { TypeOrmWinstonLogger } from './database/typeorm-logger';
 
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
-
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { OrganisationsModule } from './organisations/organisations.module';
-import { DishesModule } from './dishes/dishes.module';
-import { MenusModule } from './menus/menus.module';
-import { OrdersModule } from './orders/orders.module';
-import { PaymentsModule } from './payments/payments.module';
-import { WalletModule } from './wallet/wallet.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { LoyaltyModule } from './loyalty/loyalty.module';
-import { StorageModule } from './storage/storage.module';
-
-import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
-import { RolesGuard } from './common/guards/roles.guard';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 // Entities
 import { User } from './users/user.entity';
@@ -37,6 +24,24 @@ import { Wallet } from './wallet/wallet.entity';
 import { WalletTransaction } from './wallet/wallet-transaction.entity';
 import { Notification } from './notifications/notification.entity';
 import { LoyaltyTransaction } from './loyalty/loyalty-transaction.entity';
+import { Settings } from './settings/settings.entity';
+
+// Modules
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { OrganisationsModule } from './organisations/organisations.module';
+import { DishesModule } from './dishes/dishes.module';
+import { MenusModule } from './menus/menus.module';
+import { OrdersModule } from './orders/orders.module';
+import { PaymentsModule } from './payments/payments.module';
+import { WalletModule } from './wallet/wallet.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { LoyaltyModule } from './loyalty/loyalty.module';
+import { StorageModule } from './storage/storage.module';
+import { SettingsModule } from './settings/settings.module';
+
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -60,7 +65,7 @@ import { LoyaltyTransaction } from './loyalty/loyalty-transaction.entity';
         database: config.get('DB_NAME', 'mms_db'),
         username: config.get('DB_USER', 'postgres'),
         password: config.get('DB_PASS', 'postgres'),
-        entities: [User, Organisation, Dish, Menu, Order, Payment, Wallet, WalletTransaction, Notification, LoyaltyTransaction],
+        entities: [User, Organisation, Dish, Menu, Order, Payment, Wallet, WalletTransaction, Notification, LoyaltyTransaction, Settings],
         synchronize: config.get('NODE_ENV') !== 'production', // migrations en prod
         logging: 'all',
         logger: new TypeOrmWinstonLogger(),
@@ -79,8 +84,11 @@ import { LoyaltyTransaction } from './loyalty/loyalty-transaction.entity';
     NotificationsModule,
     LoyaltyModule,
     StorageModule,
+    SettingsModule,
   ],
+  controllers: [AppController],
   providers: [
+    AppService,
     // Guards globaux
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },

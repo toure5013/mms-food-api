@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Payment = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 const order_entity_1 = require("../orders/order.entity");
@@ -30,6 +31,9 @@ let Payment = class Payment {
     user_id;
     created_at;
     updated_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, reference: { required: true, type: () => String }, methode: { required: true, enum: require("../common/enums/index").PaymentMethod }, statut: { required: true, enum: require("../common/enums/index").PaymentStatus }, montant: { required: true, type: () => Number }, telephone: { required: true, type: () => String }, provider_transaction_id: { required: true, type: () => String }, provider_response: { required: true, type: () => String }, error_message: { required: true, type: () => String }, order: { required: true, type: () => require("../orders/order.entity").Order }, order_id: { required: true, type: () => String }, user: { required: true, type: () => require("../users/user.entity").User }, user_id: { required: true, type: () => String }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+    }
 };
 exports.Payment = Payment;
 __decorate([

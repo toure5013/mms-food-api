@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DebitWalletDto = exports.CreditWalletDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -17,6 +18,9 @@ class CreditWalletDto {
     montant;
     methode_paiement;
     telephone;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { montant: { required: true, type: () => Number, minimum: 100 }, methode_paiement: { required: true, enum: require("../../common/enums/index").PaymentMethod }, telephone: { required: false, type: () => String } };
+    }
 }
 exports.CreditWalletDto = CreditWalletDto;
 __decorate([
@@ -40,6 +44,9 @@ class DebitWalletDto {
     montant;
     description;
     reference;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { montant: { required: true, type: () => Number, minimum: 1 }, description: { required: false, type: () => String }, reference: { required: false, type: () => String } };
+    }
 }
 exports.DebitWalletDto = DebitWalletDto;
 __decorate([

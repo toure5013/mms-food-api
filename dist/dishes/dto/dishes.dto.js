@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateDishDto = exports.CreateDishDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -26,6 +27,9 @@ class CreateDishDto {
     vegetarien;
     halal;
     allergenes;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { nom: { required: true, type: () => String }, description: { required: false, type: () => String }, photo_url: { required: false, type: () => String }, categorie: { required: false, enum: require("../../common/enums/index").DishCategory }, prix: { required: true, type: () => Number, minimum: 0 }, sans_sel: { required: false, type: () => Boolean }, sans_gras: { required: false, type: () => Boolean }, sans_sucre: { required: false, type: () => Boolean }, sans_huile: { required: false, type: () => Boolean }, vegetarien: { required: false, type: () => Boolean }, halal: { required: false, type: () => Boolean }, allergenes: { required: false, type: () => [String] } };
+    }
 }
 exports.CreateDishDto = CreateDishDto;
 __decorate([
@@ -115,6 +119,9 @@ class UpdateDishDto {
     halal;
     allergenes;
     is_active;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { nom: { required: false, type: () => String }, description: { required: false, type: () => String }, photo_url: { required: false, type: () => String }, categorie: { required: false, enum: require("../../common/enums/index").DishCategory }, prix: { required: false, type: () => Number, minimum: 0 }, sans_sel: { required: false, type: () => Boolean }, sans_gras: { required: false, type: () => Boolean }, sans_sucre: { required: false, type: () => Boolean }, sans_huile: { required: false, type: () => Boolean }, vegetarien: { required: false, type: () => Boolean }, halal: { required: false, type: () => Boolean }, allergenes: { required: false, type: () => [String] }, is_active: { required: false, type: () => Boolean } };
+    }
 }
 exports.UpdateDishDto = UpdateDishDto;
 __decorate([

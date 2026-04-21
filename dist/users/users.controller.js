@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const users_service_1 = require("./users.service");
@@ -86,6 +87,7 @@ __decorate([
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un utilisateur' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
+    openapi.ApiResponse({ status: 200, type: require("./user.entity").User }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -97,6 +99,7 @@ __decorate([
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),
     (0, swagger_1.ApiOperation)({ summary: 'Supprimer un utilisateur' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
+    openapi.ApiResponse({ status: 200, type: require("./user.entity").User }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

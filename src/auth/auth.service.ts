@@ -12,7 +12,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   /** LOGIN: email + mot de passe */
   async login(dto: LoginDto) {
@@ -22,19 +22,25 @@ export class AuthService {
       relations: ['organisation', 'wallet'],
     });
 
-    if (!user) throw new UnauthorizedException('Email ou mot de passe incorrect');
+    if (!user) {
+      throw new UnauthorizedException('Email ou mot de passe incorrect');
+    }
+
     if (!user.password_hash) {
       throw new UnauthorizedException('Compte non activé. Veuillez utiliser votre lien d\'invitation.');
     }
 
     const isValid = await bcrypt.compare(dto.password, user.password_hash);
-    if (!isValid) throw new UnauthorizedException('Email ou mot de passe incorrect');
+    if (!isValid) {
+      throw new UnauthorizedException('Email ou mot de passe incorrect');
+    }
 
     // Vérifier si l'organisation est active
     if (user.organisation && !user.organisation.is_active) {
       throw new UnauthorizedException('Votre entreprise est actuellement bloquée. Contactez le super-administrateur.');
     }
 
+    console.log(`[AUTH] Connexion réussie pour: ${user.email}`);
     return this.generateTokens(user);
   }
 
@@ -106,6 +112,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload, { expiresIn: '15m' }),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
+      type_token: "Bearer",
       user: {
         id: user.id,
         email: user.email,
@@ -119,15 +126,22 @@ export class AuthService {
       },
     };
   }
-  
+
   /** PROFILE: Récupère les infos de l'utilisateur connecté */
   async getProfile(userId: string) {
+    if (!userId) {
+      throw new BadRequestException('ID utilisateur manquant');
+    }
+
     const user = await this.userRepo.findOne({
       where: { id: userId },
       relations: ['organisation', 'wallet'],
     });
 
-    if (!user) throw new NotFoundException('Utilisateur introuvable');
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
     return user;
   }
 

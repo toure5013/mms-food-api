@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedeemPointsDto = exports.AddPointsDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const loyalty_transaction_entity_1 = require("../loyalty-transaction.entity");
@@ -19,6 +20,9 @@ class AddPointsDto {
     type;
     description;
     reference;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { user_id: { required: true, type: () => String, format: "uuid" }, points: { required: true, type: () => Number, minimum: 1 }, type: { required: false, enum: require("../loyalty-transaction.entity").LoyaltyTransactionType }, description: { required: false, type: () => String }, reference: { required: false, type: () => String } };
+    }
 }
 exports.AddPointsDto = AddPointsDto;
 __decorate([
@@ -54,6 +58,9 @@ __decorate([
 class RedeemPointsDto {
     points;
     description;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { points: { required: true, type: () => Number, minimum: 1 }, description: { required: false, type: () => String } };
+    }
 }
 exports.RedeemPointsDto = RedeemPointsDto;
 __decorate([

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Dish = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
 let Dish = class Dish {
@@ -29,6 +30,9 @@ let Dish = class Dish {
     is_active;
     created_at;
     updated_at;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, nom: { required: true, type: () => String }, description: { required: true, type: () => String }, photo_url: { required: true, type: () => String }, categorie: { required: true, enum: require("../common/enums/index").DishCategory }, prix: { required: true, type: () => Number }, sans_sel: { required: true, type: () => Boolean }, sans_gras: { required: true, type: () => Boolean }, sans_sucre: { required: true, type: () => Boolean }, sans_huile: { required: true, type: () => Boolean }, vegetarien: { required: true, type: () => Boolean }, halal: { required: true, type: () => Boolean }, allergenes: { required: true, type: () => [String] }, is_active: { required: true, type: () => Boolean }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+    }
 };
 exports.Dish = Dish;
 __decorate([

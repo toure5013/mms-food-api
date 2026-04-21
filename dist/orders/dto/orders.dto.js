@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RetrieveOrderDto = exports.UpdateOrderStatusDto = exports.CreateOrderDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const index_1 = require("../../common/enums/index");
@@ -20,6 +21,9 @@ class CreateOrderDto {
     date_livraison;
     plats_ids;
     methode_paiement;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { employe_id: { required: true, type: () => String, format: "uuid" }, organisation_id: { required: true, type: () => String, format: "uuid" }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, plats_ids: { required: true, type: () => [String], format: "uuid" }, methode_paiement: { required: false, enum: require("../../common/enums/index").PaymentMethod } };
+    }
 }
 exports.CreateOrderDto = CreateOrderDto;
 __decorate([
@@ -58,6 +62,9 @@ __decorate([
 ], CreateOrderDto.prototype, "methode_paiement", void 0);
 class UpdateOrderStatusDto {
     statut;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { statut: { required: true, enum: require("../../common/enums/index").OrderStatus } };
+    }
 }
 exports.UpdateOrderStatusDto = UpdateOrderStatusDto;
 __decorate([
@@ -68,6 +75,9 @@ __decorate([
 class RetrieveOrderDto {
     qr_code_token;
     recupere_par;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { qr_code_token: { required: true, type: () => String }, recupere_par: { required: false, type: () => String, format: "uuid" } };
+    }
 }
 exports.RetrieveOrderDto = RetrieveOrderDto;
 __decorate([

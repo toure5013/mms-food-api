@@ -65,17 +65,20 @@ let AuthService = class AuthService {
             select: ['id', 'email', 'password_hash', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login', 'loyalty_points'],
             relations: ['organisation', 'wallet'],
         });
-        if (!user)
+        if (!user) {
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
+        }
         if (!user.password_hash) {
             throw new common_1.UnauthorizedException('Compte non activé. Veuillez utiliser votre lien d\'invitation.');
         }
         const isValid = await bcrypt.compare(dto.password, user.password_hash);
-        if (!isValid)
+        if (!isValid) {
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
+        }
         if (user.organisation && !user.organisation.is_active) {
             throw new common_1.UnauthorizedException('Votre entreprise est actuellement bloquée. Contactez le super-administrateur.');
         }
+        console.log(`[AUTH] Connexion réussie pour: ${user.email}`);
         return this.generateTokens(user);
     }
     async requestOtp(dto) {
@@ -130,6 +133,7 @@ let AuthService = class AuthService {
         return {
             access_token: this.jwtService.sign(payload, { expiresIn: '15m' }),
             refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
+            type_token: "Bearer",
             user: {
                 id: user.id,
                 email: user.email,
@@ -144,12 +148,16 @@ let AuthService = class AuthService {
         };
     }
     async getProfile(userId) {
+        if (!userId) {
+            throw new common_1.BadRequestException('ID utilisateur manquant');
+        }
         const user = await this.userRepo.findOne({
             where: { id: userId },
             relations: ['organisation', 'wallet'],
         });
-        if (!user)
+        if (!user) {
             throw new common_1.NotFoundException('Utilisateur introuvable');
+        }
         return user;
     }
     generateOtp() {
