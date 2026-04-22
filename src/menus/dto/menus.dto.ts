@@ -55,6 +55,11 @@ export class UpdateMenuDto {
   @IsUUID('4', { each: true })
   plats_ids?: string[];
 
+  @ApiPropertyOptional({ example: 'uuid-organisation' })
+  @IsOptional()
+  @IsUUID()
+  organisation_id?: string;
+
   @ApiPropertyOptional({ example: true })
   @IsOptional()
   @IsBoolean()

@@ -29,8 +29,13 @@ let WalletController = class WalletController {
         const userId = req.user?.id || req.user?.sub;
         return this.walletService.getWallet(userId);
     }
-    credit(req, dto) {
-        const userId = req.user?.id || req.user?.sub;
+    credit(req, dto, targetUserId) {
+        const caller = req.user;
+        const callerId = caller?.id || caller?.sub;
+        let userId = callerId;
+        if (targetUserId && (caller.role === index_1.UserRole.SUPER_ADMIN || caller.role === index_1.UserRole.ADMIN_MMS)) {
+            userId = targetUserId;
+        }
         return this.walletService.credit(userId, dto);
     }
     debit(req, dto) {
@@ -55,13 +60,14 @@ __decorate([
 ], WalletController.prototype, "getWallet", null);
 __decorate([
     (0, common_1.Post)('credit'),
-    (0, swagger_1.ApiOperation)({ summary: 'Recharger le porte-monnaie', description: 'Initie une recharge via Mobile Money pour augmenter le solde.' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Recharge initiée.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Recharger un porte-monnaie', description: 'Initie une recharge via Mobile Money ou par un admin.' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Recharge effectuée.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Query)('target_user_id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, wallet_dto_1.CreditWalletDto]),
+    __metadata("design:paramtypes", [Object, wallet_dto_1.CreditWalletDto, String]),
     __metadata("design:returntype", void 0)
 ], WalletController.prototype, "credit", null);
 __decorate([

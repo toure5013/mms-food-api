@@ -12,6 +12,7 @@ export declare class UpdateMenuDto {
     creneau?: MealSlot;
     image_url?: string;
     plats_ids?: string[];
+    organisation_id?: string;
     is_published?: boolean;
 }
 export declare class PublishMenuDto {

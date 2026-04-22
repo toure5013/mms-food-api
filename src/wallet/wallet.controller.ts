@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { WalletService } from './wallet.service';
 import { CreditWalletDto, DebitWalletDto } from './dto/wallet.dto';
@@ -9,7 +9,7 @@ import { UserRole } from '../common/enums/index';
 @ApiBearerAuth('JWT-auth')
 @Controller('wallet')
 export class WalletController {
-  constructor(private readonly walletService: WalletService) {}
+  constructor(private readonly walletService: WalletService) { }
 
   @Get()
   @ApiOperation({ summary: 'Consulter mon solde', description: 'Retourne le solde actuel du porte-monnaie de l\'utilisateur connecté.' })
@@ -21,11 +21,19 @@ export class WalletController {
   }
 
   @Post('credit')
-  @ApiOperation({ summary: 'Recharger le porte-monnaie', description: 'Initie une recharge via Mobile Money pour augmenter le solde.' })
-  @ApiResponse({ status: 201, description: 'Recharge initiée.' })
+  @ApiOperation({ summary: 'Recharger un porte-monnaie', description: 'Initie une recharge via Mobile Money ou par un admin.' })
+  @ApiResponse({ status: 201, description: 'Recharge effectuée.' })
   @ApiResponse({ status: 400, description: 'Données invalides.' })
-  credit(@Req() req: any, @Body() dto: CreditWalletDto) {
-    const userId = req.user?.id || req.user?.sub;
+  credit(@Req() req: any, @Body() dto: CreditWalletDto, @Query('target_user_id') targetUserId?: string) {
+    const caller = req.user;
+    const callerId = caller?.id || caller?.sub;
+
+    // Si un targetUserId est fourni et que l'appelant est admin, on crédite le target
+    let userId = callerId;
+    if (targetUserId && (caller.role === UserRole.SUPER_ADMIN || caller.role === UserRole.ADMIN_MMS)) {
+      userId = targetUserId;
+    }
+
     return this.walletService.credit(userId, dto);
   }
 

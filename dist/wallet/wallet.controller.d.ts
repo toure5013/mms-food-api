@@ -4,7 +4,7 @@ export declare class WalletController {
     private readonly walletService;
     constructor(walletService: WalletService);
     getWallet(req: any): Promise<import("./wallet.entity").Wallet>;
-    credit(req: any, dto: CreditWalletDto): Promise<{
+    credit(req: any, dto: CreditWalletDto, targetUserId?: string): Promise<{
         wallet: import("./wallet.entity").Wallet;
         transaction: import("./wallet-transaction.entity").WalletTransaction;
     }>;

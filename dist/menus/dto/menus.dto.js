@@ -66,9 +66,10 @@ class UpdateMenuDto {
     creneau;
     image_url;
     plats_ids;
+    organisation_id;
     is_published;
     static _OPENAPI_METADATA_FACTORY() {
-        return { date: { required: false, type: () => String }, creneau: { required: false, enum: require("../../common/enums/index").MealSlot }, image_url: { required: false, type: () => String }, plats_ids: { required: false, type: () => [String], format: "uuid" }, is_published: { required: false, type: () => Boolean } };
+        return { date: { required: false, type: () => String }, creneau: { required: false, enum: require("../../common/enums/index").MealSlot }, image_url: { required: false, type: () => String }, plats_ids: { required: false, type: () => [String], format: "uuid" }, organisation_id: { required: false, type: () => String, format: "uuid" }, is_published: { required: false, type: () => Boolean } };
     }
 }
 exports.UpdateMenuDto = UpdateMenuDto;
@@ -97,6 +98,12 @@ __decorate([
     (0, class_validator_1.IsUUID)('4', { each: true }),
     __metadata("design:type", Array)
 ], UpdateMenuDto.prototype, "plats_ids", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'uuid-organisation' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUUID)(),
+    __metadata("design:type", String)
+], UpdateMenuDto.prototype, "organisation_id", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: true }),
     (0, class_validator_1.IsOptional)(),

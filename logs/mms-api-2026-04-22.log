@@ -1024,3 +1024,204 @@
 {"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-04-22T11:46:29.702Z"}
 {"context":"HTTP","level":"info","message":"GET /api/v1/menus?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +2ms","timestamp":"2026-04-22T11:46:29.704Z"}
 {"context":"ExceptionFilter","level":"warn","message":"PUT /api/v1/menus/d34398db-33a3-4170-87b7-fad9564eecfe [400] - Warning: {\"message\":[\"property organisation_id should not exist\"],\"error\":\"Bad Request\",\"statusCode\":400}","timestamp":"2026-04-22T11:46:54.752Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/auth/profile [200] +6ms","timestamp":"2026-04-22T11:48:06.700Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +4ms","timestamp":"2026-04-22T11:48:06.876Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +2ms","timestamp":"2026-04-22T11:48:06.882Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +2ms","timestamp":"2026-04-22T11:48:10.256Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-25 [200] +2ms","timestamp":"2026-04-22T11:48:33.346Z"}
+{"context":"TypeORM","level":"error","message":"[Query Error]: error: invalid input syntax for type uuid: \"my-orders\" -- [Query]: SELECT DISTINCT \"distinctAlias\".\"Order_id\" AS \"ids_Order_id\" FROM (SELECT \"Order\".\"id\" AS \"Order_id\", \"Order\".\"numero_commande\" AS \"Order_numero_commande\", \"Order\".\"qr_code_token\" AS \"Order_qr_code_token\", \"Order\".\"statut\" AS \"Order_statut\", \"Order\".\"creneau\" AS \"Order_creneau\", \"Order\".\"date_livraison\" AS \"Order_date_livraison\", \"Order\".\"montant_total\" AS \"Order_montant_total\", \"Order\".\"montant_subvention\" AS \"Order_montant_subvention\", \"Order\".\"montant_employe\" AS \"Order_montant_employe\", \"Order\".\"methode_paiement\" AS \"Order_methode_paiement\", \"Order\".\"points_gagnes\" AS \"Order_points_gagnes\", \"Order\".\"date_recuperation\" AS \"Order_date_recuperation\", \"Order\".\"recupere_par\" AS \"Order_recupere_par\", \"Order\".\"is_guest\" AS \"Order_is_guest\", \"Order\".\"guest_info\" AS \"Order_guest_info\", \"Order\".\"employe_id\" AS \"Order_employe_id\", \"Order\".\"organisation_id\" AS \"Order_organisation_id\", \"Order\".\"created_at\" AS \"Order_created_at\", \"Order\".\"updated_at\" AS \"Order_updated_at\", \"Order__Order_plats\".\"id\" AS \"Order__Order_plats_id\", \"Order__Order_plats\".\"nom\" AS \"Order__Order_plats_nom\", \"Order__Order_plats\".\"description\" AS \"Order__Order_plats_description\", \"Order__Order_plats\".\"photo_url\" AS \"Order__Order_plats_photo_url\", \"Order__Order_plats\".\"categorie\" AS \"Order__Order_plats_categorie\", \"Order__Order_plats\".\"prix\" AS \"Order__Order_plats_prix\", \"Order__Order_plats\".\"sans_sel\" AS \"Order__Order_plats_sans_sel\", \"Order__Order_plats\".\"sans_gras\" AS \"Order__Order_plats_sans_gras\", \"Order__Order_plats\".\"sans_sucre\" AS \"Order__Order_plats_sans_sucre\", \"Order__Order_plats\".\"sans_huile\" AS \"Order__Order_plats_sans_huile\", \"Order__Order_plats\".\"vegetarien\" AS \"Order__Order_plats_vegetarien\", \"Order__Order_plats\".\"halal\" AS \"Order__Order_plats_halal\", \"Order__Order_plats\".\"allergenes\" AS \"Order__Order_plats_allergenes\", \"Order__Order_plats\".\"is_active\" AS \"Order__Order_plats_is_active\", \"Order__Order_plats\".\"created_at\" AS \"Order__Order_plats_created_at\", \"Order__Order_plats\".\"updated_at\" AS \"Order__Order_plats_updated_at\", \"Order__Order_employe\".\"id\" AS \"Order__Order_employe_id\", \"Order__Order_employe\".\"prenom\" AS \"Order__Order_employe_prenom\", \"Order__Order_employe\".\"nom\" AS \"Order__Order_employe_nom\", \"Order__Order_employe\".\"email\" AS \"Order__Order_employe_email\", \"Order__Order_employe\".\"role\" AS \"Order__Order_employe_role\", \"Order__Order_employe\".\"telephone\" AS \"Order__Order_employe_telephone\", \"Order__Order_employe\".\"avatar_url\" AS \"Order__Order_employe_avatar_url\", \"Order__Order_employe\".\"service\" AS \"Order__Order_employe_service\", \"Order__Order_employe\".\"regimes\" AS \"Order__Order_employe_regimes\", \"Order__Order_employe\".\"allergies\" AS \"Order__Order_employe_allergies\", \"Order__Order_employe\".\"loyalty_points\" AS \"Order__Order_employe_loyalty_points\", \"Order__Order_employe\".\"loyalty_expires_at\" AS \"Order__Order_employe_loyalty_expires_at\", \"Order__Order_employe\".\"fcm_token\" AS \"Order__Order_employe_fcm_token\", \"Order__Order_employe\".\"is_active\" AS \"Order__Order_employe_is_active\", \"Order__Order_employe\".\"is_first_login\" AS \"Order__Order_employe_is_first_login\", \"Order__Order_employe\".\"organisation_id\" AS \"Order__Order_employe_organisation_id\", \"Order__Order_employe\".\"created_at\" AS \"Order__Order_employe_created_at\", \"Order__Order_employe\".\"updated_at\" AS \"Order__Order_employe_updated_at\", \"Order__Order_organisation\".\"id\" AS \"Order__Order_organisation_id\", \"Order__Order_organisation\".\"slug\" AS \"Order__Order_organisation_slug\", \"Order__Order_organisation\".\"nom\" AS \"Order__Order_organisation_nom\", \"Order__Order_organisation\".\"logo_url\" AS \"Order__Order_organisation_logo_url\", \"Order__Order_organisation\".\"couleur_primaire\" AS \"Order__Order_organisation_couleur_primaire\", \"Order__Order_organisation\".\"couleur_secondaire\" AS \"Order__Order_organisation_couleur_secondaire\", \"Order__Order_organisation\".\"mode_gestion_menu\" AS \"Order__Order_organisation_mode_gestion_menu\", \"Order__Order_organisation\".\"subvention_type\" AS \"Order__Order_organisation_subvention_type\", \"Order__Order_organisation\".\"financial_mode\" AS \"Order__Order_organisation_financial_mode\", \"Order__Order_organisation\".\"subvention_valeur\" AS \"Order__Order_organisation_subvention_valeur\", \"Order__Order_organisation\".\"subvention_plafond_mensuel\" AS \"Order__Order_organisation_subvention_plafond_mensuel\", \"Order__Order_organisation\".\"is_active\" AS \"Order__Order_organisation_is_active\", \"Order__Order_organisation\".\"prix_min_plats\" AS \"Order__Order_organisation_prix_min_plats\", \"Order__Order_organisation\".\"prix_max_plats\" AS \"Order__Order_organisation_prix_max_plats\", \"Order__Order_organisation\".\"prix_max_menu\" AS \"Order__Order_organisation_prix_max_menu\", \"Order__Order_organisation\".\"is_guest_order_enabled\" AS \"Order__Order_organisation_is_guest_order_enabled\", \"Order__Order_organisation\".\"guest_config\" AS \"Order__Order_organisation_guest_config\", \"Order__Order_organisation\".\"guest_order_start_time\" AS \"Order__Order_organisation_guest_order_start_time\", \"Order__Order_organisation\".\"guest_order_end_time\" AS \"Order__Order_organisation_guest_order_end_time\", \"Order__Order_organisation\".\"created_at\" AS \"Order__Order_organisation_created_at\", \"Order__Order_organisation\".\"updated_at\" AS \"Order__Order_organisation_updated_at\" FROM \"orders\" \"Order\" LEFT JOIN \"order_dishes\" \"Order_Order__Order_plats\" ON \"Order_Order__Order_plats\".\"ordersId\"=\"Order\".\"id\" LEFT JOIN \"dishes\" \"Order__Order_plats\" ON \"Order__Order_plats\".\"id\"=\"Order_Order__Order_plats\".\"dishesId\"  LEFT JOIN \"users\" \"Order__Order_employe\" ON \"Order__Order_employe\".\"id\"=\"Order\".\"employe_id\"  LEFT JOIN \"organisations\" \"Order__Order_organisation\" ON \"Order__Order_organisation\".\"id\"=\"Order\".\"organisation_id\" WHERE ((\"Order\".\"id\" = $1))) \"distinctAlias\" ORDER BY \"Order_id\" ASC LIMIT 1 -- [Parameters]: [\"my-orders\"]","stack":[null],"timestamp":"2026-04-22T11:48:34.288Z"}
+{"context":"ExceptionFilter","level":"error","message":"GET /api/v1/orders/my-orders [500] - Error: {\"message\":\"invalid input syntax for type uuid: \\\"my-orders\\\"\"}","stack":["QueryFailedError: invalid input syntax for type uuid: \"my-orders\"\n    at PostgresQueryRunner.query (/usr/src/app/node_modules/typeorm/driver/src/driver/postgres/PostgresQueryRunner.ts:325:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async SelectQueryBuilder.loadRawResults (/usr/src/app/node_modules/typeorm/query-builder/src/query-builder/SelectQueryBuilder.ts:3868:25)\n    at async SelectQueryBuilder.getRawMany (/usr/src/app/node_modules/typeorm/query-builder/src/query-builder/SelectQueryBuilder.ts:1627:29)\n    at async SelectQueryBuilder.executeEntitiesAndRawResults (/usr/src/app/node_modules/typeorm/query-builder/src/query-builder/SelectQueryBuilder.ts:3530:26)\n    at async SelectQueryBuilder.getRawAndEntities (/usr/src/app/node_modules/typeorm/query-builder/src/query-builder/SelectQueryBuilder.ts:1671:29)\n    at async SelectQueryBuilder.getOne (/usr/src/app/node_modules/typeorm/query-builder/src/query-builder/SelectQueryBuilder.ts:1698:25)\n    at async OrdersService.findOne (/usr/src/app/src/orders/orders.service.ts:36:19)"],"timestamp":"2026-04-22T11:48:34.320Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +6ms","timestamp":"2026-04-22T11:48:36.093Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/enums [200] +8ms","timestamp":"2026-04-22T11:48:42.541Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +5ms","timestamp":"2026-04-22T11:48:42.557Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +8ms","timestamp":"2026-04-22T11:48:42.559Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +6ms","timestamp":"2026-04-22T11:48:42.560Z"}
+{"context":"HTTP","level":"info","message":"POST /api/v1/auth/login [200] +198ms","timestamp":"2026-04-22T11:49:00.453Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +7ms","timestamp":"2026-04-22T11:49:00.636Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-04-22T11:49:00.642Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +2ms","timestamp":"2026-04-22T11:49:00.649Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users [200] +2ms","timestamp":"2026-04-22T11:49:00.650Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +2ms","timestamp":"2026-04-22T11:49:00.652Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +6ms","timestamp":"2026-04-22T11:49:00.657Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +3ms","timestamp":"2026-04-22T11:49:00.661Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +8ms","timestamp":"2026-04-22T11:49:00.662Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/notifications [200] +4ms","timestamp":"2026-04-22T11:49:00.663Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +2ms","timestamp":"2026-04-22T11:49:00.666Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +4ms","timestamp":"2026-04-22T11:49:00.670Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users [200] +1ms","timestamp":"2026-04-22T11:49:00.672Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/notifications [200] +2ms","timestamp":"2026-04-22T11:49:00.675Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +3ms","timestamp":"2026-04-22T11:49:00.677Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +1ms","timestamp":"2026-04-22T11:49:00.679Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +1ms","timestamp":"2026-04-22T11:49:00.682Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +2ms","timestamp":"2026-04-22T11:49:04.305Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +6ms","timestamp":"2026-04-22T11:49:04.310Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/enums [200] +5ms","timestamp":"2026-04-22T11:49:04.317Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/enums [200] +4ms","timestamp":"2026-04-22T11:49:04.318Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +3ms","timestamp":"2026-04-22T11:49:04.323Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +3ms","timestamp":"2026-04-22T11:49:04.325Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +5ms","timestamp":"2026-04-22T11:49:04.328Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +2ms","timestamp":"2026-04-22T11:49:04.329Z"}
+{"context":"ExceptionFilter","level":"warn","message":"PUT /api/v1/menus/d34398db-33a3-4170-87b7-fad9564eecfe [400] - Warning: {\"message\":[\"property organisation_id should not exist\"],\"error\":\"Bad Request\",\"statusCode\":400}","timestamp":"2026-04-22T11:49:33.482Z"}
+{"context":"ExceptionFilter","level":"warn","message":"PUT /api/v1/menus/d34398db-33a3-4170-87b7-fad9564eecfe [400] - Warning: {\"message\":[\"property organisation_id should not exist\"],\"error\":\"Bad Request\",\"statusCode\":400}","timestamp":"2026-04-22T11:51:32.715Z"}
+{"context":"ExceptionFilter","level":"warn","message":"PUT /api/v1/menus/d34398db-33a3-4170-87b7-fad9564eecfe [400] - Warning: {\"message\":[\"property organisation_id should not exist\"],\"error\":\"Bad Request\",\"statusCode\":400}","timestamp":"2026-04-22T11:52:00.799Z"}
+{"context":"ExceptionFilter","level":"warn","message":"PUT /api/v1/menus/ee7396f9-8e62-46d0-ad48-222a134f61b2 [400] - Warning: {\"message\":[\"property organisation_id should not exist\"],\"error\":\"Bad Request\",\"statusCode\":400}","timestamp":"2026-04-22T11:53:28.421Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/auth/profile [200] +4ms","timestamp":"2026-04-22T11:54:37.912Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/auth/profile [200] +5ms","timestamp":"2026-04-22T11:54:38.795Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +4ms","timestamp":"2026-04-22T11:54:38.978Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +2ms","timestamp":"2026-04-22T11:54:39.002Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-23 [200] +1ms","timestamp":"2026-04-22T11:54:45.297Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/auth/profile [200] +3ms","timestamp":"2026-04-22T11:55:52.563Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +2ms","timestamp":"2026-04-22T11:55:52.779Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +1ms","timestamp":"2026-04-22T11:55:52.783Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-22 [200] +4ms","timestamp":"2026-04-22T11:56:07.406Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-23 [200] +3ms","timestamp":"2026-04-22T11:56:09.963Z"}
+{"context":"RoutesResolver","level":"info","message":"AppController {/api/v1}:","timestamp":"2026-04-22T11:56:43.114Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1, GET} route","timestamp":"2026-04-22T11:56:43.115Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/enums, GET} route","timestamp":"2026-04-22T11:56:43.116Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/api/v1/auth}:","timestamp":"2026-04-22T11:56:43.116Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/login, POST} route","timestamp":"2026-04-22T11:56:43.116Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/request, POST} route","timestamp":"2026-04-22T11:56:43.117Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/verify, POST} route","timestamp":"2026-04-22T11:56:43.117Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/password/set, POST} route","timestamp":"2026-04-22T11:56:43.117Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/profile, GET} route","timestamp":"2026-04-22T11:56:43.118Z"}
+{"context":"RoutesResolver","level":"info","message":"UsersController {/api/v1/users}:","timestamp":"2026-04-22T11:56:43.118Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, GET} route","timestamp":"2026-04-22T11:56:43.118Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, POST} route","timestamp":"2026-04-22T11:56:43.118Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, GET} route","timestamp":"2026-04-22T11:56:43.119Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, PATCH} route","timestamp":"2026-04-22T11:56:43.119Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, DELETE} route","timestamp":"2026-04-22T11:56:43.119Z"}
+{"context":"RoutesResolver","level":"info","message":"OrganisationsController {/api/v1/organisations}:","timestamp":"2026-04-22T11:56:43.119Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/public/:slug, GET} route","timestamp":"2026-04-22T11:56:43.120Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, GET} route","timestamp":"2026-04-22T11:56:43.120Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, POST} route","timestamp":"2026-04-22T11:56:43.120Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, GET} route","timestamp":"2026-04-22T11:56:43.120Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, PATCH} route","timestamp":"2026-04-22T11:56:43.121Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, DELETE} route","timestamp":"2026-04-22T11:56:43.121Z"}
+{"context":"RoutesResolver","level":"info","message":"DishesController {/api/v1/dishes}:","timestamp":"2026-04-22T11:56:43.121Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, GET} route","timestamp":"2026-04-22T11:56:43.121Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, POST} route","timestamp":"2026-04-22T11:56:43.121Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes/:id, GET} route","timestamp":"2026-04-22T11:56:43.122Z"}
+{"context":"RoutesResolver","level":"info","message":"MenusController {/api/v1/menus}:","timestamp":"2026-04-22T11:56:43.122Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/public/:organisationId, GET} route","timestamp":"2026-04-22T11:56:43.122Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/daily, GET} route","timestamp":"2026-04-22T11:56:43.123Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, GET} route","timestamp":"2026-04-22T11:56:43.123Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, GET} route","timestamp":"2026-04-22T11:56:43.123Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, POST} route","timestamp":"2026-04-22T11:56:43.123Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, PUT} route","timestamp":"2026-04-22T11:56:43.124Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id/publish, PATCH} route","timestamp":"2026-04-22T11:56:43.124Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, DELETE} route","timestamp":"2026-04-22T11:56:43.124Z"}
+{"context":"RoutesResolver","level":"info","message":"OrdersController {/api/v1/orders}:","timestamp":"2026-04-22T11:56:43.124Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, GET} route","timestamp":"2026-04-22T11:56:43.126Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/stats/:organisationId, GET} route","timestamp":"2026-04-22T11:56:43.126Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id, GET} route","timestamp":"2026-04-22T11:56:43.126Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, POST} route","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/guest, POST} route","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, PATCH} route","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/retrieve, POST} route","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RoutesResolver","level":"info","message":"PaymentsController {/api/v1/payments}:","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, GET} route","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id, GET} route","timestamp":"2026-04-22T11:56:43.127Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, POST} route","timestamp":"2026-04-22T11:56:43.128Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/webhook, POST} route","timestamp":"2026-04-22T11:56:43.128Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id/refund, PATCH} route","timestamp":"2026-04-22T11:56:43.128Z"}
+{"context":"RoutesResolver","level":"info","message":"WalletController {/api/v1/wallet}:","timestamp":"2026-04-22T11:56:43.128Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet, GET} route","timestamp":"2026-04-22T11:56:43.128Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/credit, POST} route","timestamp":"2026-04-22T11:56:43.129Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/debit, POST} route","timestamp":"2026-04-22T11:56:43.129Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/transactions, GET} route","timestamp":"2026-04-22T11:56:43.129Z"}
+{"context":"RoutesResolver","level":"info","message":"NotificationsController {/api/v1/notifications}:","timestamp":"2026-04-22T11:56:43.129Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, GET} route","timestamp":"2026-04-22T11:56:43.129Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/unread-count, GET} route","timestamp":"2026-04-22T11:56:43.129Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, GET} route","timestamp":"2026-04-22T11:56:43.130Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, POST} route","timestamp":"2026-04-22T11:56:43.130Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id/read, PATCH} route","timestamp":"2026-04-22T11:56:43.130Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/read-all, PATCH} route","timestamp":"2026-04-22T11:56:43.130Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/fcm-token, POST} route","timestamp":"2026-04-22T11:56:43.130Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, DELETE} route","timestamp":"2026-04-22T11:56:43.130Z"}
+{"context":"RoutesResolver","level":"info","message":"LoyaltyController {/api/v1/loyalty}:","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/points, GET} route","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/history, GET} route","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/leaderboard, GET} route","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/add, POST} route","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/redeem, POST} route","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RoutesResolver","level":"info","message":"StorageController {/api/v1/storage}:","timestamp":"2026-04-22T11:56:43.131Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/storage/upload, POST} route","timestamp":"2026-04-22T11:56:43.132Z"}
+{"context":"RoutesResolver","level":"info","message":"SettingsController {/api/v1/settings}:","timestamp":"2026-04-22T11:56:43.132Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, GET} route","timestamp":"2026-04-22T11:56:43.132Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-04-22T11:56:43.132Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-04-22T11:56:43.136Z"}
+{"context":"RoutesResolver","level":"info","message":"AppController {/api/v1}:","timestamp":"2026-04-22T11:59:12.486Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1, GET} route","timestamp":"2026-04-22T11:59:12.488Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/enums, GET} route","timestamp":"2026-04-22T11:59:12.488Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/api/v1/auth}:","timestamp":"2026-04-22T11:59:12.488Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/login, POST} route","timestamp":"2026-04-22T11:59:12.489Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/request, POST} route","timestamp":"2026-04-22T11:59:12.489Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/verify, POST} route","timestamp":"2026-04-22T11:59:12.490Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/password/set, POST} route","timestamp":"2026-04-22T11:59:12.490Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/profile, GET} route","timestamp":"2026-04-22T11:59:12.491Z"}
+{"context":"RoutesResolver","level":"info","message":"UsersController {/api/v1/users}:","timestamp":"2026-04-22T11:59:12.491Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, GET} route","timestamp":"2026-04-22T11:59:12.491Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, POST} route","timestamp":"2026-04-22T11:59:12.491Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, GET} route","timestamp":"2026-04-22T11:59:12.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, PATCH} route","timestamp":"2026-04-22T11:59:12.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, DELETE} route","timestamp":"2026-04-22T11:59:12.492Z"}
+{"context":"RoutesResolver","level":"info","message":"OrganisationsController {/api/v1/organisations}:","timestamp":"2026-04-22T11:59:12.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/public/:slug, GET} route","timestamp":"2026-04-22T11:59:12.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, GET} route","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, POST} route","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, GET} route","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, PATCH} route","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, DELETE} route","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RoutesResolver","level":"info","message":"DishesController {/api/v1/dishes}:","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, GET} route","timestamp":"2026-04-22T11:59:12.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, POST} route","timestamp":"2026-04-22T11:59:12.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes/:id, GET} route","timestamp":"2026-04-22T11:59:12.494Z"}
+{"context":"RoutesResolver","level":"info","message":"MenusController {/api/v1/menus}:","timestamp":"2026-04-22T11:59:12.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/public/:organisationId, GET} route","timestamp":"2026-04-22T11:59:12.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/daily, GET} route","timestamp":"2026-04-22T11:59:12.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, GET} route","timestamp":"2026-04-22T11:59:12.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, GET} route","timestamp":"2026-04-22T11:59:12.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, POST} route","timestamp":"2026-04-22T11:59:12.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, PUT} route","timestamp":"2026-04-22T11:59:12.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id/publish, PATCH} route","timestamp":"2026-04-22T11:59:12.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, DELETE} route","timestamp":"2026-04-22T11:59:12.496Z"}
+{"context":"RoutesResolver","level":"info","message":"OrdersController {/api/v1/orders}:","timestamp":"2026-04-22T11:59:12.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, GET} route","timestamp":"2026-04-22T11:59:12.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/stats/:organisationId, GET} route","timestamp":"2026-04-22T11:59:12.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id, GET} route","timestamp":"2026-04-22T11:59:12.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, POST} route","timestamp":"2026-04-22T11:59:12.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/guest, POST} route","timestamp":"2026-04-22T11:59:12.497Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, PATCH} route","timestamp":"2026-04-22T11:59:12.497Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/retrieve, POST} route","timestamp":"2026-04-22T11:59:12.497Z"}
+{"context":"RoutesResolver","level":"info","message":"PaymentsController {/api/v1/payments}:","timestamp":"2026-04-22T11:59:12.497Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, GET} route","timestamp":"2026-04-22T11:59:12.497Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id, GET} route","timestamp":"2026-04-22T11:59:12.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, POST} route","timestamp":"2026-04-22T11:59:12.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/webhook, POST} route","timestamp":"2026-04-22T11:59:12.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id/refund, PATCH} route","timestamp":"2026-04-22T11:59:12.498Z"}
+{"context":"RoutesResolver","level":"info","message":"WalletController {/api/v1/wallet}:","timestamp":"2026-04-22T11:59:12.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet, GET} route","timestamp":"2026-04-22T11:59:12.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/credit, POST} route","timestamp":"2026-04-22T11:59:12.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/debit, POST} route","timestamp":"2026-04-22T11:59:12.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/transactions, GET} route","timestamp":"2026-04-22T11:59:12.499Z"}
+{"context":"RoutesResolver","level":"info","message":"NotificationsController {/api/v1/notifications}:","timestamp":"2026-04-22T11:59:12.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, GET} route","timestamp":"2026-04-22T11:59:12.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/unread-count, GET} route","timestamp":"2026-04-22T11:59:12.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, GET} route","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, POST} route","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id/read, PATCH} route","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/read-all, PATCH} route","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/fcm-token, POST} route","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, DELETE} route","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RoutesResolver","level":"info","message":"LoyaltyController {/api/v1/loyalty}:","timestamp":"2026-04-22T11:59:12.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/points, GET} route","timestamp":"2026-04-22T11:59:12.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/history, GET} route","timestamp":"2026-04-22T11:59:12.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/leaderboard, GET} route","timestamp":"2026-04-22T11:59:12.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/add, POST} route","timestamp":"2026-04-22T11:59:12.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/redeem, POST} route","timestamp":"2026-04-22T11:59:12.501Z"}
+{"context":"RoutesResolver","level":"info","message":"StorageController {/api/v1/storage}:","timestamp":"2026-04-22T11:59:12.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/storage/upload, POST} route","timestamp":"2026-04-22T11:59:12.502Z"}
+{"context":"RoutesResolver","level":"info","message":"SettingsController {/api/v1/settings}:","timestamp":"2026-04-22T11:59:12.502Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, GET} route","timestamp":"2026-04-22T11:59:12.502Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-04-22T11:59:12.502Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-04-22T11:59:12.506Z"}
