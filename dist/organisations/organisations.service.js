@@ -33,6 +33,15 @@ let OrganisationsService = class OrganisationsService {
             throw new common_1.NotFoundException('Organisation introuvable');
         return org;
     }
+    async findBySlugPublic(slug) {
+        const org = await this.organisationRepo.findOne({
+            where: { slug, is_active: true },
+            select: ['id', 'nom', 'slug', 'logo_url', 'couleur_primaire', 'couleur_secondaire', 'guest_config', 'is_guest_order_enabled', 'guest_order_start_time', 'guest_order_end_time']
+        });
+        if (!org)
+            throw new common_1.NotFoundException('Organisation introuvable');
+        return org;
+    }
     create(dto) {
         const org = this.organisationRepo.create(dto);
         return this.organisationRepo.save(org);

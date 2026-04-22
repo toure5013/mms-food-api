@@ -5,8 +5,8 @@ import { MealSlot, OrderStatus, PaymentMethod } from '../../common/enums/index';
 export class CreateOrderDto {
   @ApiProperty({ example: 'uuid-employe', description: 'UUID de l\'employé commandant' })
   @IsUUID()
-  @IsNotEmpty()
-  employe_id: string;
+  @IsOptional()
+  employe_id?: string;
 
   @ApiProperty({ example: 'uuid-organisation', description: 'UUID de l\'organisation' })
   @IsUUID()
@@ -30,6 +30,30 @@ export class CreateOrderDto {
   @IsOptional()
   @IsEnum(PaymentMethod)
   methode_paiement?: PaymentMethod;
+}
+
+export class CreateGuestOrderDto {
+  @ApiProperty({ example: 'uuid-organisation' })
+  @IsUUID()
+  @IsNotEmpty()
+  organisation_id: string;
+
+  @ApiProperty({ enum: MealSlot, example: MealSlot.NOON })
+  @IsEnum(MealSlot)
+  creneau: MealSlot;
+
+  @ApiProperty({ example: '2026-04-14' })
+  @IsDateString()
+  date_livraison: string;
+
+  @ApiProperty({ example: ['uuid-dish-1'] })
+  @IsArray()
+  @IsUUID('4', { each: true })
+  plats_ids: string[];
+
+  @ApiProperty({ example: { nom: 'Jean', chambre: '102' } })
+  @IsNotEmpty()
+  guest_info: any;
 }
 
 export class UpdateOrderStatusDto {

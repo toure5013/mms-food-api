@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiQuery, ApiParam }
 import { MenusService } from './menus.service';
 import { CreateMenuDto, UpdateMenuDto, PublishMenuDto } from './dto/menus.dto';
 import { Roles } from '../common/decorators/roles.decorator';
+import { Public } from '../common/decorators/public.decorator';
 import { UserRole } from '../common/enums/index';
 
 @ApiTags('Menus')
@@ -10,6 +11,15 @@ import { UserRole } from '../common/enums/index';
 @Controller('menus')
 export class MenusController {
   constructor(private readonly menusService: MenusService) {}
+
+  @Public()
+  @Get('public/:organisationId')
+  @ApiOperation({ summary: 'Menu du jour public', description: 'Retourne les plats disponibles pour une organisation (vue publique).' })
+  @ApiParam({ name: 'organisationId', description: 'UUID de l\'organisation' })
+  findDailyPublic(@Param('organisationId') organisationId: string) {
+    const today = new Date().toISOString().split('T')[0];
+    return this.menusService.findDailyDishes(today, organisationId);
+  }
 
   @Get('daily')
   @ApiOperation({ summary: 'Plats du jour', description: 'Retourne la liste complète des plats disponibles pour une date donnée (filtré par organisation).' })

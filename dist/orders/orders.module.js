@@ -13,12 +13,13 @@ const orders_controller_1 = require("./orders.controller");
 const orders_service_1 = require("./orders.service");
 const order_entity_1 = require("./order.entity");
 const dish_entity_1 = require("../dishes/dish.entity");
+const organisation_entity_1 = require("../organisations/organisation.entity");
 let OrdersModule = class OrdersModule {
 };
 exports.OrdersModule = OrdersModule;
 exports.OrdersModule = OrdersModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([order_entity_1.Order, dish_entity_1.Dish])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([order_entity_1.Order, dish_entity_1.Dish, organisation_entity_1.Organisation])],
         controllers: [orders_controller_1.OrdersController],
         providers: [orders_service_1.OrdersService],
         exports: [orders_service_1.OrdersService],

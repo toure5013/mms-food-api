@@ -15,6 +15,10 @@ export declare class CreateOrganisationDto {
     composition_menu?: DishCategory[];
     financial_mode?: FinancialMode;
     is_active?: boolean;
+    is_guest_order_enabled?: boolean;
+    guest_config?: any;
+    guest_order_start_time?: string;
+    guest_order_end_time?: string;
 }
 export declare class UpdateOrganisationDto {
     nom?: string;
@@ -32,4 +36,8 @@ export declare class UpdateOrganisationDto {
     composition_menu?: DishCategory[];
     financial_mode?: FinancialMode;
     is_active?: boolean;
+    is_guest_order_enabled?: boolean;
+    guest_config?: any;
+    guest_order_start_time?: string;
+    guest_order_end_time?: string;
 }

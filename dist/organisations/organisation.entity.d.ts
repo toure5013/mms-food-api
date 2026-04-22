@@ -1,4 +1,4 @@
-import { MenuMode, SubventionType, DishCategory, FinancialMode } from '../common/enums/index';
+import { MenuMode, SubventionType, FinancialMode } from '../common/enums/index';
 import { User } from '../users/user.entity';
 export declare class Organisation {
     id: string;
@@ -16,7 +16,10 @@ export declare class Organisation {
     prix_min_plats: number;
     prix_max_plats: number;
     prix_max_menu: number;
-    composition_menu: DishCategory[];
+    is_guest_order_enabled: boolean;
+    guest_config: any;
+    guest_order_start_time: string;
+    guest_order_end_time: string;
     users: User[];
     created_at: Date;
     updated_at: Date;

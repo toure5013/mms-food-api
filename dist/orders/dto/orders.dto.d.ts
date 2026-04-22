@@ -1,11 +1,18 @@
 import { MealSlot, OrderStatus, PaymentMethod } from '../../common/enums/index';
 export declare class CreateOrderDto {
-    employe_id: string;
+    employe_id?: string;
     organisation_id: string;
     creneau: MealSlot;
     date_livraison: string;
     plats_ids: string[];
     methode_paiement?: PaymentMethod;
+}
+export declare class CreateGuestOrderDto {
+    organisation_id: string;
+    creneau: MealSlot;
+    date_livraison: string;
+    plats_ids: string[];
+    guest_info: any;
 }
 export declare class UpdateOrderStatusDto {
     statut: OrderStatus;

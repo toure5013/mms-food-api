@@ -6,6 +6,7 @@ export declare class OrganisationsService {
     constructor(organisationRepo: Repository<Organisation>);
     findAll(): Promise<Organisation[]>;
     findOne(id: string): Promise<Organisation>;
+    findBySlugPublic(slug: string): Promise<Organisation>;
     create(dto: CreateOrganisationDto): Promise<Organisation>;
     update(id: string, dto: any): Promise<Organisation>;
     remove(id: string): Promise<Organisation>;

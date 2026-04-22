@@ -18,12 +18,16 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const organisations_service_1 = require("./organisations.service");
 const roles_decorator_1 = require("../common/decorators/roles.decorator");
+const public_decorator_1 = require("../common/decorators/public.decorator");
 const index_1 = require("../common/enums/index");
 const organisations_dto_1 = require("./dto/organisations.dto");
 let OrganisationsController = class OrganisationsController {
     organisationsService;
     constructor(organisationsService) {
         this.organisationsService = organisationsService;
+    }
+    findPublic(slug) {
+        return this.organisationsService.findBySlugPublic(slug);
     }
     findAll() {
         return this.organisationsService.findAll();
@@ -48,6 +52,17 @@ let OrganisationsController = class OrganisationsController {
     }
 };
 exports.OrganisationsController = OrganisationsController;
+__decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('public/:slug'),
+    (0, swagger_1.ApiOperation)({ summary: 'Infos publiques d\'une organisation', description: 'Retourne les infos de base (logo, config invité) d\'une entreprise par son slug.' }),
+    (0, swagger_1.ApiParam)({ name: 'slug', description: 'Slug de l\'organisation' }),
+    openapi.ApiResponse({ status: 200, type: require("./organisation.entity").Organisation }),
+    __param(0, (0, common_1.Param)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], OrganisationsController.prototype, "findPublic", null);
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),

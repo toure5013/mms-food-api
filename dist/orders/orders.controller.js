@@ -19,6 +19,7 @@ const swagger_1 = require("@nestjs/swagger");
 const orders_service_1 = require("./orders.service");
 const orders_dto_1 = require("./dto/orders.dto");
 const roles_decorator_1 = require("../common/decorators/roles.decorator");
+const public_decorator_1 = require("../common/decorators/public.decorator");
 const index_1 = require("../common/enums/index");
 let OrdersController = class OrdersController {
     ordersService;
@@ -36,6 +37,9 @@ let OrdersController = class OrdersController {
     }
     create(dto) {
         return this.ordersService.create(dto);
+    }
+    createGuest(dto) {
+        return this.ordersService.createGuestOrder(dto);
     }
     updateStatus(id, dto) {
         return this.ordersService.updateStatus(id, dto);
@@ -93,6 +97,17 @@ __decorate([
     __metadata("design:paramtypes", [orders_dto_1.CreateOrderDto]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "create", null);
+__decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Post)('guest'),
+    (0, swagger_1.ApiOperation)({ summary: 'Créer une commande invité', description: 'Permet à un invité de commander sans compte.' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Commande créée avec succès.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides ou créneau fermé.' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [orders_dto_1.CreateGuestOrderDto]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "createGuest", null);
 __decorate([
     (0, common_1.Patch)(':id/status'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.COOK),

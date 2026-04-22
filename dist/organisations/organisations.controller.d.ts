@@ -3,6 +3,7 @@ import { CreateOrganisationDto, UpdateOrganisationDto } from './dto/organisation
 export declare class OrganisationsController {
     private readonly organisationsService;
     constructor(organisationsService: OrganisationsService);
+    findPublic(slug: string): Promise<import("./organisation.entity").Organisation>;
     findAll(): Promise<import("./organisation.entity").Organisation[]>;
     create(dto: CreateOrganisationDto): Promise<import("./organisation.entity").Organisation>;
     findOne(id: string, req: any): Promise<import("./organisation.entity").Organisation>;

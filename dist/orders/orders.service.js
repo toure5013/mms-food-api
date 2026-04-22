@@ -18,14 +18,17 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const order_entity_1 = require("./order.entity");
 const dish_entity_1 = require("../dishes/dish.entity");
+const organisation_entity_1 = require("../organisations/organisation.entity");
 const index_1 = require("../common/enums/index");
 const uuid_1 = require("uuid");
 let OrdersService = class OrdersService {
     orderRepo;
     dishRepo;
-    constructor(orderRepo, dishRepo) {
+    organisationRepo;
+    constructor(orderRepo, dishRepo, organisationRepo) {
         this.orderRepo = orderRepo;
         this.dishRepo = dishRepo;
+        this.organisationRepo = organisationRepo;
     }
     findAll(organisationId, employeId, statut) {
         const where = {};
@@ -124,13 +127,54 @@ let OrdersService = class OrdersService {
         const cancelled = await qb.clone().andWhere('order.statut = :s', { s: index_1.OrderStatus.CANCELLED }).getCount();
         return { total, pending, confirmed, retrieved, cancelled };
     }
+    async createGuestOrder(dto) {
+        const org = await this.organisationRepo.findOneBy({ id: dto.organisation_id });
+        if (!org)
+            throw new common_1.NotFoundException('Organisation introuvable');
+        if (!org.is_guest_order_enabled) {
+            throw new common_1.BadRequestException('Les commandes invités sont désactivées pour cette organisation');
+        }
+        const now = new Date();
+        const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        if (org.guest_order_start_time && currentTime < org.guest_order_start_time) {
+            throw new common_1.BadRequestException(`Les commandes ne sont pas encore ouvertes (Ouverture à ${org.guest_order_start_time})`);
+        }
+        if (org.guest_order_end_time && currentTime > org.guest_order_end_time) {
+            throw new common_1.BadRequestException(`Les commandes sont fermées (Fermeture à ${org.guest_order_end_time})`);
+        }
+        const { plats_ids, ...orderData } = dto;
+        const plats = await this.dishRepo.find({
+            where: { id: (0, typeorm_2.In)(plats_ids) },
+        });
+        if (plats.length === 0) {
+            throw new common_1.BadRequestException('Aucun plat valide trouvé');
+        }
+        const montant_total = plats.reduce((sum, dish) => sum + Number(dish.prix), 0);
+        const timestamp = Date.now().toString().slice(-6);
+        const numero_commande = `GUEST-${new Date().getFullYear()}-${timestamp}`;
+        const qr_code_token = (0, uuid_1.v4)();
+        const order = this.orderRepo.create({
+            ...orderData,
+            numero_commande,
+            qr_code_token,
+            montant_total,
+            montant_employe: montant_total,
+            plats,
+            statut: index_1.OrderStatus.PENDING,
+            is_guest: true,
+            points_gagnes: 0,
+        });
+        return this.orderRepo.save(order);
+    }
 };
 exports.OrdersService = OrdersService;
 exports.OrdersService = OrdersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(order_entity_1.Order)),
     __param(1, (0, typeorm_1.InjectRepository)(dish_entity_1.Dish)),
+    __param(2, (0, typeorm_1.InjectRepository)(organisation_entity_1.Organisation)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], OrdersService);
 //# sourceMappingURL=orders.service.js.map

@@ -82,6 +82,24 @@ export class CreateOrganisationDto {
   @ApiPropertyOptional({ example: true })
   @IsOptional()
   is_active?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  is_guest_order_enabled?: boolean;
+
+  @ApiPropertyOptional({ example: { fields: [] } })
+  @IsOptional()
+  guest_config?: any;
+
+  @ApiPropertyOptional({ example: "08:00" })
+  @IsOptional()
+  @IsString()
+  guest_order_start_time?: string;
+
+  @ApiPropertyOptional({ example: "11:30" })
+  @IsOptional()
+  @IsString()
+  guest_order_end_time?: string;
 }
 
 export class UpdateOrganisationDto {
@@ -164,4 +182,22 @@ export class UpdateOrganisationDto {
   @ApiPropertyOptional({ example: true })
   @IsOptional()
   is_active?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  is_guest_order_enabled?: boolean;
+
+  @ApiPropertyOptional({ example: { fields: [] } })
+  @IsOptional()
+  guest_config?: any;
+
+  @ApiPropertyOptional({ example: "08:00" })
+  @IsOptional()
+  @IsString()
+  guest_order_start_time?: string;
+
+  @ApiPropertyOptional({ example: "11:30" })
+  @IsOptional()
+  @IsString()
+  guest_order_end_time?: string;
 }

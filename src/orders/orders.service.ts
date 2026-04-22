@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Order } from './order.entity';
 import { Dish } from '../dishes/dish.entity';
-import { CreateOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
+import { Organisation } from '../organisations/organisation.entity';
+import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
 import { OrderStatus } from '../common/enums/index';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,6 +15,8 @@ export class OrdersService {
     private readonly orderRepo: Repository<Order>,
     @InjectRepository(Dish)
     private readonly dishRepo: Repository<Dish>,
+    @InjectRepository(Organisation)
+    private readonly organisationRepo: Repository<Organisation>,
   ) {}
 
   findAll(organisationId?: string, employeId?: string, statut?: string) {
@@ -138,5 +141,55 @@ export class OrdersService {
     const cancelled = await qb.clone().andWhere('order.statut = :s', { s: OrderStatus.CANCELLED }).getCount();
 
     return { total, pending, confirmed, retrieved, cancelled };
+  }
+
+  async createGuestOrder(dto: CreateGuestOrderDto) {
+    const org = await this.organisationRepo.findOneBy({ id: dto.organisation_id });
+    if (!org) throw new NotFoundException('Organisation introuvable');
+
+    if (!org.is_guest_order_enabled) {
+      throw new BadRequestException('Les commandes invités sont désactivées pour cette organisation');
+    }
+
+    // Validation du créneau horaire
+    const now = new Date();
+    const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+    if (org.guest_order_start_time && currentTime < org.guest_order_start_time) {
+      throw new BadRequestException(`Les commandes ne sont pas encore ouvertes (Ouverture à ${org.guest_order_start_time})`);
+    }
+
+    if (org.guest_order_end_time && currentTime > org.guest_order_end_time) {
+      throw new BadRequestException(`Les commandes sont fermées (Fermeture à ${org.guest_order_end_time})`);
+    }
+
+    const { plats_ids, ...orderData } = dto;
+
+    const plats = await this.dishRepo.find({
+      where: { id: In(plats_ids) },
+    });
+
+    if (plats.length === 0) {
+      throw new BadRequestException('Aucun plat valide trouvé');
+    }
+
+    const montant_total = plats.reduce((sum, dish) => sum + Number(dish.prix), 0);
+    const timestamp = Date.now().toString().slice(-6);
+    const numero_commande = `GUEST-${new Date().getFullYear()}-${timestamp}`;
+    const qr_code_token = uuidv4();
+
+    const order = this.orderRepo.create({
+      ...orderData,
+      numero_commande,
+      qr_code_token,
+      montant_total,
+      montant_employe: montant_total,
+      plats,
+      statut: OrderStatus.PENDING,
+      is_guest: true,
+      points_gagnes: 0,
+    });
+
+    return this.orderRepo.save(order);
   }
 }

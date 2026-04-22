@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Patch, Delete, Req, ForbiddenExcept
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { OrganisationsService } from './organisations.service';
 import { Roles } from '../common/decorators/roles.decorator';
+import { Public } from '../common/decorators/public.decorator';
 import { UserRole } from '../common/enums/index';
 import { CreateOrganisationDto, UpdateOrganisationDto } from './dto/organisations.dto';
 
@@ -10,6 +11,14 @@ import { CreateOrganisationDto, UpdateOrganisationDto } from './dto/organisation
 @Controller('organisations')
 export class OrganisationsController {
   constructor(private readonly organisationsService: OrganisationsService) {}
+
+  @Public()
+  @Get('public/:slug')
+  @ApiOperation({ summary: 'Infos publiques d\'une organisation', description: 'Retourne les infos de base (logo, config invité) d\'une entreprise par son slug.' })
+  @ApiParam({ name: 'slug', description: 'Slug de l\'organisation' })
+  findPublic(@Param('slug') slug: string) {
+    return this.organisationsService.findBySlugPublic(slug);
+  }
 
   @Get()
   @Roles(UserRole.SUPER_ADMIN)

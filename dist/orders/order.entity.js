@@ -30,6 +30,8 @@ let Order = class Order {
     points_gagnes;
     date_recuperation;
     recupere_par;
+    is_guest;
+    guest_info;
     employe;
     employe_id;
     organisation;
@@ -38,7 +40,7 @@ let Order = class Order {
     created_at;
     updated_at;
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String }, numero_commande: { required: true, type: () => String }, qr_code_token: { required: true, type: () => String }, statut: { required: true, enum: require("../common/enums/index").OrderStatus }, creneau: { required: true, enum: require("../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, montant_total: { required: true, type: () => Number }, montant_subvention: { required: true, type: () => Number }, montant_employe: { required: true, type: () => Number }, methode_paiement: { required: true, enum: require("../common/enums/index").PaymentMethod }, points_gagnes: { required: true, type: () => Number }, date_recuperation: { required: true, type: () => Date }, recupere_par: { required: true, type: () => String }, employe: { required: true, type: () => require("../users/user.entity").User }, employe_id: { required: true, type: () => String }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, plats: { required: true, type: () => [require("../dishes/dish.entity").Dish] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => String }, numero_commande: { required: true, type: () => String }, qr_code_token: { required: true, type: () => String }, statut: { required: true, enum: require("../common/enums/index").OrderStatus }, creneau: { required: true, enum: require("../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, montant_total: { required: true, type: () => Number }, montant_subvention: { required: true, type: () => Number }, montant_employe: { required: true, type: () => Number }, methode_paiement: { required: true, enum: require("../common/enums/index").PaymentMethod }, points_gagnes: { required: true, type: () => Number }, date_recuperation: { required: true, type: () => Date }, recupere_par: { required: true, type: () => String }, is_guest: { required: true, type: () => Boolean }, guest_info: { required: true, type: () => Object }, employe: { required: true, type: () => require("../users/user.entity").User }, employe_id: { required: true, type: () => String }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, plats: { required: true, type: () => [require("../dishes/dish.entity").Dish] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
     }
 };
 exports.Order = Order;
@@ -95,12 +97,20 @@ __decorate([
     __metadata("design:type", String)
 ], Order.prototype, "recupere_par", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { eager: false }),
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Order.prototype, "is_guest", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
+    __metadata("design:type", Object)
+], Order.prototype, "guest_info", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { eager: false, nullable: true }),
     (0, typeorm_1.JoinColumn)({ name: 'employe_id' }),
     __metadata("design:type", user_entity_1.User)
 ], Order.prototype, "employe", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Order.prototype, "employe_id", void 0);
 __decorate([

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RetrieveOrderDto = exports.UpdateOrderStatusDto = exports.CreateOrderDto = void 0;
+exports.RetrieveOrderDto = exports.UpdateOrderStatusDto = exports.CreateGuestOrderDto = exports.CreateOrderDto = void 0;
 const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
@@ -22,14 +22,14 @@ class CreateOrderDto {
     plats_ids;
     methode_paiement;
     static _OPENAPI_METADATA_FACTORY() {
-        return { employe_id: { required: true, type: () => String, format: "uuid" }, organisation_id: { required: true, type: () => String, format: "uuid" }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, plats_ids: { required: true, type: () => [String], format: "uuid" }, methode_paiement: { required: false, enum: require("../../common/enums/index").PaymentMethod } };
+        return { employe_id: { required: false, type: () => String, format: "uuid" }, organisation_id: { required: true, type: () => String, format: "uuid" }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, plats_ids: { required: true, type: () => [String], format: "uuid" }, methode_paiement: { required: false, enum: require("../../common/enums/index").PaymentMethod } };
     }
 }
 exports.CreateOrderDto = CreateOrderDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'uuid-employe', description: 'UUID de l\'employé commandant' }),
     (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "employe_id", void 0);
 __decorate([
@@ -60,6 +60,44 @@ __decorate([
     (0, class_validator_1.IsEnum)(index_1.PaymentMethod),
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "methode_paiement", void 0);
+class CreateGuestOrderDto {
+    organisation_id;
+    creneau;
+    date_livraison;
+    plats_ids;
+    guest_info;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { organisation_id: { required: true, type: () => String, format: "uuid" }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, date_livraison: { required: true, type: () => String }, plats_ids: { required: true, type: () => [String], format: "uuid" }, guest_info: { required: true, type: () => Object } };
+    }
+}
+exports.CreateGuestOrderDto = CreateGuestOrderDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'uuid-organisation' }),
+    (0, class_validator_1.IsUUID)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateGuestOrderDto.prototype, "organisation_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ enum: index_1.MealSlot, example: index_1.MealSlot.NOON }),
+    (0, class_validator_1.IsEnum)(index_1.MealSlot),
+    __metadata("design:type", String)
+], CreateGuestOrderDto.prototype, "creneau", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '2026-04-14' }),
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", String)
+], CreateGuestOrderDto.prototype, "date_livraison", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: ['uuid-dish-1'] }),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsUUID)('4', { each: true }),
+    __metadata("design:type", Array)
+], CreateGuestOrderDto.prototype, "plats_ids", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: { nom: 'Jean', chambre: '102' } }),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Object)
+], CreateGuestOrderDto.prototype, "guest_info", void 0);
 class UpdateOrderStatusDto {
     statut;
     static _OPENAPI_METADATA_FACTORY() {

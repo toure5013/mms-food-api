@@ -52,8 +52,17 @@ export class Organisation {
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   prix_max_menu: number;
 
-  @Column({ type: 'simple-array', nullable: true })
-  composition_menu: DishCategory[];
+  @Column({ default: false })
+  is_guest_order_enabled: boolean;
+
+  @Column({ type: 'jsonb', nullable: true })
+  guest_config: any; // { fields: [{id, label, required, type}] }
+
+  @Column({ nullable: true })
+  guest_order_start_time: string; // "HH:mm"
+
+  @Column({ nullable: true })
+  guest_order_end_time: string; // "HH:mm"
 
   @OneToMany(() => User, (user) => user.organisation)
   users: User[];

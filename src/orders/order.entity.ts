@@ -52,12 +52,18 @@ export class Order {
   @Column({ nullable: true })
   recupere_par: string; // user_id du distributeur
 
+  @Column({ default: false })
+  is_guest: boolean;
+
+  @Column({ type: 'jsonb', nullable: true })
+  guest_info: any; // { nom, numero_chambre, etage, etc. }
+
   // Relations
-  @ManyToOne(() => User, { eager: false })
+  @ManyToOne(() => User, { eager: false, nullable: true })
   @JoinColumn({ name: 'employe_id' })
   employe: User;
 
-  @Column()
+  @Column({ nullable: true })
   employe_id: string;
 
   @ManyToOne(() => Organisation, { eager: false })

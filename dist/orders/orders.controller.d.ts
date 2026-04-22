@@ -1,5 +1,5 @@
 import { OrdersService } from './orders.service';
-import { CreateOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
+import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
 export declare class OrdersController {
     private readonly ordersService;
     constructor(ordersService: OrdersService);
@@ -13,6 +13,7 @@ export declare class OrdersController {
     }>;
     findOne(id: string): Promise<import("./order.entity").Order>;
     create(dto: CreateOrderDto): Promise<import("./order.entity").Order>;
+    createGuest(dto: CreateGuestOrderDto): Promise<import("./order.entity").Order>;
     updateStatus(id: string, dto: UpdateOrderStatusDto): Promise<import("./order.entity").Order>;
     retrieveByQrCode(dto: RetrieveOrderDto): Promise<import("./order.entity").Order>;
 }

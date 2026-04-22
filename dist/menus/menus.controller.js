@@ -19,11 +19,16 @@ const swagger_1 = require("@nestjs/swagger");
 const menus_service_1 = require("./menus.service");
 const menus_dto_1 = require("./dto/menus.dto");
 const roles_decorator_1 = require("../common/decorators/roles.decorator");
+const public_decorator_1 = require("../common/decorators/public.decorator");
 const index_1 = require("../common/enums/index");
 let MenusController = class MenusController {
     menusService;
     constructor(menusService) {
         this.menusService = menusService;
+    }
+    findDailyPublic(organisationId) {
+        const today = new Date().toISOString().split('T')[0];
+        return this.menusService.findDailyDishes(today, organisationId);
     }
     findDaily(date, req) {
         const organisationId = req.user?.organisation_id;
@@ -49,6 +54,17 @@ let MenusController = class MenusController {
     }
 };
 exports.MenusController = MenusController;
+__decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('public/:organisationId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Menu du jour public', description: 'Retourne les plats disponibles pour une organisation (vue publique).' }),
+    (0, swagger_1.ApiParam)({ name: 'organisationId', description: 'UUID de l\'organisation' }),
+    openapi.ApiResponse({ status: 200, type: [require("../dishes/dish.entity").Dish] }),
+    __param(0, (0, common_1.Param)('organisationId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], MenusController.prototype, "findDailyPublic", null);
 __decorate([
     (0, common_1.Get)('daily'),
     (0, swagger_1.ApiOperation)({ summary: 'Plats du jour', description: 'Retourne la liste complète des plats disponibles pour une date donnée (filtré par organisation).' }),

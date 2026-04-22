@@ -16,6 +16,8 @@ export declare class Order {
     points_gagnes: number;
     date_recuperation: Date;
     recupere_par: string;
+    is_guest: boolean;
+    guest_info: any;
     employe: User;
     employe_id: string;
     organisation: Organisation;

@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Patch, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
+import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
 import { Roles } from '../common/decorators/roles.decorator';
+import { Public } from '../common/decorators/public.decorator';
 import { UserRole } from '../common/enums/index';
 
 @ApiTags('Orders')
@@ -51,6 +52,15 @@ export class OrdersController {
   @ApiResponse({ status: 400, description: 'Données invalides ou solde insuffisant.' })
   create(@Body() dto: CreateOrderDto) {
     return this.ordersService.create(dto);
+  }
+
+  @Public()
+  @Post('guest')
+  @ApiOperation({ summary: 'Créer une commande invité', description: 'Permet à un invité de commander sans compte.' })
+  @ApiResponse({ status: 201, description: 'Commande créée avec succès.' })
+  @ApiResponse({ status: 400, description: 'Données invalides ou créneau fermé.' })
+  createGuest(@Body() dto: CreateGuestOrderDto) {
+    return this.ordersService.createGuestOrder(dto);
   }
 
   @Patch(':id/status')
