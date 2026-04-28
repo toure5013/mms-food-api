@@ -19,6 +19,7 @@ export declare class CreateOrganisationDto {
     guest_config?: any;
     guest_order_start_time?: string;
     guest_order_end_time?: string;
+    order_day_offset?: number;
 }
 export declare class UpdateOrganisationDto {
     nom?: string;
@@ -40,4 +41,5 @@ export declare class UpdateOrganisationDto {
     guest_config?: any;
     guest_order_start_time?: string;
     guest_order_end_time?: string;
+    order_day_offset?: number;
 }

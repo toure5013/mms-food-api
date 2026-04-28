@@ -104,4 +104,17 @@ export class MenusService {
 
     return uniqueDishes;
   }
+
+  async findDailyPublic(organisationId: string) {
+    const org = await this.orgRepo.findOne({ where: { id: organisationId } });
+    if (!org) throw new NotFoundException('Organisation introuvable');
+
+    const date = new Date();
+    if (org.order_day_offset) {
+      date.setDate(date.getDate() + org.order_day_offset);
+    }
+    const dateStr = date.toISOString().split('T')[0];
+
+    return this.findDailyDishes(dateStr, organisationId);
+  }
 }

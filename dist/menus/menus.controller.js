@@ -27,8 +27,7 @@ let MenusController = class MenusController {
         this.menusService = menusService;
     }
     findDailyPublic(organisationId) {
-        const today = new Date().toISOString().split('T')[0];
-        return this.menusService.findDailyDishes(today, organisationId);
+        return this.menusService.findDailyPublic(organisationId);
     }
     findDaily(date, req) {
         const organisationId = req.user?.organisation_id;

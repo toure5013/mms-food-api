@@ -34,11 +34,12 @@ let Organisation = class Organisation {
     guest_config;
     guest_order_start_time;
     guest_order_end_time;
+    order_day_offset;
     users;
     created_at;
     updated_at;
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String }, slug: { required: true, type: () => String }, nom: { required: true, type: () => String }, logo_url: { required: true, type: () => String }, couleur_primaire: { required: true, type: () => String }, couleur_secondaire: { required: true, type: () => String }, mode_gestion_menu: { required: true, enum: require("../common/enums/index").MenuMode }, subvention_type: { required: true, enum: require("../common/enums/index").SubventionType }, financial_mode: { required: true, enum: require("../common/enums/index").FinancialMode }, subvention_valeur: { required: true, type: () => Number }, subvention_plafond_mensuel: { required: true, type: () => Number }, is_active: { required: true, type: () => Boolean }, prix_min_plats: { required: true, type: () => Number }, prix_max_plats: { required: true, type: () => Number }, prix_max_menu: { required: true, type: () => Number }, is_guest_order_enabled: { required: true, type: () => Boolean }, guest_config: { required: true, type: () => Object }, guest_order_start_time: { required: true, type: () => String }, guest_order_end_time: { required: true, type: () => String }, users: { required: true, type: () => [require("../users/user.entity").User] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => String }, slug: { required: true, type: () => String }, nom: { required: true, type: () => String }, logo_url: { required: true, type: () => String }, couleur_primaire: { required: true, type: () => String }, couleur_secondaire: { required: true, type: () => String }, mode_gestion_menu: { required: true, enum: require("../common/enums/index").MenuMode }, subvention_type: { required: true, enum: require("../common/enums/index").SubventionType }, financial_mode: { required: true, enum: require("../common/enums/index").FinancialMode }, subvention_valeur: { required: true, type: () => Number }, subvention_plafond_mensuel: { required: true, type: () => Number }, is_active: { required: true, type: () => Boolean }, prix_min_plats: { required: true, type: () => Number }, prix_max_plats: { required: true, type: () => Number }, prix_max_menu: { required: true, type: () => Number }, is_guest_order_enabled: { required: true, type: () => Boolean }, guest_config: { required: true, type: () => Object }, guest_order_start_time: { required: true, type: () => String }, guest_order_end_time: { required: true, type: () => String }, order_day_offset: { required: true, type: () => Number }, users: { required: true, type: () => [require("../users/user.entity").User] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
     }
 };
 exports.Organisation = Organisation;
@@ -118,6 +119,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Organisation.prototype, "guest_order_end_time", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], Organisation.prototype, "order_day_offset", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => user_entity_1.User, (user) => user.organisation),
     __metadata("design:type", Array)

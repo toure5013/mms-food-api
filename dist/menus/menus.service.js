@@ -99,6 +99,17 @@ let MenusService = class MenusService {
         const uniqueDishes = Array.from(new Map(allDishes.map((d) => [d.id, d])).values());
         return uniqueDishes;
     }
+    async findDailyPublic(organisationId) {
+        const org = await this.orgRepo.findOne({ where: { id: organisationId } });
+        if (!org)
+            throw new common_1.NotFoundException('Organisation introuvable');
+        const date = new Date();
+        if (org.order_day_offset) {
+            date.setDate(date.getDate() + org.order_day_offset);
+        }
+        const dateStr = date.toISOString().split('T')[0];
+        return this.findDailyDishes(dateStr, organisationId);
+    }
 };
 exports.MenusService = MenusService;
 exports.MenusService = MenusService = __decorate([

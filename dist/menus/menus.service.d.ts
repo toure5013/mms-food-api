@@ -15,4 +15,5 @@ export declare class MenusService {
     publish(id: string, isPublished: boolean): Promise<Menu>;
     remove(id: string): Promise<Menu>;
     findDailyDishes(date: string, organisationId?: string): Promise<Dish[]>;
+    findDailyPublic(organisationId: string): Promise<Dish[]>;
 }

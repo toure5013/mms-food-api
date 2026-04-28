@@ -64,6 +64,9 @@ export class Organisation {
   @Column({ nullable: true })
   guest_order_end_time: string; // "HH:mm"
 
+  @Column({ default: 0 })
+  order_day_offset: number; // 0 for today, 1 for tomorrow
+
   @OneToMany(() => User, (user) => user.organisation)
   users: User[];
 

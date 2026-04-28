@@ -17,8 +17,7 @@ export class MenusController {
   @ApiOperation({ summary: 'Menu du jour public', description: 'Retourne les plats disponibles pour une organisation (vue publique).' })
   @ApiParam({ name: 'organisationId', description: 'UUID de l\'organisation' })
   findDailyPublic(@Param('organisationId') organisationId: string) {
-    const today = new Date().toISOString().split('T')[0];
-    return this.menusService.findDailyDishes(today, organisationId);
+    return this.menusService.findDailyPublic(organisationId);
   }
 
   @Get('daily')

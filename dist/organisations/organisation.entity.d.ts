@@ -20,6 +20,7 @@ export declare class Organisation {
     guest_config: any;
     guest_order_start_time: string;
     guest_order_end_time: string;
+    order_day_offset: number;
     users: User[];
     created_at: Date;
     updated_at: Date;

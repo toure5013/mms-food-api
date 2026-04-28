@@ -34,8 +34,9 @@ class CreateOrganisationDto {
     guest_config;
     guest_order_start_time;
     guest_order_end_time;
+    order_day_offset;
     static _OPENAPI_METADATA_FACTORY() {
-        return { nom: { required: true, type: () => String }, slug: { required: true, type: () => String }, logo_url: { required: false, type: () => String }, couleur_primaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, couleur_secondaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, mode_gestion_menu: { required: false, enum: require("../../common/enums/index").MenuMode }, subvention_type: { required: false, enum: require("../../common/enums/index").SubventionType }, subvention_valeur: { required: false, type: () => Number, minimum: 0 }, subvention_plafond_mensuel: { required: false, type: () => Number, minimum: 0 }, prix_min_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_menu: { required: false, type: () => Number, minimum: 0 }, composition_menu: { required: false, enum: require("../../common/enums/index").DishCategory, isArray: true }, financial_mode: { required: false, enum: require("../../common/enums/index").FinancialMode }, is_active: { required: false, type: () => Boolean }, is_guest_order_enabled: { required: false, type: () => Boolean }, guest_config: { required: false, type: () => Object }, guest_order_start_time: { required: false, type: () => String }, guest_order_end_time: { required: false, type: () => String } };
+        return { nom: { required: true, type: () => String }, slug: { required: true, type: () => String }, logo_url: { required: false, type: () => String }, couleur_primaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, couleur_secondaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, mode_gestion_menu: { required: false, enum: require("../../common/enums/index").MenuMode }, subvention_type: { required: false, enum: require("../../common/enums/index").SubventionType }, subvention_valeur: { required: false, type: () => Number, minimum: 0 }, subvention_plafond_mensuel: { required: false, type: () => Number, minimum: 0 }, prix_min_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_menu: { required: false, type: () => Number, minimum: 0 }, composition_menu: { required: false, enum: require("../../common/enums/index").DishCategory, isArray: true }, financial_mode: { required: false, enum: require("../../common/enums/index").FinancialMode }, is_active: { required: false, type: () => Boolean }, is_guest_order_enabled: { required: false, type: () => Boolean }, guest_config: { required: false, type: () => Object }, guest_order_start_time: { required: false, type: () => String }, guest_order_end_time: { required: false, type: () => String }, order_day_offset: { required: false, type: () => Number } };
     }
 }
 exports.CreateOrganisationDto = CreateOrganisationDto;
@@ -156,6 +157,12 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateOrganisationDto.prototype, "guest_order_end_time", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 0 }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CreateOrganisationDto.prototype, "order_day_offset", void 0);
 class UpdateOrganisationDto {
     nom;
     slug;
@@ -176,8 +183,9 @@ class UpdateOrganisationDto {
     guest_config;
     guest_order_start_time;
     guest_order_end_time;
+    order_day_offset;
     static _OPENAPI_METADATA_FACTORY() {
-        return { nom: { required: false, type: () => String }, slug: { required: false, type: () => String }, logo_url: { required: false, type: () => String }, couleur_primaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, couleur_secondaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, mode_gestion_menu: { required: false, enum: require("../../common/enums/index").MenuMode }, subvention_type: { required: false, enum: require("../../common/enums/index").SubventionType }, subvention_valeur: { required: false, type: () => Number, minimum: 0 }, subvention_plafond_mensuel: { required: false, type: () => Number, minimum: 0 }, prix_min_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_menu: { required: false, type: () => Number, minimum: 0 }, composition_menu: { required: false, enum: require("../../common/enums/index").DishCategory, isArray: true }, financial_mode: { required: false, enum: require("../../common/enums/index").FinancialMode }, is_active: { required: false, type: () => Boolean }, is_guest_order_enabled: { required: false, type: () => Boolean }, guest_config: { required: false, type: () => Object }, guest_order_start_time: { required: false, type: () => String }, guest_order_end_time: { required: false, type: () => String } };
+        return { nom: { required: false, type: () => String }, slug: { required: false, type: () => String }, logo_url: { required: false, type: () => String }, couleur_primaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, couleur_secondaire: { required: false, type: () => String, pattern: "^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" }, mode_gestion_menu: { required: false, enum: require("../../common/enums/index").MenuMode }, subvention_type: { required: false, enum: require("../../common/enums/index").SubventionType }, subvention_valeur: { required: false, type: () => Number, minimum: 0 }, subvention_plafond_mensuel: { required: false, type: () => Number, minimum: 0 }, prix_min_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_plats: { required: false, type: () => Number, minimum: 0 }, prix_max_menu: { required: false, type: () => Number, minimum: 0 }, composition_menu: { required: false, enum: require("../../common/enums/index").DishCategory, isArray: true }, financial_mode: { required: false, enum: require("../../common/enums/index").FinancialMode }, is_active: { required: false, type: () => Boolean }, is_guest_order_enabled: { required: false, type: () => Boolean }, guest_config: { required: false, type: () => Object }, guest_order_start_time: { required: false, type: () => String }, guest_order_end_time: { required: false, type: () => String }, order_day_offset: { required: false, type: () => Number } };
     }
 }
 exports.UpdateOrganisationDto = UpdateOrganisationDto;
@@ -298,4 +306,10 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateOrganisationDto.prototype, "guest_order_end_time", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 0 }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], UpdateOrganisationDto.prototype, "order_day_offset", void 0);
 //# sourceMappingURL=organisations.dto.js.map

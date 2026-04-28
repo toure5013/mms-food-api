@@ -100,6 +100,11 @@ export class CreateOrganisationDto {
   @IsOptional()
   @IsString()
   guest_order_end_time?: string;
+
+  @ApiPropertyOptional({ example: 0 })
+  @IsOptional()
+  @IsNumber()
+  order_day_offset?: number;
 }
 
 export class UpdateOrganisationDto {
@@ -200,4 +205,9 @@ export class UpdateOrganisationDto {
   @IsOptional()
   @IsString()
   guest_order_end_time?: string;
+
+  @ApiPropertyOptional({ example: 0 })
+  @IsOptional()
+  @IsNumber()
+  order_day_offset?: number;
 }

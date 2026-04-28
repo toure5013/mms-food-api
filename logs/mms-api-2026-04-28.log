@@ -1,0 +1,19 @@
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/auth/profile [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-04-28T09:00:35.230Z"}
+{"context":"HTTP","level":"info","message":"POST /api/v1/auth/login [200] +202ms","timestamp":"2026-04-28T09:05:11.928Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +4ms","timestamp":"2026-04-28T09:05:12.045Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +4ms","timestamp":"2026-04-28T09:05:12.055Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/auth/profile [200] +8ms","timestamp":"2026-04-28T09:09:33.782Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +7ms","timestamp":"2026-04-28T09:09:33.987Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +4ms","timestamp":"2026-04-28T09:09:33.995Z"}
+{"context":"HTTP","level":"info","message":"POST /api/v1/auth/login [200] +198ms","timestamp":"2026-04-28T09:13:12.865Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +3ms","timestamp":"2026-04-28T09:13:12.971Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +5ms","timestamp":"2026-04-28T09:14:05.484Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +3ms","timestamp":"2026-04-28T09:14:15.410Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +4ms","timestamp":"2026-04-28T09:14:21.405Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/auth/profile [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-04-28T09:59:09.323Z"}
+{"context":"HTTP","level":"info","message":"POST /api/v1/auth/login [200] +205ms","timestamp":"2026-04-28T09:59:30.791Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +3ms","timestamp":"2026-04-28T09:59:30.951Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +2ms","timestamp":"2026-04-28T09:59:30.958Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/auth/profile [200] +3ms","timestamp":"2026-04-28T09:59:51.332Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +4ms","timestamp":"2026-04-28T09:59:51.571Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?date=2026-04-28 [200] +4ms","timestamp":"2026-04-28T09:59:51.609Z"}
