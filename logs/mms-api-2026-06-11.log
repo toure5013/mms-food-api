@@ -1,0 +1,7 @@
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/notifications [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.320Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.430Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.432Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.436Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/users [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.448Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/organisations [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.451Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T12:33:47.459Z"}

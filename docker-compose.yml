@@ -16,7 +16,7 @@ services:
       - NODE_ENV=development
       - PORT=3001
       - DB_HOST=db
-      - DB_PORT=${DB_PORT:-5432}
+      - DB_PORT=${DB_PORT:-5433}
       - DB_NAME=${DB_NAME:-mms_db}
       - DB_USER=${DB_USER:-postgres}
       - DB_PASS=${DB_PASS:-postgres}
@@ -43,7 +43,7 @@ services:
     container_name: mms_db
     restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: ${DB_NAME:-mms_db}
       POSTGRES_USER: ${DB_USER:-postgres}
