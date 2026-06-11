@@ -17,7 +17,7 @@ export class OrdersService {
     private readonly dishRepo: Repository<Dish>,
     @InjectRepository(Organisation)
     private readonly organisationRepo: Repository<Organisation>,
-  ) {}
+  ) { }
 
   findAll(organisationId?: string, employeId?: string, statut?: string) {
     const where: any = {};
@@ -30,6 +30,18 @@ export class OrdersService {
       relations: ['plats', 'employe', 'organisation'],
       order: { created_at: 'DESC' },
     });
+  }
+
+  async findMyOrders(employeId: string) {
+    const orders = await this.orderRepo.find({
+      where: { employe_id: employeId },
+      // On conserve les mêmes relations que findOne pour que Flutter reçoive toutes les données
+      relations: ['plats', 'employe', 'organisation'],
+      // On trie par date de création décroissante (de la plus récente à la plus ancienne)
+      order: { created_at: 'DESC' },
+    });
+
+    return orders;
   }
 
   async findOne(id: string) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Query, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
@@ -10,7 +10,7 @@ import { UserRole } from '../common/enums/index';
 @ApiBearerAuth('JWT-auth')
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService) { }
 
   @Get()
   @ApiOperation({ summary: 'Liste des commandes', description: 'Retourne la liste des commandes, filtrable par organisation, employé et statut.' })
@@ -35,6 +35,16 @@ export class OrdersController {
   getStats(@Param('organisationId') organisationId: string) {
     return this.ordersService.getStats(organisationId);
   }
+
+  @Get('my-orders')
+  @ApiOperation({ summary: 'Commandes de l\'utilisateur connecté' })
+  findMyOrders(@Req() req: any) {
+    // req.user est injecté automatiquement par votre Guard JWT (Passport)
+    const employeId = req.user.id;
+    return this.ordersService.findMyOrders(employeId);
+  }
+
+
 
   @Get(':id')
   @ApiOperation({ summary: 'Détails d\'une commande', description: 'Retourne les détails complets d\'une commande par son UUID.' })
