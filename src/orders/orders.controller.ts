@@ -75,13 +75,24 @@ export class OrdersController {
 
   @Patch(':id/status')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.COOK)
-  @ApiOperation({ summary: 'Mettre à jour le statut', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' })
+  @ApiOperation({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' })
   @ApiParam({ name: 'id', description: 'UUID de la commande' })
   @ApiResponse({ status: 200, description: 'Statut mis à jour.' })
   @ApiResponse({ status: 404, description: 'Commande non trouvée.' })
-  updateStatus(@Param('id') id: string, @Body() dto: UpdateOrderStatusDto) {
+  updateStatusPatch(@Param('id') id: string, @Body() dto: UpdateOrderStatusDto) {
     return this.ordersService.updateStatus(id, dto);
   }
+
+  @Post(':id/status')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.COOK)
+  @ApiOperation({ summary: 'Mettre à jour le statut (POST - Fallback Flutter)', description: 'Modifie le statut d\'une commande pour compatibilité mobile.' })
+  @ApiParam({ name: 'id', description: 'UUID de la commande' })
+  @ApiResponse({ status: 200, description: 'Statut mis à jour.' })
+  @ApiResponse({ status: 404, description: 'Commande non trouvée.' })
+  updateStatusPost(@Param('id') id: string, @Body() dto: UpdateOrderStatusDto) {
+    return this.ordersService.updateStatus(id, dto);
+  }
+
 
   @Post('retrieve')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS)
