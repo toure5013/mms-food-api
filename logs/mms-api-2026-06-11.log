@@ -1,0 +1,126 @@
+{"context":"RoutesResolver","level":"info","message":"AppController {/api/v1}:","timestamp":"2026-06-11T12:59:52.490Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1, GET} route","timestamp":"2026-06-11T12:59:52.491Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/enums, GET} route","timestamp":"2026-06-11T12:59:52.491Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/api/v1/auth}:","timestamp":"2026-06-11T12:59:52.491Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/login, POST} route","timestamp":"2026-06-11T12:59:52.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/request, POST} route","timestamp":"2026-06-11T12:59:52.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/verify, POST} route","timestamp":"2026-06-11T12:59:52.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/password/set, POST} route","timestamp":"2026-06-11T12:59:52.492Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/profile, GET} route","timestamp":"2026-06-11T12:59:52.493Z"}
+{"context":"RoutesResolver","level":"info","message":"UsersController {/api/v1/users}:","timestamp":"2026-06-11T12:59:52.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, GET} route","timestamp":"2026-06-11T12:59:52.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, POST} route","timestamp":"2026-06-11T12:59:52.493Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, GET} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, PATCH} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, DELETE} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RoutesResolver","level":"info","message":"OrganisationsController {/api/v1/organisations}:","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/public/:slug, GET} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, GET} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, POST} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, GET} route","timestamp":"2026-06-11T12:59:52.494Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, PATCH} route","timestamp":"2026-06-11T12:59:52.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, DELETE} route","timestamp":"2026-06-11T12:59:52.495Z"}
+{"context":"RoutesResolver","level":"info","message":"DishesController {/api/v1/dishes}:","timestamp":"2026-06-11T12:59:52.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, GET} route","timestamp":"2026-06-11T12:59:52.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, POST} route","timestamp":"2026-06-11T12:59:52.495Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes/:id, GET} route","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RoutesResolver","level":"info","message":"MenusController {/api/v1/menus}:","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/public/:organisationId, GET} route","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/daily, GET} route","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, GET} route","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, GET} route","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, POST} route","timestamp":"2026-06-11T12:59:52.496Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, PUT} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id/publish, PATCH} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, DELETE} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RoutesResolver","level":"info","message":"OrdersController {/api/v1/orders}:","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, GET} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/stats/:organisationId, GET} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id, GET} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, POST} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/guest, POST} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, PATCH} route","timestamp":"2026-06-11T12:59:52.498Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/retrieve, POST} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RoutesResolver","level":"info","message":"PaymentsController {/api/v1/payments}:","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, GET} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id, GET} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, POST} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/webhook, POST} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id/refund, PATCH} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RoutesResolver","level":"info","message":"WalletController {/api/v1/wallet}:","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet, GET} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/credit, POST} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/debit, POST} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/transactions, GET} route","timestamp":"2026-06-11T12:59:52.499Z"}
+{"context":"RoutesResolver","level":"info","message":"NotificationsController {/api/v1/notifications}:","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, GET} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/unread-count, GET} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, GET} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, POST} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id/read, PATCH} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/read-all, PATCH} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/fcm-token, POST} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, DELETE} route","timestamp":"2026-06-11T12:59:52.500Z"}
+{"context":"RoutesResolver","level":"info","message":"LoyaltyController {/api/v1/loyalty}:","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/points, GET} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/history, GET} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/leaderboard, GET} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/add, POST} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/redeem, POST} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RoutesResolver","level":"info","message":"StorageController {/api/v1/storage}:","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/storage/upload, POST} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RoutesResolver","level":"info","message":"SettingsController {/api/v1/settings}:","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, GET} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-06-11T12:59:52.501Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-06-11T12:59:52.509Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/users [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:28.414Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:28.420Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:28.425Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:28.428Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/notifications [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:28.432Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:28.436Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:29.374Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/notifications [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:29.375Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:29.377Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:29.378Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/users [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:29.382Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:29.385Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:38.394Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/users [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:38.398Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/orders? [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:38.401Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/notifications [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:38.403Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:38.405Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/dishes [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-11T13:04:38.407Z"}
+{"context":"HTTP","level":"info","message":"POST /api/v1/auth/login [200] +201ms","timestamp":"2026-06-11T13:05:26.711Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users [200] +5ms","timestamp":"2026-06-11T13:05:27.588Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +5ms","timestamp":"2026-06-11T13:05:27.598Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +3ms","timestamp":"2026-06-11T13:05:27.605Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +3ms","timestamp":"2026-06-11T13:05:27.609Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +5ms","timestamp":"2026-06-11T13:05:27.612Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +4ms","timestamp":"2026-06-11T13:05:27.623Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +8ms","timestamp":"2026-06-11T13:05:27.626Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +3ms","timestamp":"2026-06-11T13:05:27.627Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +2ms","timestamp":"2026-06-11T13:05:27.628Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +2ms","timestamp":"2026-06-11T13:05:27.634Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +3ms","timestamp":"2026-06-11T13:05:27.636Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/notifications [200] +1ms","timestamp":"2026-06-11T13:05:27.638Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-06-11T13:05:27.642Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users [200] +1ms","timestamp":"2026-06-11T13:05:27.644Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders? [200] +2ms","timestamp":"2026-06-11T13:05:27.645Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/notifications [200] +0ms","timestamp":"2026-06-11T13:05:27.647Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +2ms","timestamp":"2026-06-11T13:05:30.372Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/users?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-06-11T13:05:30.406Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-06-11T13:05:30.411Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-06-11T13:05:30.411Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-06-11T13:05:31.307Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/organisations/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +2ms","timestamp":"2026-06-11T13:05:31.309Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +2ms","timestamp":"2026-06-11T13:05:31.310Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/enums [200] +1ms","timestamp":"2026-06-11T13:05:31.336Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/dishes [200] +2ms","timestamp":"2026-06-11T13:05:31.338Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/enums [200] +3ms","timestamp":"2026-06-11T13:05:31.340Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +10ms","timestamp":"2026-06-11T13:05:31.349Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/menus?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +18ms","timestamp":"2026-06-11T13:05:31.359Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +2ms","timestamp":"2026-06-11T13:05:31.932Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/orders?organisation_id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11 [200] +1ms","timestamp":"2026-06-11T13:05:31.936Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/payments? [200] +3ms","timestamp":"2026-06-11T13:05:32.682Z"}
+{"context":"HTTP","level":"info","message":"GET /api/v1/payments? [200] +1ms","timestamp":"2026-06-11T13:05:32.682Z"}
