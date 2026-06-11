@@ -20,7 +20,7 @@ let Menu = class Menu {
     date;
     creneau;
     is_published;
-    image_url;
+    photo_url;
     published_at;
     publication_limite;
     organisation;
@@ -29,7 +29,7 @@ let Menu = class Menu {
     created_at;
     updated_at;
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String }, date: { required: true, type: () => String }, creneau: { required: true, enum: require("../common/enums/index").MealSlot }, is_published: { required: true, type: () => Boolean }, image_url: { required: true, type: () => String }, published_at: { required: true, type: () => Date }, publication_limite: { required: true, type: () => Date }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, plats: { required: true, type: () => [require("../dishes/dish.entity").Dish] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => String }, date: { required: true, type: () => String }, creneau: { required: true, enum: require("../common/enums/index").MealSlot }, is_published: { required: true, type: () => Boolean }, photo_url: { required: true, type: () => String }, published_at: { required: true, type: () => Date }, publication_limite: { required: true, type: () => Date }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, organisation_id: { required: true, type: () => String }, plats: { required: true, type: () => [require("../dishes/dish.entity").Dish] }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
     }
 };
 exports.Menu = Menu;
@@ -52,7 +52,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], Menu.prototype, "image_url", void 0);
+], Menu.prototype, "photo_url", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)

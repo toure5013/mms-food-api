@@ -14,7 +14,7 @@ export class CreateMenuDto {
   @ApiPropertyOptional({ example: 'http://localhost:9000/mms-cantine/menus/menu-1.jpg', description: 'URL de l\'image du menu' })
   @IsOptional()
   @IsString()
-  image_url?: string;
+  photo_url?: string;
 
   @ApiProperty({ example: 'uuid-organisation', description: 'UUID de l\'organisation' })
   @IsUUID()
@@ -47,7 +47,7 @@ export class UpdateMenuDto {
   @ApiPropertyOptional({ example: 'http://localhost:9000/mms-cantine/menus/menu-1.jpg' })
   @IsOptional()
   @IsString()
-  image_url?: string;
+  photo_url?: string;
 
   @ApiPropertyOptional({ example: ['uuid-dish-1'] })
   @IsOptional()

@@ -21,7 +21,7 @@ export class Menu {
   is_published: boolean;
 
   @Column({ nullable: true })
-  image_url: string;
+  photo_url: string;
 
   @Column({ nullable: true })
   published_at: Date;

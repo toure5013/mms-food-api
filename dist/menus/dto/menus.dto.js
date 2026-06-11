@@ -17,12 +17,12 @@ const index_1 = require("../../common/enums/index");
 class CreateMenuDto {
     date;
     creneau;
-    image_url;
+    photo_url;
     organisation_id;
     plats_ids;
     is_published;
     static _OPENAPI_METADATA_FACTORY() {
-        return { date: { required: true, type: () => String }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, image_url: { required: false, type: () => String }, organisation_id: { required: true, type: () => String, format: "uuid" }, plats_ids: { required: false, type: () => [String], format: "uuid" }, is_published: { required: false, type: () => Boolean } };
+        return { date: { required: true, type: () => String }, creneau: { required: true, enum: require("../../common/enums/index").MealSlot }, photo_url: { required: false, type: () => String }, organisation_id: { required: true, type: () => String, format: "uuid" }, plats_ids: { required: false, type: () => [String], format: "uuid" }, is_published: { required: false, type: () => Boolean } };
     }
 }
 exports.CreateMenuDto = CreateMenuDto;
@@ -41,7 +41,7 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateMenuDto.prototype, "image_url", void 0);
+], CreateMenuDto.prototype, "photo_url", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'uuid-organisation', description: 'UUID de l\'organisation' }),
     (0, class_validator_1.IsUUID)(),
@@ -64,12 +64,12 @@ __decorate([
 class UpdateMenuDto {
     date;
     creneau;
-    image_url;
+    photo_url;
     plats_ids;
     organisation_id;
     is_published;
     static _OPENAPI_METADATA_FACTORY() {
-        return { date: { required: false, type: () => String }, creneau: { required: false, enum: require("../../common/enums/index").MealSlot }, image_url: { required: false, type: () => String }, plats_ids: { required: false, type: () => [String], format: "uuid" }, organisation_id: { required: false, type: () => String, format: "uuid" }, is_published: { required: false, type: () => Boolean } };
+        return { date: { required: false, type: () => String }, creneau: { required: false, enum: require("../../common/enums/index").MealSlot }, photo_url: { required: false, type: () => String }, plats_ids: { required: false, type: () => [String], format: "uuid" }, organisation_id: { required: false, type: () => String, format: "uuid" }, is_published: { required: false, type: () => Boolean } };
     }
 }
 exports.UpdateMenuDto = UpdateMenuDto;
@@ -90,7 +90,7 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], UpdateMenuDto.prototype, "image_url", void 0);
+], UpdateMenuDto.prototype, "photo_url", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: ['uuid-dish-1'] }),
     (0, class_validator_1.IsOptional)(),

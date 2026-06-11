@@ -6,7 +6,7 @@ export declare class Menu {
     date: string;
     creneau: MealSlot;
     is_published: boolean;
-    image_url: string;
+    photo_url: string;
     published_at: Date;
     publication_limite: Date;
     organisation: Organisation;
