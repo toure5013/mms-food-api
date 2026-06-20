@@ -41,5 +41,5 @@ jobs:
         uses: caprover/deploy-from-github@v1.1.2
         with:
           server: ${{ secrets.CAPROVER_SERVER }}
-          app: ${{ secrets.CAPROVER_BACKEND_APP_NAME }}
-          token: ${{ secrets.CAPROVER_BACKEND_APP_TOKEN }}
+          app: ${{ secrets.CAPROVER_MMS_BACKEND_APP_NAME }}
+          token: ${{ secrets.CAPROVER_MMS_BACKEND_APP_TOKEN }}
