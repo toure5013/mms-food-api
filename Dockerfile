@@ -1,83 +1,49 @@
 # ==============================
-# BASE
+# BUILD STAGE
 # ==============================
-FROM node:22.14-alpine AS base
+FROM node:22.14.0-alpine AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache python3 make g++ git
 
-
-# ==============================
-# DEPENDENCIES
-# ==============================
-FROM base AS deps
-
-# Native dependencies (bcrypt, sharp, etc.)
-RUN apk add --no-cache \
-  python3 \
-  make \
-  g++
-
-COPY package*.json ./
+# npm
+COPY package.json package-lock.json ./
 
 RUN npm ci
 
-
-# ==============================
-# BUILDER
-# ==============================
-FROM base AS builder
-
-COPY --from=deps /app/node_modules ./node_modules
-
 COPY . .
+
+RUN npm rebuild bcrypt --build-from-source
 
 RUN npm run build
 
 
-# Remove dev dependencies
-RUN npm prune --omit=dev
-
-
 # ==============================
-# RUNNER
+# PRODUCTION STAGE
 # ==============================
-FROM base AS runner
+FROM node:22.14.0-alpine AS runner
 
+WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3001
+ENV PORT=80
 
+RUN apk add --no-cache python3
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs \
-  && adduser --system --uid 1001 nestjs
+COPY package.json package-lock.json ./
 
+RUN npm ci --omit=dev
 
-# Copy application
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
 
 
-# Create writable folders
-RUN mkdir -p /app/logs \
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nestjs \
   && chown -R nestjs:nodejs /app
-
 
 USER nestjs
 
-
-EXPOSE 3001
-
-
-HEALTHCHECK \
-  --interval=30s \
-  --timeout=5s \
-  --start-period=15s \
-  --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/api/v1/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
-
+EXPOSE 80
 
 CMD ["node", "dist/main.js"]
