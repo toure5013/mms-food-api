@@ -60,6 +60,12 @@ let AppController = class AppController {
     getHello() {
         return this.appService.getHello();
     }
+    check() {
+        return {
+            status: "ok",
+            timestamp: new Date()
+        };
+    }
     async getEnums() {
         const settings = await this.settingsService.getSettings();
         const customAllergies = settings.dietary?.customAllergies || [];
@@ -95,6 +101,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
+__decorate([
+    (0, common_1.Get)("health"),
+    openapi.ApiResponse({ status: 200 }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "check", null);
 __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Get)('enums'),

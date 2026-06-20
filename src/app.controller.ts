@@ -19,6 +19,14 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get("health")
+  check() {
+    return {
+      status: "ok",
+      timestamp: new Date()
+    }
+  }
+
   @Public()
   @Get('enums')
   @ApiOperation({ summary: 'Récupérer toutes les énumérations du système', description: 'Retourne un objet contenant toutes les énumérations (catégories de plats, rôles, statuts de commande, etc.) utilisées par l\'API.' })

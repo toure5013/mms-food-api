@@ -6,6 +6,10 @@ export declare class AppController {
     private readonly settingsService;
     constructor(appService: AppService, settingsService: SettingsService);
     getHello(): string;
+    check(): {
+        status: string;
+        timestamp: Date;
+    };
     getEnums(): Promise<{
         dishCategories: Enums.DishCategory[];
         userRoles: Enums.UserRole[];
