@@ -44,6 +44,14 @@ let OrdersService = class OrdersService {
             order: { created_at: 'DESC' },
         });
     }
+    async findMyOrders(employeId) {
+        const orders = await this.orderRepo.find({
+            where: { employe_id: employeId },
+            relations: ['plats', 'employe', 'organisation'],
+            order: { created_at: 'DESC' },
+        });
+        return orders;
+    }
     async findOne(id) {
         const order = await this.orderRepo.findOne({
             where: { id },

@@ -9,6 +9,7 @@ export declare class OrdersService {
     private readonly organisationRepo;
     constructor(orderRepo: Repository<Order>, dishRepo: Repository<Dish>, organisationRepo: Repository<Organisation>);
     findAll(organisationId?: string, employeId?: string, statut?: string): Promise<Order[]>;
+    findMyOrders(employeId: string): Promise<Order[]>;
     findOne(id: string): Promise<Order>;
     findByQrCode(qrCodeToken: string): Promise<Order>;
     create(dto: CreateOrderDto): Promise<Order>;

@@ -32,6 +32,10 @@ let OrdersController = class OrdersController {
     getStats(organisationId) {
         return this.ordersService.getStats(organisationId);
     }
+    findMyOrders(req) {
+        const employeId = req.user.id;
+        return this.ordersService.findMyOrders(employeId);
+    }
     findOne(id) {
         return this.ordersService.findOne(id);
     }
@@ -41,7 +45,10 @@ let OrdersController = class OrdersController {
     createGuest(dto) {
         return this.ordersService.createGuestOrder(dto);
     }
-    updateStatus(id, dto) {
+    updateStatusPatch(id, dto) {
+        return this.ordersService.updateStatus(id, dto);
+    }
+    updateStatusPost(id, dto) {
         return this.ordersService.updateStatus(id, dto);
     }
     retrieveByQrCode(dto) {
@@ -75,6 +82,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "getStats", null);
+__decorate([
+    (0, common_1.Get)('my-orders'),
+    (0, swagger_1.ApiOperation)({ summary: 'Commandes de l\'utilisateur connecté' }),
+    openapi.ApiResponse({ status: 200, type: [require("./order.entity").Order] }),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "findMyOrders", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Détails d\'une commande', description: 'Retourne les détails complets d\'une commande par son UUID.' }),
@@ -111,7 +127,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id/status'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.COOK),
-    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut mis à jour.' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Commande non trouvée.' }),
@@ -120,7 +136,20 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, orders_dto_1.UpdateOrderStatusDto]),
     __metadata("design:returntype", void 0)
-], OrdersController.prototype, "updateStatus", null);
+], OrdersController.prototype, "updateStatusPatch", null);
+__decorate([
+    (0, common_1.Post)(':id/status'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.COOK),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut (POST - Fallback Flutter)', description: 'Modifie le statut d\'une commande pour compatibilité mobile.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Commande non trouvée.' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, orders_dto_1.UpdateOrderStatusDto]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "updateStatusPost", null);
 __decorate([
     (0, common_1.Post)('retrieve'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),

@@ -14,6 +14,16 @@
             "date": 1781182792340,
             "name": "logs/mms-api-2026-06-11.log",
             "hash": "cdeead7510c751470198064c35abeb2a2ea161281f3d94f9511beded84ff1184"
+        },
+        {
+            "date": 1781282693915,
+            "name": "logs/mms-api-2026-06-12.log",
+            "hash": "876ab676ebccd53ec00e13cb5bf4bf201856cc9d89372ee0d125827033337f9c"
+        },
+        {
+            "date": 1781954839885,
+            "name": "logs/mms-api-2026-06-20.log",
+            "hash": "28fe0126730d8ce40254b9a054415599396a3c847c674587c8238b92db4edc7e"
         }
     ],
     "hashType": "sha256"

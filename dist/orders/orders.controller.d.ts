@@ -11,9 +11,11 @@ export declare class OrdersController {
         retrieved: number;
         cancelled: number;
     }>;
+    findMyOrders(req: any): Promise<import("./order.entity").Order[]>;
     findOne(id: string): Promise<import("./order.entity").Order>;
     create(dto: CreateOrderDto): Promise<import("./order.entity").Order>;
     createGuest(dto: CreateGuestOrderDto): Promise<import("./order.entity").Order>;
-    updateStatus(id: string, dto: UpdateOrderStatusDto): Promise<import("./order.entity").Order>;
+    updateStatusPatch(id: string, dto: UpdateOrderStatusDto): Promise<import("./order.entity").Order>;
+    updateStatusPost(id: string, dto: UpdateOrderStatusDto): Promise<import("./order.entity").Order>;
     retrieveByQrCode(dto: RetrieveOrderDto): Promise<import("./order.entity").Order>;
 }
