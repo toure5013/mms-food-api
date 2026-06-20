@@ -3,7 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { CacheModule } from '@nestjs/cache-manager';
 import { WinstonModule } from 'nest-winston';
+import { RedisModule } from './redis/redis.module';
 
 import { getWinstonConfig } from './common/logger/logger.config';
 import { TypeOrmWinstonLogger } from './database/typeorm-logger';
@@ -47,6 +49,23 @@ import { RolesGuard } from './common/guards/roles.guard';
   imports: [
     // Config globale (.env)
     ConfigModule.forRoot({ isGlobal: true }),
+
+    // Redis — client ioredis global (REDIS_HOST / REDIS_PORT / REDIS_PASSWORD)
+    RedisModule,
+
+    // Cache — store Redis via ioredis
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: 60 * 1000, // 60 secondes par défaut
+        max: 500,
+        host: config.get<string>('REDIS_HOST', 'localhost'),
+        port: config.get<number>('REDIS_PORT', 6379),
+        password: config.get<string>('REDIS_PASSWORD') || undefined,
+      }),
+    }),
 
     // Rate limiting: 100 requêtes / 60 secondes
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),

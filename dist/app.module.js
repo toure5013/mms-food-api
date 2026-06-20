@@ -12,7 +12,9 @@ const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const core_1 = require("@nestjs/core");
 const throttler_1 = require("@nestjs/throttler");
+const cache_manager_1 = require("@nestjs/cache-manager");
 const nest_winston_1 = require("nest-winston");
+const redis_module_1 = require("./redis/redis.module");
 const logger_config_1 = require("./common/logger/logger.config");
 const typeorm_logger_1 = require("./database/typeorm-logger");
 const all_exceptions_filter_1 = require("./common/filters/all-exceptions.filter");
@@ -51,6 +53,19 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
+            redis_module_1.RedisModule,
+            cache_manager_1.CacheModule.registerAsync({
+                isGlobal: true,
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (config) => ({
+                    ttl: 60 * 1000,
+                    max: 500,
+                    host: config.get('REDIS_HOST', 'localhost'),
+                    port: config.get('REDIS_PORT', 6379),
+                    password: config.get('REDIS_PASSWORD') || undefined,
+                }),
+            }),
             throttler_1.ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
             nest_winston_1.WinstonModule.forRoot((0, logger_config_1.getWinstonConfig)()),
             typeorm_1.TypeOrmModule.forRootAsync({

@@ -170,3 +170,234 @@
 {"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-06-20T11:56:23.670Z"}
 {"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-06-20T11:56:23.674Z"}
 {"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/auth/profile [401] - Warning: {\"message\":\"Token invalide ou expiré\",\"error\":\"Unauthorized\",\"statusCode\":401}","timestamp":"2026-06-20T12:02:30.708Z"}
+{"context":"RoutesResolver","level":"info","message":"AppController {/api/v1}:","timestamp":"2026-06-20T12:03:54.761Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1, GET} route","timestamp":"2026-06-20T12:03:54.762Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/enums, GET} route","timestamp":"2026-06-20T12:03:54.762Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/api/v1/auth}:","timestamp":"2026-06-20T12:03:54.762Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/login, POST} route","timestamp":"2026-06-20T12:03:54.763Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/request, POST} route","timestamp":"2026-06-20T12:03:54.763Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/verify, POST} route","timestamp":"2026-06-20T12:03:54.763Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/password/set, POST} route","timestamp":"2026-06-20T12:03:54.763Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/profile, GET} route","timestamp":"2026-06-20T12:03:54.764Z"}
+{"context":"RoutesResolver","level":"info","message":"UsersController {/api/v1/users}:","timestamp":"2026-06-20T12:03:54.764Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, GET} route","timestamp":"2026-06-20T12:03:54.764Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, POST} route","timestamp":"2026-06-20T12:03:54.765Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, GET} route","timestamp":"2026-06-20T12:03:54.765Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, PATCH} route","timestamp":"2026-06-20T12:03:54.765Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, DELETE} route","timestamp":"2026-06-20T12:03:54.765Z"}
+{"context":"RoutesResolver","level":"info","message":"OrganisationsController {/api/v1/organisations}:","timestamp":"2026-06-20T12:03:54.765Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/public/:slug, GET} route","timestamp":"2026-06-20T12:03:54.765Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, GET} route","timestamp":"2026-06-20T12:03:54.766Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, POST} route","timestamp":"2026-06-20T12:03:54.766Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, GET} route","timestamp":"2026-06-20T12:03:54.766Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, PATCH} route","timestamp":"2026-06-20T12:03:54.766Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, DELETE} route","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RoutesResolver","level":"info","message":"DishesController {/api/v1/dishes}:","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, GET} route","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, POST} route","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes/:id, GET} route","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RoutesResolver","level":"info","message":"MenusController {/api/v1/menus}:","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/public/:organisationId, GET} route","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/daily, GET} route","timestamp":"2026-06-20T12:03:54.768Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, GET} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, GET} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, POST} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, PUT} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id/publish, PATCH} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, DELETE} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RoutesResolver","level":"info","message":"OrdersController {/api/v1/orders}:","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, GET} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/stats/:organisationId, GET} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/my-orders, GET} route","timestamp":"2026-06-20T12:03:54.769Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id, GET} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, POST} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/guest, POST} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, PATCH} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, POST} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/retrieve, POST} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RoutesResolver","level":"info","message":"PaymentsController {/api/v1/payments}:","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, GET} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id, GET} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, POST} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/webhook, POST} route","timestamp":"2026-06-20T12:03:54.770Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id/refund, PATCH} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RoutesResolver","level":"info","message":"WalletController {/api/v1/wallet}:","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet, GET} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/credit, POST} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/debit, POST} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/transactions, GET} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RoutesResolver","level":"info","message":"NotificationsController {/api/v1/notifications}:","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, GET} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/unread-count, GET} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, GET} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, POST} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id/read, PATCH} route","timestamp":"2026-06-20T12:03:54.771Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/read-all, PATCH} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/fcm-token, POST} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, DELETE} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RoutesResolver","level":"info","message":"LoyaltyController {/api/v1/loyalty}:","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/points, GET} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/history, GET} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/leaderboard, GET} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/add, POST} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/redeem, POST} route","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RoutesResolver","level":"info","message":"StorageController {/api/v1/storage}:","timestamp":"2026-06-20T12:03:54.772Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/storage/upload, POST} route","timestamp":"2026-06-20T12:03:54.773Z"}
+{"context":"RoutesResolver","level":"info","message":"SettingsController {/api/v1/settings}:","timestamp":"2026-06-20T12:03:54.773Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, GET} route","timestamp":"2026-06-20T12:03:54.773Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-06-20T12:03:54.773Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-06-20T12:03:54.776Z"}
+{"context":"RoutesResolver","level":"info","message":"AppController {/api/v1}:","timestamp":"2026-06-20T12:04:01.596Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1, GET} route","timestamp":"2026-06-20T12:04:01.597Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/enums, GET} route","timestamp":"2026-06-20T12:04:01.597Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/api/v1/auth}:","timestamp":"2026-06-20T12:04:01.597Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/login, POST} route","timestamp":"2026-06-20T12:04:01.597Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/request, POST} route","timestamp":"2026-06-20T12:04:01.598Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/verify, POST} route","timestamp":"2026-06-20T12:04:01.598Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/password/set, POST} route","timestamp":"2026-06-20T12:04:01.598Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/profile, GET} route","timestamp":"2026-06-20T12:04:01.598Z"}
+{"context":"RoutesResolver","level":"info","message":"UsersController {/api/v1/users}:","timestamp":"2026-06-20T12:04:01.598Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, GET} route","timestamp":"2026-06-20T12:04:01.599Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, POST} route","timestamp":"2026-06-20T12:04:01.599Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, GET} route","timestamp":"2026-06-20T12:04:01.599Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, PATCH} route","timestamp":"2026-06-20T12:04:01.599Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, DELETE} route","timestamp":"2026-06-20T12:04:01.599Z"}
+{"context":"RoutesResolver","level":"info","message":"OrganisationsController {/api/v1/organisations}:","timestamp":"2026-06-20T12:04:01.600Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/public/:slug, GET} route","timestamp":"2026-06-20T12:04:01.601Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, GET} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, POST} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, GET} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, PATCH} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, DELETE} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RoutesResolver","level":"info","message":"DishesController {/api/v1/dishes}:","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, GET} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, POST} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes/:id, GET} route","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RoutesResolver","level":"info","message":"MenusController {/api/v1/menus}:","timestamp":"2026-06-20T12:04:01.602Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/public/:organisationId, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/daily, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, POST} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, PUT} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id/publish, PATCH} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, DELETE} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RoutesResolver","level":"info","message":"OrdersController {/api/v1/orders}:","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/stats/:organisationId, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/my-orders, GET} route","timestamp":"2026-06-20T12:04:01.603Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id, GET} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/guest, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, PATCH} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/retrieve, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RoutesResolver","level":"info","message":"PaymentsController {/api/v1/payments}:","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, GET} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id, GET} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/webhook, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id/refund, PATCH} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RoutesResolver","level":"info","message":"WalletController {/api/v1/wallet}:","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet, GET} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/credit, POST} route","timestamp":"2026-06-20T12:04:01.604Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/debit, POST} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/transactions, GET} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RoutesResolver","level":"info","message":"NotificationsController {/api/v1/notifications}:","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, GET} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/unread-count, GET} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, GET} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, POST} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id/read, PATCH} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/read-all, PATCH} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/fcm-token, POST} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, DELETE} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RoutesResolver","level":"info","message":"LoyaltyController {/api/v1/loyalty}:","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/points, GET} route","timestamp":"2026-06-20T12:04:01.605Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/history, GET} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/leaderboard, GET} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/add, POST} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/redeem, POST} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RoutesResolver","level":"info","message":"StorageController {/api/v1/storage}:","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/storage/upload, POST} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RoutesResolver","level":"info","message":"SettingsController {/api/v1/settings}:","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, GET} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-06-20T12:04:01.606Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-06-20T12:04:01.610Z"}
+{"context":"RoutesResolver","level":"info","message":"AppController {/api/v1}:","timestamp":"2026-06-20T12:04:12.552Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1, GET} route","timestamp":"2026-06-20T12:04:12.553Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/enums, GET} route","timestamp":"2026-06-20T12:04:12.554Z"}
+{"context":"RoutesResolver","level":"info","message":"AuthController {/api/v1/auth}:","timestamp":"2026-06-20T12:04:12.554Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/login, POST} route","timestamp":"2026-06-20T12:04:12.554Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/request, POST} route","timestamp":"2026-06-20T12:04:12.554Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/otp/verify, POST} route","timestamp":"2026-06-20T12:04:12.555Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/password/set, POST} route","timestamp":"2026-06-20T12:04:12.555Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/auth/profile, GET} route","timestamp":"2026-06-20T12:04:12.555Z"}
+{"context":"RoutesResolver","level":"info","message":"UsersController {/api/v1/users}:","timestamp":"2026-06-20T12:04:12.555Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, GET} route","timestamp":"2026-06-20T12:04:12.556Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users, POST} route","timestamp":"2026-06-20T12:04:12.556Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, GET} route","timestamp":"2026-06-20T12:04:12.556Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, PATCH} route","timestamp":"2026-06-20T12:04:12.556Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/users/:id, DELETE} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RoutesResolver","level":"info","message":"OrganisationsController {/api/v1/organisations}:","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/public/:slug, GET} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, GET} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations, POST} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, GET} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, PATCH} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/organisations/:id, DELETE} route","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RoutesResolver","level":"info","message":"DishesController {/api/v1/dishes}:","timestamp":"2026-06-20T12:04:12.557Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, GET} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes, POST} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/dishes/:id, GET} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RoutesResolver","level":"info","message":"MenusController {/api/v1/menus}:","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/public/:organisationId, GET} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/daily, GET} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, GET} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, GET} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus, POST} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, PUT} route","timestamp":"2026-06-20T12:04:12.558Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id/publish, PATCH} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/menus/:id, DELETE} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RoutesResolver","level":"info","message":"OrdersController {/api/v1/orders}:","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, GET} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/stats/:organisationId, GET} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/my-orders, GET} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id, GET} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders, POST} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/guest, POST} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, PATCH} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/:id/status, POST} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/orders/retrieve, POST} route","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RoutesResolver","level":"info","message":"PaymentsController {/api/v1/payments}:","timestamp":"2026-06-20T12:04:12.559Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, GET} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id, GET} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments, POST} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/webhook, POST} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/payments/:id/refund, PATCH} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RoutesResolver","level":"info","message":"WalletController {/api/v1/wallet}:","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet, GET} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/credit, POST} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/debit, POST} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/wallet/transactions, GET} route","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RoutesResolver","level":"info","message":"NotificationsController {/api/v1/notifications}:","timestamp":"2026-06-20T12:04:12.560Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, GET} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/unread-count, GET} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, GET} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications, POST} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id/read, PATCH} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/read-all, PATCH} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/fcm-token, POST} route","timestamp":"2026-06-20T12:04:12.561Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/notifications/:id, DELETE} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RoutesResolver","level":"info","message":"LoyaltyController {/api/v1/loyalty}:","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/points, GET} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/history, GET} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/leaderboard, GET} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/add, POST} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/loyalty/redeem, POST} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RoutesResolver","level":"info","message":"StorageController {/api/v1/storage}:","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/storage/upload, POST} route","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RoutesResolver","level":"info","message":"SettingsController {/api/v1/settings}:","timestamp":"2026-06-20T12:04:12.562Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, GET} route","timestamp":"2026-06-20T12:04:12.563Z"}
+{"context":"RouterExplorer","level":"info","message":"Mapped {/api/v1/settings, PATCH} route","timestamp":"2026-06-20T12:04:12.563Z"}
+{"context":"NestApplication","level":"info","message":"Nest application successfully started","timestamp":"2026-06-20T12:04:12.568Z"}
