@@ -63,8 +63,23 @@ let SettingsService = class SettingsService {
                 dietary: {
                     customAllergies: [],
                     customRegimes: []
+                },
+                features: {
+                    otpRequired: process.env.OTP_REQUIRED !== 'false',
+                    paymentRequired: process.env.PAYMENT_REQUIRED !== 'false',
                 }
             });
+        }
+        else {
+            const existing = await this.settingsRepo.findOne({ where: { id: 1 } });
+            if (existing && !existing.features) {
+                await this.settingsRepo.update(1, {
+                    features: {
+                        otpRequired: process.env.OTP_REQUIRED !== 'false',
+                        paymentRequired: process.env.PAYMENT_REQUIRED !== 'false',
+                    },
+                });
+            }
         }
     }
     async getSettings() {

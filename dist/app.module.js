@@ -22,6 +22,7 @@ const logging_interceptor_1 = require("./common/interceptors/logging.interceptor
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const email_module_1 = require("./common/email/email.module");
+const push_module_1 = require("./common/push/push.module");
 const user_entity_1 = require("./users/user.entity");
 const organisation_entity_1 = require("./organisations/organisation.entity");
 const dish_entity_1 = require("./dishes/dish.entity");
@@ -86,6 +87,7 @@ exports.AppModule = AppModule = __decorate([
                 }),
             }),
             email_module_1.EmailModule,
+            push_module_1.PushModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             organisations_module_1.OrganisationsModule,

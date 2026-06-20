@@ -5,6 +5,7 @@ export enum UserRole {
   EMPLOYEE = 'EMPLOYEE',             // Employee (Mobile)
   COOK = 'COOK',                     // Cuisinier (Mobile)
   PATIENT = 'PATIENT',               // Patient (Tablet)
+  SERVER = 'SERVER',                 // Serveur / distributeur de repas
 }
 
 export enum MenuMode {

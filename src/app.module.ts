@@ -15,6 +15,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EmailModule } from './common/email/email.module';
+import { PushModule } from './common/push/push.module';
 
 // Entities
 import { User } from './users/user.entity';
@@ -94,6 +95,7 @@ import { RolesGuard } from './common/guards/roles.guard';
 
     // Modules globaux
     EmailModule,
+    PushModule,
 
     // Feature modules
     AuthModule,

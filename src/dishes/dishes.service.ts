@@ -12,10 +12,9 @@ export class DishesService {
   ) {}
 
   findAll(organisationId?: string) {
-    return this.dishRepo.find({
-      where: { is_active: true },
-      order: { nom: 'ASC' },
-    });
+    const where: any = { is_active: true };
+    if (organisationId) where.organisation_id = organisationId;
+    return this.dishRepo.find({ where, order: { nom: 'ASC' } });
   }
 
   async findOne(id: string) {
@@ -24,8 +23,8 @@ export class DishesService {
     return dish;
   }
 
-  create(dto: CreateDishDto) {
-    const dish = this.dishRepo.create(dto);
+  create(dto: CreateDishDto, organisationId?: string) {
+    const dish = this.dishRepo.create({ ...dto, organisation_id: organisationId ?? undefined });
     return this.dishRepo.save(dish);
   }
 

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsHexColor, IsNumber, IsArray, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsHexColor, IsNumber, IsArray, Min, IsBoolean } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { MenuMode, SubventionType, DishCategory, FinancialMode } from '../../common/enums/index';
 
@@ -210,4 +210,29 @@ export class UpdateOrganisationDto {
   @IsOptional()
   @IsNumber()
   order_day_offset?: number;
+}
+
+export class UpdateGuestModeDto {
+  @ApiProperty({ example: true, description: 'Activer ou désactiver les commandes sans connexion (scan QR code)' })
+  @IsBoolean()
+  is_guest_order_enabled: boolean;
+
+  @ApiPropertyOptional({ example: '08:00', description: 'Heure de début des commandes invité (HH:mm)' })
+  @IsOptional()
+  @IsString()
+  guest_order_start_time?: string;
+
+  @ApiPropertyOptional({ example: '11:30', description: 'Heure de fin des commandes invité (HH:mm)' })
+  @IsOptional()
+  @IsString()
+  guest_order_end_time?: string;
+
+  @ApiPropertyOptional({ example: 0, description: '0 = commandes pour aujourd\'hui, 1 = pour demain' })
+  @IsOptional()
+  @IsNumber()
+  order_day_offset?: number;
+
+  @ApiPropertyOptional({ example: { fields: [{ name: 'nom', required: true }] }, description: "Configuration des champs à remplir par l'invité" })
+  @IsOptional()
+  guest_config?: any;
 }

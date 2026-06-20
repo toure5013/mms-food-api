@@ -51,6 +51,11 @@ let OrganisationsService = class OrganisationsService {
         Object.assign(org, dto);
         return this.organisationRepo.save(org);
     }
+    async updateGuestMode(orgId, dto) {
+        const org = await this.findOne(orgId);
+        Object.assign(org, dto);
+        return this.organisationRepo.save(org);
+    }
     async remove(id) {
         const org = await this.findOne(id);
         return this.organisationRepo.remove(org);

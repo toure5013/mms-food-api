@@ -1,4 +1,5 @@
 import { DishCategory } from '../common/enums/index';
+import { Organisation } from '../organisations/organisation.entity';
 export declare class Dish {
     id: string;
     nom: string;
@@ -13,6 +14,8 @@ export declare class Dish {
     vegetarien: boolean;
     halal: boolean;
     allergenes: string[];
+    organisation_id: string;
+    organisation: Organisation;
     is_active: boolean;
     created_at: Date;
     updated_at: Date;

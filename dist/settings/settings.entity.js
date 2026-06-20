@@ -20,10 +20,11 @@ let Settings = class Settings {
     security;
     org;
     dietary;
+    features;
     created_at;
     updated_at;
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, general: { required: true, type: () => Object }, branding: { required: true, type: () => Object }, notifs: { required: true, type: () => Object }, security: { required: true, type: () => Object }, org: { required: true, type: () => Object }, dietary: { required: true, type: () => ({ customAllergies: { required: true, type: () => [String] }, customRegimes: { required: true, type: () => [String] } }) }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => Number }, general: { required: true, type: () => Object }, branding: { required: true, type: () => Object }, notifs: { required: true, type: () => Object }, security: { required: true, type: () => Object }, org: { required: true, type: () => Object }, dietary: { required: true, type: () => ({ customAllergies: { required: true, type: () => [String] }, customRegimes: { required: true, type: () => [String] } }) }, features: { required: true, type: () => ({ otpRequired: { required: true, type: () => Boolean }, paymentRequired: { required: true, type: () => Boolean } }) }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
     }
 };
 exports.Settings = Settings;
@@ -55,6 +56,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
     __metadata("design:type", Object)
 ], Settings.prototype, "dietary", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
+    __metadata("design:type", Object)
+], Settings.prototype, "features", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

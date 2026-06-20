@@ -54,15 +54,18 @@ const jwt_1 = require("@nestjs/jwt");
 const bcrypt = __importStar(require("bcrypt"));
 const user_entity_1 = require("../users/user.entity");
 const email_service_1 = require("../common/email/email.service");
+const settings_service_1 = require("../settings/settings.service");
 let AuthService = AuthService_1 = class AuthService {
     userRepo;
     jwtService;
     emailService;
+    settingsService;
     logger = new common_1.Logger(AuthService_1.name);
-    constructor(userRepo, jwtService, emailService) {
+    constructor(userRepo, jwtService, emailService, settingsService) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
         this.emailService = emailService;
+        this.settingsService = settingsService;
     }
     async login(dto) {
         const user = await this.userRepo.findOne({
@@ -88,11 +91,17 @@ let AuthService = AuthService_1 = class AuthService {
         const user = await this.userRepo.findOne({ where: { email: dto.email } });
         if (!user)
             throw new common_1.NotFoundException('Aucun compte associé à cet email');
+        const settings = await this.settingsService.getSettings();
+        const otpRequired = settings.features?.otpRequired !== false;
         const otpCode = this.generateOtp();
-        const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+        const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
         await this.userRepo.update(user.id, { otp_code: otpCode, otp_expires_at: expiresAt });
-        await this.emailService.sendOtp(user.email, otpCode, user.prenom);
-        return { message: 'Code OTP envoyé par email', expires_in_minutes: 10 };
+        if (otpRequired) {
+            await this.emailService.sendOtp(user.email, otpCode, user.prenom);
+            return { message: 'Code OTP envoyé par email', expires_in_minutes: 10, otp_disabled: false };
+        }
+        this.logger.log(`OTP désactivé — code fourni directement pour ${user.email}`);
+        return { message: 'OTP désactivé — code de réinitialisation fourni', expires_in_minutes: 30, otp_disabled: true, auto_code: otpCode };
     }
     async verifyOtp(dto) {
         const user = await this.userRepo.findOne({
@@ -144,7 +153,7 @@ let AuthService = AuthService_1 = class AuthService {
             organisation_id: user.organisation_id ?? null,
         };
         return {
-            access_token: this.jwtService.sign(newPayload, { expiresIn: '15m' }),
+            access_token: this.jwtService.sign(newPayload, { expiresIn: '30d' }),
             type_token: 'Bearer',
         };
     }
@@ -167,8 +176,8 @@ let AuthService = AuthService_1 = class AuthService {
             organisation_id: user.organisation_id ?? null,
         };
         return {
-            access_token: this.jwtService.sign(payload, { expiresIn: '15m' }),
-            refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
+            access_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
+            refresh_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
             type_token: 'Bearer',
             user: {
                 id: user.id,
@@ -193,6 +202,7 @@ exports.AuthService = AuthService = AuthService_1 = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         jwt_1.JwtService,
-        email_service_1.EmailService])
+        email_service_1.EmailService,
+        settings_service_1.SettingsService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

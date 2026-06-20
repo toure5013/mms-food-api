@@ -39,7 +39,8 @@ let OrdersController = class OrdersController {
     findOne(id) {
         return this.ordersService.findOne(id);
     }
-    create(dto) {
+    create(dto, req) {
+        dto.employe_id = req.user?.id;
         return this.ordersService.create(dto);
     }
     createGuest(dto) {
@@ -112,8 +113,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Commande créée avec succès.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides ou solde insuffisant.' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [orders_dto_1.CreateOrderDto]),
+    __metadata("design:paramtypes", [orders_dto_1.CreateOrderDto, Object]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "create", null);
 __decorate([
@@ -129,8 +131,8 @@ __decorate([
 ], OrdersController.prototype, "createGuest", null);
 __decorate([
     (0, common_1.Patch)(':id/status'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.COOK),
-    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.COOK, index_1.UserRole.SERVER),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED). Accessible aux admins et au personnel de distribution.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut mis à jour.' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Commande non trouvée.' }),
@@ -142,7 +144,7 @@ __decorate([
 ], OrdersController.prototype, "updateStatusPatch", null);
 __decorate([
     (0, common_1.Post)(':id/status'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.COOK),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.COOK, index_1.UserRole.SERVER),
     (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour le statut (POST - Fallback Flutter)', description: 'Modifie le statut d\'une commande pour compatibilité mobile.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut mis à jour.' }),
@@ -167,8 +169,8 @@ __decorate([
 ], OrdersController.prototype, "cancel", null);
 __decorate([
     (0, common_1.Post)('retrieve'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Retrait par scan QR code', description: 'Marque une commande comme récupérée en utilisant le token du QR code.' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.SERVER),
+    (0, swagger_1.ApiOperation)({ summary: 'Retrait par scan QR code', description: 'Marque une commande comme récupérée en utilisant le token du QR code. Accessible aux serveurs et admins.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Commande marquée comme récupérée.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Token QR code invalide ou commande déjà récupérée/annulée.' }),
     __param(0, (0, common_1.Body)()),

@@ -3,12 +3,14 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/user.entity';
 import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto } from './dto/auth.dto';
 import { EmailService } from '../common/email/email.service';
+import { SettingsService } from '../settings/settings.service';
 export declare class AuthService {
     private readonly userRepo;
     private readonly jwtService;
     private readonly emailService;
+    private readonly settingsService;
     private readonly logger;
-    constructor(userRepo: Repository<User>, jwtService: JwtService, emailService: EmailService);
+    constructor(userRepo: Repository<User>, jwtService: JwtService, emailService: EmailService, settingsService: SettingsService);
     login(dto: LoginDto): Promise<{
         access_token: string;
         refresh_token: string;
@@ -30,6 +32,13 @@ export declare class AuthService {
     requestOtp(dto: RequestOtpDto): Promise<{
         message: string;
         expires_in_minutes: number;
+        otp_disabled: boolean;
+        auto_code?: undefined;
+    } | {
+        message: string;
+        expires_in_minutes: number;
+        otp_disabled: boolean;
+        auto_code: string;
     }>;
     verifyOtp(dto: VerifyOtpDto): Promise<{
         valid: boolean;

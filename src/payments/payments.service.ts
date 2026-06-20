@@ -5,6 +5,7 @@ import { Payment } from './payment.entity';
 import { Order } from '../orders/order.entity';
 import { CreatePaymentDto, WebhookPaymentDto } from './dto/payments.dto';
 import { PaymentStatus, OrderStatus } from '../common/enums/index';
+import { PaymentProviderService } from './payment-provider.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class PaymentsService {
     private readonly paymentRepo: Repository<Payment>,
     @InjectRepository(Order)
     private readonly orderRepo: Repository<Order>,
+    private readonly providerService: PaymentProviderService,
   ) {}
 
   findAll(orderId?: string, userId?: string) {
@@ -38,27 +40,31 @@ export class PaymentsService {
   }
 
   async create(dto: CreatePaymentDto) {
-    // Vérifier que la commande existe
     const order = await this.orderRepo.findOne({ where: { id: dto.order_id } });
     if (!order) throw new NotFoundException('Commande introuvable');
 
-    // Vérifier que la commande est en attente de paiement
     if (order.statut !== OrderStatus.CONFIRMED && order.statut !== OrderStatus.PENDING) {
       throw new BadRequestException(
         `La commande n'est pas en attente de paiement (statut: ${order.statut})`,
       );
     }
 
-    // Générer une référence unique
     const reference = `PAY-MMS-${Date.now().toString(36).toUpperCase()}-${uuidv4().slice(0, 4).toUpperCase()}`;
+
+    // Initier le paiement auprès du provider (Wave / CinetPay / PayDunya)
+    const providerResult = await this.providerService.initiate(dto.methode, dto.montant, reference, dto.telephone);
 
     const payment = this.paymentRepo.create({
       ...dto,
       reference,
       statut: PaymentStatus.PENDING,
+      provider_transaction_id: providerResult.provider_reference,
+      provider_response: JSON.stringify({ checkout_url: providerResult.checkout_url }),
     });
 
-    return this.paymentRepo.save(payment);
+    const saved = await this.paymentRepo.save(payment);
+
+    return { ...saved, checkout_url: providerResult.checkout_url };
   }
 
   async handleWebhook(dto: WebhookPaymentDto) {

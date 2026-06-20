@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { DishesService } from './dishes.service';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -14,8 +14,10 @@ export class DishesController {
   @Get()
   @ApiOperation({ summary: 'Catalogue des plats', description: 'Retourne la liste complète des plats disponibles, avec leurs informations nutritionnelles et allergènes.' })
   @ApiResponse({ status: 200, description: 'Liste des plats retournée.' })
-  findAll() {
-    return this.dishesService.findAll();
+  findAll(@Req() req: any) {
+    const user = req.user;
+    const orgId = user?.role === UserRole.ADMIN_CLIENT ? user.organisation_id : undefined;
+    return this.dishesService.findAll(orgId);
   }
 
   @Post()
@@ -23,8 +25,10 @@ export class DishesController {
   @ApiOperation({ summary: 'Ajouter un plat', description: 'Crée un nouveau plat dans le catalogue avec ses caractéristiques (catégorie, prix, allergènes, régimes alimentaires).' })
   @ApiResponse({ status: 201, description: 'Plat créé avec succès.' })
   @ApiResponse({ status: 400, description: 'Données invalides.' })
-  create(@Body() dto: CreateDishDto) {
-    return this.dishesService.create(dto);
+  create(@Body() dto: CreateDishDto, @Req() req: any) {
+    const user = req.user;
+    const orgId = user?.role === UserRole.ADMIN_CLIENT ? user.organisation_id : undefined;
+    return this.dishesService.create(dto, orgId);
   }
 
   @Get(':id')

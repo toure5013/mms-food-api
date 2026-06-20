@@ -14,6 +14,7 @@ export class SettingsService implements OnModuleInit {
     // S'assurer qu'au moins une ligne de paramètres existe au démarrage
     const count = await this.settingsRepo.count();
     if (count === 0) {
+      // Premier démarrage — initialise depuis les variables d'environnement
       await this.settingsRepo.save({
         id: 1,
         general: {
@@ -52,8 +53,23 @@ export class SettingsService implements OnModuleInit {
         dietary: {
           customAllergies: [],
           customRegimes: []
+        },
+        features: {
+          otpRequired: process.env.OTP_REQUIRED !== 'false',
+          paymentRequired: process.env.PAYMENT_REQUIRED !== 'false',
         }
       });
+    } else {
+      // La ligne existe — si features est null, initialise depuis l'env
+      const existing = await this.settingsRepo.findOne({ where: { id: 1 } });
+      if (existing && !existing.features) {
+        await this.settingsRepo.update(1, {
+          features: {
+            otpRequired: process.env.OTP_REQUIRED !== 'false',
+            paymentRequired: process.env.PAYMENT_REQUIRED !== 'false',
+          },
+        });
+      }
     }
   }
 

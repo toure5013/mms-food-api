@@ -21,9 +21,15 @@ export class Settings {
   org: any;
 
   @Column({ type: 'jsonb', nullable: true })
-  dietary: { 
-    customAllergies: string[], 
-    customRegimes: string[] 
+  dietary: {
+    customAllergies: string[];
+    customRegimes: string[];
+  };
+
+  @Column({ type: 'jsonb', nullable: true })
+  features: {
+    otpRequired: boolean;
+    paymentRequired: boolean;
   };
 
   @CreateDateColumn()

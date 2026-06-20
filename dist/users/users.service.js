@@ -17,15 +17,18 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
+const index_1 = require("../common/enums/index");
 let UsersService = class UsersService {
     userRepo;
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    findAll(organisationId) {
+    findAll(organisationId, role) {
         const where = {};
         if (organisationId)
             where.organisation_id = organisationId;
+        if (role)
+            where.role = role;
         return this.userRepo.find({
             where,
             relations: ['organisation'],
@@ -41,17 +44,35 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException('Utilisateur introuvable');
         return user;
     }
-    async create(dto) {
-        const user = this.userRepo.create({
-            ...dto,
-            is_first_login: true,
-            is_active: true,
-        });
+    async create(dto, currentUser) {
+        if (currentUser?.role === index_1.UserRole.ADMIN_CLIENT) {
+            const allowed = [index_1.UserRole.EMPLOYEE, index_1.UserRole.COOK, index_1.UserRole.SERVER];
+            if (!allowed.includes(dto.role)) {
+                throw new common_1.ForbiddenException(`Un admin client ne peut créer que les rôles : ${allowed.join(', ')}`);
+            }
+            dto.organisation_id = currentUser.organisation_id;
+        }
+        const user = this.userRepo.create({ ...dto, is_first_login: true, is_active: true });
         return this.userRepo.save(user);
     }
-    async update(id, dto) {
+    async update(id, dto, currentUser) {
         const user = await this.findOne(id);
+        if (currentUser?.role === index_1.UserRole.ADMIN_CLIENT) {
+            if (user.organisation_id !== currentUser.organisation_id) {
+                throw new common_1.ForbiddenException('Accès refusé — cet utilisateur n\'appartient pas à votre organisation');
+            }
+        }
         Object.assign(user, dto);
+        return this.userRepo.save(user);
+    }
+    async toggleActive(id, currentUser) {
+        const user = await this.findOne(id);
+        if (currentUser.role === index_1.UserRole.ADMIN_CLIENT) {
+            if (user.organisation_id !== currentUser.organisation_id) {
+                throw new common_1.ForbiddenException('Accès refusé — cet utilisateur n\'appartient pas à votre organisation');
+            }
+        }
+        user.is_active = !user.is_active;
         return this.userRepo.save(user);
     }
     async remove(id) {

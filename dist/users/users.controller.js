@@ -25,21 +25,24 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    findAll(orgId, req) {
+    findAll(orgId, role, req) {
         const user = req?.user;
-        if (user && user.role === index_1.UserRole.ADMIN_CLIENT) {
-            return this.usersService.findAll(user.organisation_id);
+        if (user?.role === index_1.UserRole.ADMIN_CLIENT) {
+            return this.usersService.findAll(user.organisation_id, role);
         }
-        return this.usersService.findAll(orgId);
+        return this.usersService.findAll(orgId, role);
     }
-    create(dto) {
-        return this.usersService.create(dto);
+    create(dto, req) {
+        return this.usersService.create(dto, req.user);
     }
     findOne(id) {
         return this.usersService.findOne(id);
     }
-    update(id, dto) {
-        return this.usersService.update(id, dto);
+    update(id, dto, req) {
+        return this.usersService.update(id, dto, req.user);
+    }
+    toggleActive(id, req) {
+        return this.usersService.toggleActive(id, req.user);
     }
     remove(id) {
         return this.usersService.remove(id);
@@ -49,26 +52,30 @@ exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Liste des utilisateurs', description: 'Retourne la liste des utilisateurs. Un Admin Client ne voit que les employés de son organisation.' }),
-    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'Filtrer par organisation (UUID)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Liste des utilisateurs', description: 'Retourne la liste des utilisateurs. Un Admin Client ne voit que les membres de son organisation.' }),
+    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'Filtrer par organisation — SUPER_ADMIN uniquement (UUID)' }),
+    (0, swagger_1.ApiQuery)({ name: 'role', required: false, enum: index_1.UserRole, description: 'Filtrer par rôle (ex: SERVER, COOK, EMPLOYEE)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste retournée avec succès.' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'Accès refusé — rôle insuffisant.' }),
     __param(0, (0, common_1.Query)('organisation_id')),
-    __param(1, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('role')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Créer / inviter un utilisateur', description: 'Crée un nouvel utilisateur et envoie un OTP par email pour la première connexion.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Créer / inviter un utilisateur', description: 'Crée un nouvel utilisateur et envoie un OTP par email pour la première connexion. Un ADMIN_CLIENT ne peut créer que des EMPLOYEE, COOK ou SERVER dans sa propre organisation.' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Utilisateur créé avec succès — OTP envoyé par email.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Rôle non autorisé pour un admin client.' }),
     (0, swagger_1.ApiResponse)({ status: 409, description: 'Un utilisateur avec cet email existe déjà.' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [users_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [users_dto_1.CreateUserDto, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
 __decorate([
@@ -85,19 +92,34 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
-    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un utilisateur' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un utilisateur', description: 'Un Admin Client ne peut modifier que les membres de sa propre organisation.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
-    openapi.ApiResponse({ status: 200, type: require("./user.entity").User }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Utilisateur mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Accès refusé — utilisateur hors de votre organisation.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, users_dto_1.UpdateUserDto, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "update", null);
 __decorate([
+    (0, common_1.Patch)(':id/toggle-active'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Activer / désactiver un utilisateur', description: 'Bascule l\'état actif/inactif d\'un membre. Un Admin Client ne peut agir que sur les membres de sa propre organisation.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut basculé.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Accès refusé — utilisateur hors de votre organisation.' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "toggleActive", null);
+__decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Supprimer un utilisateur' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Supprimer un utilisateur (hard delete)', description: 'Suppression définitive — SUPER_ADMIN uniquement. Préférer toggle-active pour désactiver.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
     openapi.ApiResponse({ status: 200, type: require("./user.entity").User }),
     __param(0, (0, common_1.Param)('id')),

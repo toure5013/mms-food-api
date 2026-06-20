@@ -4,7 +4,7 @@ import { OrganisationsService } from './organisations.service';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { UserRole } from '../common/enums/index';
-import { CreateOrganisationDto, UpdateOrganisationDto } from './dto/organisations.dto';
+import { CreateOrganisationDto, UpdateOrganisationDto, UpdateGuestModeDto } from './dto/organisations.dto';
 
 @ApiTags('Organisations')
 @ApiBearerAuth('JWT-auth')
@@ -39,6 +39,17 @@ export class OrganisationsController {
     return this.organisationsService.create(dto);
   }
 
+  @Get('my')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
+  @ApiOperation({ summary: 'Mon organisation', description: 'Retourne les informations complètes de l\'organisation de l\'admin connecté, sans avoir à connaître son UUID.' })
+  @ApiResponse({ status: 200, description: 'Organisation retournée.' })
+  @ApiResponse({ status: 403, description: 'Aucune organisation associée à ce compte.' })
+  findMine(@Req() req: any) {
+    const orgId = req.user.organisation_id;
+    if (!orgId) throw new ForbiddenException('Aucune organisation associée à ce compte');
+    return this.organisationsService.findOne(orgId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Détails d\'une organisation', description: 'Retourne les informations complètes d\'une organisation. Un utilisateur non-admin ne peut voir que sa propre organisation.' })
   @ApiParam({ name: 'id', description: 'UUID de l\'organisation' })
@@ -55,13 +66,29 @@ export class OrganisationsController {
     return this.organisationsService.findOne(id);
   }
 
+  @Patch('my/guest-mode')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
+  @ApiOperation({ summary: 'Activer / désactiver le mode invité', description: 'Permet à un admin de toggler les commandes sans connexion (QR code) pour son organisation.' })
+  @ApiResponse({ status: 200, description: 'Mode invité mis à jour.' })
+  @ApiResponse({ status: 403, description: 'Aucune organisation associée à cet utilisateur.' })
+  updateGuestMode(@Body() dto: UpdateGuestModeDto, @Req() req: any) {
+    const orgId = req.user.organisation_id;
+    if (!orgId) throw new ForbiddenException('Aucune organisation associée à ce compte');
+    return this.organisationsService.updateGuestMode(orgId, dto);
+  }
+
   @Patch(':id')
-  @Roles(UserRole.SUPER_ADMIN)
-  @ApiOperation({ summary: 'Mettre à jour une organisation', description: 'Modifie partiellement la configuration d\'une organisation (nom, branding, subventions, etc.).' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
+  @ApiOperation({ summary: 'Mettre à jour une organisation', description: 'Modifie la configuration d\'une organisation. Un Admin Client ne peut modifier que sa propre organisation.' })
   @ApiParam({ name: 'id', description: 'UUID de l\'organisation' })
   @ApiResponse({ status: 200, description: 'Organisation mise à jour.' })
+  @ApiResponse({ status: 403, description: 'Accès refusé à cette organisation.' })
   @ApiResponse({ status: 404, description: 'Organisation non trouvée.' })
-  update(@Param('id') id: string, @Body() dto: UpdateOrganisationDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateOrganisationDto, @Req() req: any) {
+    const user = req.user;
+    if (user.role === UserRole.ADMIN_CLIENT && user.organisation_id !== id) {
+      throw new ForbiddenException('Accès refusé — vous ne pouvez modifier que votre propre organisation');
+    }
     return this.organisationsService.update(id, dto);
   }
 

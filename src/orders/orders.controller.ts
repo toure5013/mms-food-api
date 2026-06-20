@@ -60,7 +60,9 @@ export class OrdersController {
   @ApiOperation({ summary: 'Créer une commande', description: 'Crée une nouvelle commande, génère un numéro unique et un token de QR code.' })
   @ApiResponse({ status: 201, description: 'Commande créée avec succès.' })
   @ApiResponse({ status: 400, description: 'Données invalides ou solde insuffisant.' })
-  create(@Body() dto: CreateOrderDto) {
+  create(@Body() dto: CreateOrderDto, @Req() req: any) {
+    // Toujours utiliser l'id JWT — le client ne doit pas pouvoir l'usurper
+    dto.employe_id = req.user?.id;
     return this.ordersService.create(dto);
   }
 
@@ -74,8 +76,8 @@ export class OrdersController {
   }
 
   @Patch(':id/status')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.COOK)
-  @ApiOperation({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED).' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.COOK, UserRole.SERVER)
+  @ApiOperation({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED). Accessible aux admins et au personnel de distribution.' })
   @ApiParam({ name: 'id', description: 'UUID de la commande' })
   @ApiResponse({ status: 200, description: 'Statut mis à jour.' })
   @ApiResponse({ status: 404, description: 'Commande non trouvée.' })
@@ -84,7 +86,7 @@ export class OrdersController {
   }
 
   @Post(':id/status')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.COOK)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.COOK, UserRole.SERVER)
   @ApiOperation({ summary: 'Mettre à jour le statut (POST - Fallback Flutter)', description: 'Modifie le statut d\'une commande pour compatibilité mobile.' })
   @ApiParam({ name: 'id', description: 'UUID de la commande' })
   @ApiResponse({ status: 200, description: 'Statut mis à jour.' })
@@ -104,8 +106,8 @@ export class OrdersController {
   }
 
   @Post('retrieve')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS)
-  @ApiOperation({ summary: 'Retrait par scan QR code', description: 'Marque une commande comme récupérée en utilisant le token du QR code.' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.SERVER)
+  @ApiOperation({ summary: 'Retrait par scan QR code', description: 'Marque une commande comme récupérée en utilisant le token du QR code. Accessible aux serveurs et admins.' })
   @ApiResponse({ status: 200, description: 'Commande marquée comme récupérée.' })
   @ApiResponse({ status: 400, description: 'Token QR code invalide ou commande déjà récupérée/annulée.' })
   retrieveByQrCode(@Body() dto: RetrieveOrderDto) {

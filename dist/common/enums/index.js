@@ -9,6 +9,7 @@ var UserRole;
     UserRole["EMPLOYEE"] = "EMPLOYEE";
     UserRole["COOK"] = "COOK";
     UserRole["PATIENT"] = "PATIENT";
+    UserRole["SERVER"] = "SERVER";
 })(UserRole || (exports.UserRole = UserRole = {}));
 var MenuMode;
 (function (MenuMode) {

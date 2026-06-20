@@ -1,8 +1,9 @@
 import {
   Entity, PrimaryGeneratedColumn, Column,
-  CreateDateColumn, UpdateDateColumn,
+  CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn,
 } from 'typeorm';
 import { DishCategory } from '../common/enums/index';
+import { Organisation } from '../organisations/organisation.entity';
 
 @Entity('dishes')
 export class Dish {
@@ -34,6 +35,13 @@ export class Dish {
 
   @Column({ type: 'simple-array', nullable: true })
   allergenes: string[];
+
+  @Column({ nullable: true })
+  organisation_id: string;
+
+  @ManyToOne(() => Organisation, { nullable: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'organisation_id' })
+  organisation: Organisation;
 
   @Column({ default: true })
   is_active: boolean;

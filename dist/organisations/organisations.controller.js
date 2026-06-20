@@ -35,6 +35,12 @@ let OrganisationsController = class OrganisationsController {
     create(dto) {
         return this.organisationsService.create(dto);
     }
+    findMine(req) {
+        const orgId = req.user.organisation_id;
+        if (!orgId)
+            throw new common_1.ForbiddenException('Aucune organisation associée à ce compte');
+        return this.organisationsService.findOne(orgId);
+    }
     findOne(id, req) {
         const user = req.user;
         if (user.role !== index_1.UserRole.SUPER_ADMIN && user.role !== index_1.UserRole.ADMIN_MMS) {
@@ -44,7 +50,17 @@ let OrganisationsController = class OrganisationsController {
         }
         return this.organisationsService.findOne(id);
     }
-    update(id, dto) {
+    updateGuestMode(dto, req) {
+        const orgId = req.user.organisation_id;
+        if (!orgId)
+            throw new common_1.ForbiddenException('Aucune organisation associée à ce compte');
+        return this.organisationsService.updateGuestMode(orgId, dto);
+    }
+    update(id, dto, req) {
+        const user = req.user;
+        if (user.role === index_1.UserRole.ADMIN_CLIENT && user.organisation_id !== id) {
+            throw new common_1.ForbiddenException('Accès refusé — vous ne pouvez modifier que votre propre organisation');
+        }
         return this.organisationsService.update(id, dto);
     }
     remove(id) {
@@ -86,6 +102,17 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], OrganisationsController.prototype, "create", null);
 __decorate([
+    (0, common_1.Get)('my'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Mon organisation', description: 'Retourne les informations complètes de l\'organisation de l\'admin connecté, sans avoir à connaître son UUID.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Organisation retournée.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Aucune organisation associée à ce compte.' }),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], OrganisationsController.prototype, "findMine", null);
+__decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Détails d\'une organisation', description: 'Retourne les informations complètes d\'une organisation. Un utilisateur non-admin ne peut voir que sa propre organisation.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'organisation' }),
@@ -99,16 +126,30 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], OrganisationsController.prototype, "findOne", null);
 __decorate([
+    (0, common_1.Patch)('my/guest-mode'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Activer / désactiver le mode invité', description: 'Permet à un admin de toggler les commandes sans connexion (QR code) pour son organisation.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Mode invité mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Aucune organisation associée à cet utilisateur.' }),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [organisations_dto_1.UpdateGuestModeDto, Object]),
+    __metadata("design:returntype", void 0)
+], OrganisationsController.prototype, "updateGuestMode", null);
+__decorate([
     (0, common_1.Patch)(':id'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),
-    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour une organisation', description: 'Modifie partiellement la configuration d\'une organisation (nom, branding, subventions, etc.).' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour une organisation', description: 'Modifie la configuration d\'une organisation. Un Admin Client ne peut modifier que sa propre organisation.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'organisation' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Organisation mise à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Accès refusé à cette organisation.' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Organisation non trouvée.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, organisations_dto_1.UpdateOrganisationDto]),
+    __metadata("design:paramtypes", [String, organisations_dto_1.UpdateOrganisationDto, Object]),
     __metadata("design:returntype", void 0)
 ], OrganisationsController.prototype, "update", null);
 __decorate([

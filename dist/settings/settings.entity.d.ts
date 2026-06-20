@@ -9,6 +9,10 @@ export declare class Settings {
         customAllergies: string[];
         customRegimes: string[];
     };
+    features: {
+        otpRequired: boolean;
+        paymentRequired: boolean;
+    };
     created_at: Date;
     updated_at: Date;
 }

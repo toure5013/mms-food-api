@@ -4,8 +4,12 @@ import { Repository, In } from 'typeorm';
 import { Order } from './order.entity';
 import { Dish } from '../dishes/dish.entity';
 import { Organisation } from '../organisations/organisation.entity';
+import { User } from '../users/user.entity';
+import { Notification } from '../notifications/notification.entity';
 import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
-import { OrderStatus, SubventionType } from '../common/enums/index';
+import { OrderStatus, SubventionType, PaymentMethod, NotificationChannel } from '../common/enums/index';
+import { WalletService } from '../wallet/wallet.service';
+import { PushService } from '../common/push/push.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -17,6 +21,12 @@ export class OrdersService {
     private readonly dishRepo: Repository<Dish>,
     @InjectRepository(Organisation)
     private readonly organisationRepo: Repository<Organisation>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
+    @InjectRepository(Notification)
+    private readonly notificationRepo: Repository<Notification>,
+    private readonly walletService: WalletService,
+    private readonly pushService: PushService,
   ) {}
 
   findAll(organisationId?: string, employeId?: string, statut?: string) {
@@ -76,6 +86,22 @@ export class OrdersService {
     const numero_commande = `MMS-${new Date().getFullYear()}-${timestamp}`;
     const qr_code_token = uuidv4();
 
+    // Déduction wallet si paiement WALLET
+    if (dto.methode_paiement === PaymentMethod.WALLET && dto.employe_id && montant_employe > 0) {
+      await this.walletService.debit(dto.employe_id, {
+        montant: montant_employe,
+        description: `Paiement commande ${numero_commande}`,
+        reference: numero_commande,
+      });
+    }
+
+    // Paiement EMPLOYER = entièrement pris en charge, pas de déduction
+    const initialStatut =
+      dto.methode_paiement === PaymentMethod.WALLET ||
+      dto.methode_paiement === PaymentMethod.EMPLOYER
+        ? OrderStatus.CONFIRMED
+        : OrderStatus.PENDING;
+
     const order = this.orderRepo.create({
       ...orderData,
       numero_commande,
@@ -84,11 +110,24 @@ export class OrdersService {
       montant_subvention,
       montant_employe,
       plats,
-      statut: OrderStatus.PENDING,
+      statut: initialStatut,
       points_gagnes: Math.floor(montant_total / 1000),
     });
 
-    return this.orderRepo.save(order);
+    const saved = await this.orderRepo.save(order);
+
+    // Notification de confirmation à l'employé
+    if (dto.employe_id) {
+      await this.notifyUser(dto.employe_id, {
+        titre: 'Commande confirmée',
+        message: `Votre commande ${numero_commande} a été enregistrée.`,
+        pushTitle: 'Commande confirmée ✅',
+        pushBody: `${numero_commande} — ${plats.map((p) => p.nom).join(', ')}`,
+        data: { order_id: saved.id, numero_commande },
+      });
+    }
+
+    return saved;
   }
 
   async updateStatus(id: string, dto: UpdateOrderStatusDto) {
@@ -114,7 +153,31 @@ export class OrdersService {
       order.date_recuperation = new Date();
     }
 
-    return this.orderRepo.save(order);
+    const saved = await this.orderRepo.save(order);
+
+    // Push FCM quand la commande est prête
+    if (dto.statut === OrderStatus.READY && order.employe_id) {
+      await this.notifyUser(order.employe_id, {
+        titre: 'Commande prête 🍽️',
+        message: `Votre commande ${order.numero_commande} est prête à être récupérée.`,
+        pushTitle: 'Commande prête ! 🍽️',
+        pushBody: `${order.numero_commande} — venez récupérer votre repas.`,
+        data: { order_id: order.id, numero_commande: order.numero_commande },
+      });
+    }
+
+    // Push FCM si annulée
+    if (dto.statut === OrderStatus.CANCELLED && order.employe_id) {
+      await this.notifyUser(order.employe_id, {
+        titre: 'Commande annulée',
+        message: `Votre commande ${order.numero_commande} a été annulée.`,
+        pushTitle: 'Commande annulée ❌',
+        pushBody: `${order.numero_commande} a été annulée.`,
+        data: { order_id: order.id, numero_commande: order.numero_commande },
+      });
+    }
+
+    return saved;
   }
 
   async cancel(id: string, userId: string) {
@@ -132,7 +195,19 @@ export class OrdersService {
     }
 
     order.statut = OrderStatus.CANCELLED;
-    return this.orderRepo.save(order);
+    const saved = await this.orderRepo.save(order);
+
+    if (order.employe_id) {
+      await this.notifyUser(order.employe_id, {
+        titre: 'Commande annulée',
+        message: `Votre commande ${order.numero_commande} a été annulée.`,
+        pushTitle: 'Commande annulée',
+        pushBody: `${order.numero_commande} a été annulée.`,
+        data: { order_id: order.id },
+      });
+    }
+
+    return saved;
   }
 
   async retrieveByQrCode(dto: RetrieveOrderDto) {
@@ -206,6 +281,39 @@ export class OrdersService {
     return this.orderRepo.save(order);
   }
 
+  // ─── Helpers ─────────────────────────────────────────────────────────────
+
+  private async notifyUser(
+    userId: string,
+    opts: {
+      titre: string;
+      message: string;
+      pushTitle: string;
+      pushBody: string;
+      data?: Record<string, string>;
+    },
+  ): Promise<void> {
+    // 1. DB notification
+    try {
+      await this.notificationRepo.save(
+        this.notificationRepo.create({
+          titre: opts.titre,
+          message: opts.message,
+          user_id: userId,
+          canal: NotificationChannel.PUSH,
+        }),
+      );
+    } catch { /* non bloquant */ }
+
+    // 2. Push FCM
+    try {
+      const user = await this.userRepo.findOne({ where: { id: userId }, select: ['fcm_token'] });
+      if (user?.fcm_token) {
+        await this.pushService.sendToToken(user.fcm_token, opts.pushTitle, opts.pushBody, opts.data);
+      }
+    } catch { /* non bloquant */ }
+  }
+
   private calculateSubvention(montant_total: number, org: Organisation): number {
     const valeur = Number(org.subvention_valeur);
     const plafond = org.subvention_plafond_mensuel ? Number(org.subvention_plafond_mensuel) : Infinity;
@@ -221,7 +329,6 @@ export class OrdersService {
         return Math.min((montant_total * valeur) / 100, plafond, montant_total);
 
       case SubventionType.HYBRID:
-        // Montant fixe + % sur le reste, plafonné
         return Math.min(valeur + (montant_total * 0.1), plafond, montant_total);
 
       case SubventionType.FULL:

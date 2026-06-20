@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../users/user.entity';
 import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto } from './dto/auth.dto';
 import { EmailService } from '../common/email/email.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,7 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
+    private readonly settingsService: SettingsService,
   ) {}
 
   async login(dto: LoginDto) {
@@ -48,14 +50,21 @@ export class AuthService {
     const user = await this.userRepo.findOne({ where: { email: dto.email } });
     if (!user) throw new NotFoundException('Aucun compte associé à cet email');
 
-    const otpCode = this.generateOtp();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const settings = await this.settingsService.getSettings();
+    const otpRequired = settings.features?.otpRequired !== false;
 
+    const otpCode = this.generateOtp();
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 min for bypass mode too
     await this.userRepo.update(user.id, { otp_code: otpCode, otp_expires_at: expiresAt });
 
-    await this.emailService.sendOtp(user.email, otpCode, user.prenom);
+    if (otpRequired) {
+      await this.emailService.sendOtp(user.email, otpCode, user.prenom);
+      return { message: 'Code OTP envoyé par email', expires_in_minutes: 10, otp_disabled: false };
+    }
 
-    return { message: 'Code OTP envoyé par email', expires_in_minutes: 10 };
+    // OTP désactivé : renvoyer le code directement (pas d'email)
+    this.logger.log(`OTP désactivé — code fourni directement pour ${user.email}`);
+    return { message: 'OTP désactivé — code de réinitialisation fourni', expires_in_minutes: 30, otp_disabled: true, auto_code: otpCode };
   }
 
   async verifyOtp(dto: VerifyOtpDto) {
@@ -115,7 +124,7 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(newPayload, { expiresIn: '15m' }),
+      access_token: this.jwtService.sign(newPayload, { expiresIn: '30d' }),
       type_token: 'Bearer',
     };
   }
@@ -141,8 +150,8 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(payload, { expiresIn: '15m' }),
-      refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
+      access_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
+      refresh_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
       type_token: 'Bearer',
       user: {
         id: user.id,

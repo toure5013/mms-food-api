@@ -5,6 +5,7 @@ import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { Public } from '../common/decorators/public.decorator';
 
 @ApiTags('Settings')
 @ApiBearerAuth('JWT-auth')
@@ -17,6 +18,17 @@ export class SettingsController {
   @ApiResponse({ status: 200, description: 'Paramètres retournés.' })
   findAll() {
     return this.settingsService.getSettings();
+  }
+
+  @Public()
+  @Get('features')
+  @ApiOperation({ summary: 'Récupérer les fonctionnalités activées (public)' })
+  async getFeatures() {
+    const settings = await this.settingsService.getSettings();
+    return settings.features ?? {
+      otpRequired: process.env.OTP_REQUIRED !== 'false',
+      paymentRequired: process.env.PAYMENT_REQUIRED !== 'false',
+    };
   }
 
   @Patch()

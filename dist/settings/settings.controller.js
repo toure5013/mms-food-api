@@ -21,6 +21,7 @@ const roles_decorator_1 = require("../common/decorators/roles.decorator");
 const enums_1 = require("../common/enums");
 const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../common/guards/roles.guard");
+const public_decorator_1 = require("../common/decorators/public.decorator");
 let SettingsController = class SettingsController {
     settingsService;
     constructor(settingsService) {
@@ -28,6 +29,13 @@ let SettingsController = class SettingsController {
     }
     findAll() {
         return this.settingsService.getSettings();
+    }
+    async getFeatures() {
+        const settings = await this.settingsService.getSettings();
+        return settings.features ?? {
+            otpRequired: process.env.OTP_REQUIRED !== 'false',
+            paymentRequired: process.env.PAYMENT_REQUIRED !== 'false',
+        };
     }
     update(data) {
         return this.settingsService.updateSettings(data);
@@ -42,6 +50,15 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], SettingsController.prototype, "findAll", null);
+__decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('features'),
+    (0, swagger_1.ApiOperation)({ summary: 'Récupérer les fonctionnalités activées (public)' }),
+    openapi.ApiResponse({ status: 200 }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SettingsController.prototype, "getFeatures", null);
 __decorate([
     (0, common_1.Patch)(),
     (0, roles_decorator_1.Roles)(enums_1.UserRole.ADMIN_CLIENT, enums_1.UserRole.SUPER_ADMIN, enums_1.UserRole.ADMIN_MMS),

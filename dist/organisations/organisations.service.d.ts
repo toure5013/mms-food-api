@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { Organisation } from './organisation.entity';
-import { CreateOrganisationDto } from './dto/organisations.dto';
+import { CreateOrganisationDto, UpdateGuestModeDto } from './dto/organisations.dto';
 export declare class OrganisationsService {
     private readonly organisationRepo;
     constructor(organisationRepo: Repository<Organisation>);
@@ -9,5 +9,6 @@ export declare class OrganisationsService {
     findBySlugPublic(slug: string): Promise<Organisation>;
     create(dto: CreateOrganisationDto): Promise<Organisation>;
     update(id: string, dto: any): Promise<Organisation>;
+    updateGuestMode(orgId: string, dto: UpdateGuestModeDto): Promise<Organisation>;
     remove(id: string): Promise<Organisation>;
 }

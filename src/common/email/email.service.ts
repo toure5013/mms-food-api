@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as sgMail from '@sendgrid/mail';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const sgMail = require('@sendgrid/mail') as typeof import('@sendgrid/mail');
 
 @Injectable()
 export class EmailService {

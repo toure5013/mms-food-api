@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateOrganisationDto = exports.CreateOrganisationDto = void 0;
+exports.UpdateGuestModeDto = exports.UpdateOrganisationDto = exports.CreateOrganisationDto = void 0;
 const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
@@ -312,4 +312,43 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], UpdateOrganisationDto.prototype, "order_day_offset", void 0);
+class UpdateGuestModeDto {
+    is_guest_order_enabled;
+    guest_order_start_time;
+    guest_order_end_time;
+    order_day_offset;
+    guest_config;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { is_guest_order_enabled: { required: true, type: () => Boolean }, guest_order_start_time: { required: false, type: () => String }, guest_order_end_time: { required: false, type: () => String }, order_day_offset: { required: false, type: () => Number }, guest_config: { required: false, type: () => Object } };
+    }
+}
+exports.UpdateGuestModeDto = UpdateGuestModeDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: true, description: 'Activer ou désactiver les commandes sans connexion (scan QR code)' }),
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
+], UpdateGuestModeDto.prototype, "is_guest_order_enabled", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: '08:00', description: 'Heure de début des commandes invité (HH:mm)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateGuestModeDto.prototype, "guest_order_start_time", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: '11:30', description: 'Heure de fin des commandes invité (HH:mm)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateGuestModeDto.prototype, "guest_order_end_time", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 0, description: '0 = commandes pour aujourd\'hui, 1 = pour demain' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], UpdateGuestModeDto.prototype, "order_day_offset", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: { fields: [{ name: 'nom', required: true }] }, description: "Configuration des champs à remplir par l'invité" }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
+], UpdateGuestModeDto.prototype, "guest_config", void 0);
 //# sourceMappingURL=organisations.dto.js.map

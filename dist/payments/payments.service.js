@@ -19,13 +19,16 @@ const typeorm_2 = require("typeorm");
 const payment_entity_1 = require("./payment.entity");
 const order_entity_1 = require("../orders/order.entity");
 const index_1 = require("../common/enums/index");
+const payment_provider_service_1 = require("./payment-provider.service");
 const uuid_1 = require("uuid");
 let PaymentsService = class PaymentsService {
     paymentRepo;
     orderRepo;
-    constructor(paymentRepo, orderRepo) {
+    providerService;
+    constructor(paymentRepo, orderRepo, providerService) {
         this.paymentRepo = paymentRepo;
         this.orderRepo = orderRepo;
+        this.providerService = providerService;
     }
     findAll(orderId, userId) {
         const where = {};
@@ -56,12 +59,16 @@ let PaymentsService = class PaymentsService {
             throw new common_1.BadRequestException(`La commande n'est pas en attente de paiement (statut: ${order.statut})`);
         }
         const reference = `PAY-MMS-${Date.now().toString(36).toUpperCase()}-${(0, uuid_1.v4)().slice(0, 4).toUpperCase()}`;
+        const providerResult = await this.providerService.initiate(dto.methode, dto.montant, reference, dto.telephone);
         const payment = this.paymentRepo.create({
             ...dto,
             reference,
             statut: index_1.PaymentStatus.PENDING,
+            provider_transaction_id: providerResult.provider_reference,
+            provider_response: JSON.stringify({ checkout_url: providerResult.checkout_url }),
         });
-        return this.paymentRepo.save(payment);
+        const saved = await this.paymentRepo.save(payment);
+        return { ...saved, checkout_url: providerResult.checkout_url };
     }
     async handleWebhook(dto) {
         const payment = await this.paymentRepo.findOne({
@@ -100,6 +107,7 @@ exports.PaymentsService = PaymentsService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(payment_entity_1.Payment)),
     __param(1, (0, typeorm_1.InjectRepository)(order_entity_1.Order)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        payment_provider_service_1.PaymentProviderService])
 ], PaymentsService);
 //# sourceMappingURL=payments.service.js.map

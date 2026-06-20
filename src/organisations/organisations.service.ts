@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Organisation } from './organisation.entity';
-import { CreateOrganisationDto } from './dto/organisations.dto';
+import { CreateOrganisationDto, UpdateGuestModeDto } from './dto/organisations.dto';
 
 @Injectable()
 export class OrganisationsService {
@@ -39,6 +39,12 @@ export class OrganisationsService {
 
   async update(id: string, dto: any) {
     const org = await this.findOne(id);
+    Object.assign(org, dto);
+    return this.organisationRepo.save(org);
+  }
+
+  async updateGuestMode(orgId: string, dto: UpdateGuestModeDto) {
+    const org = await this.findOne(orgId);
     Object.assign(org, dto);
     return this.organisationRepo.save(org);
   }

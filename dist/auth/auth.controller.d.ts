@@ -24,6 +24,13 @@ export declare class AuthController {
     requestOtp(dto: RequestOtpDto): Promise<{
         message: string;
         expires_in_minutes: number;
+        otp_disabled: boolean;
+        auto_code?: undefined;
+    } | {
+        message: string;
+        expires_in_minutes: number;
+        otp_disabled: boolean;
+        auto_code: string;
     }>;
     verifyOtp(dto: VerifyOtpDto): Promise<{
         valid: boolean;

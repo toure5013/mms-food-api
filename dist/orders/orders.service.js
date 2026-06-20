@@ -19,16 +19,28 @@ const typeorm_2 = require("typeorm");
 const order_entity_1 = require("./order.entity");
 const dish_entity_1 = require("../dishes/dish.entity");
 const organisation_entity_1 = require("../organisations/organisation.entity");
+const user_entity_1 = require("../users/user.entity");
+const notification_entity_1 = require("../notifications/notification.entity");
 const index_1 = require("../common/enums/index");
+const wallet_service_1 = require("../wallet/wallet.service");
+const push_service_1 = require("../common/push/push.service");
 const uuid_1 = require("uuid");
 let OrdersService = class OrdersService {
     orderRepo;
     dishRepo;
     organisationRepo;
-    constructor(orderRepo, dishRepo, organisationRepo) {
+    userRepo;
+    notificationRepo;
+    walletService;
+    pushService;
+    constructor(orderRepo, dishRepo, organisationRepo, userRepo, notificationRepo, walletService, pushService) {
         this.orderRepo = orderRepo;
         this.dishRepo = dishRepo;
         this.organisationRepo = organisationRepo;
+        this.userRepo = userRepo;
+        this.notificationRepo = notificationRepo;
+        this.walletService = walletService;
+        this.pushService = pushService;
     }
     findAll(organisationId, employeId, statut) {
         const where = {};
@@ -85,6 +97,17 @@ let OrdersService = class OrdersService {
         const timestamp = Date.now().toString().slice(-6);
         const numero_commande = `MMS-${new Date().getFullYear()}-${timestamp}`;
         const qr_code_token = (0, uuid_1.v4)();
+        if (dto.methode_paiement === index_1.PaymentMethod.WALLET && dto.employe_id && montant_employe > 0) {
+            await this.walletService.debit(dto.employe_id, {
+                montant: montant_employe,
+                description: `Paiement commande ${numero_commande}`,
+                reference: numero_commande,
+            });
+        }
+        const initialStatut = dto.methode_paiement === index_1.PaymentMethod.WALLET ||
+            dto.methode_paiement === index_1.PaymentMethod.EMPLOYER
+            ? index_1.OrderStatus.CONFIRMED
+            : index_1.OrderStatus.PENDING;
         const order = this.orderRepo.create({
             ...orderData,
             numero_commande,
@@ -93,10 +116,20 @@ let OrdersService = class OrdersService {
             montant_subvention,
             montant_employe,
             plats,
-            statut: index_1.OrderStatus.PENDING,
+            statut: initialStatut,
             points_gagnes: Math.floor(montant_total / 1000),
         });
-        return this.orderRepo.save(order);
+        const saved = await this.orderRepo.save(order);
+        if (dto.employe_id) {
+            await this.notifyUser(dto.employe_id, {
+                titre: 'Commande confirmée',
+                message: `Votre commande ${numero_commande} a été enregistrée.`,
+                pushTitle: 'Commande confirmée ✅',
+                pushBody: `${numero_commande} — ${plats.map((p) => p.nom).join(', ')}`,
+                data: { order_id: saved.id, numero_commande },
+            });
+        }
+        return saved;
     }
     async updateStatus(id, dto) {
         const order = await this.findOne(id);
@@ -115,7 +148,26 @@ let OrdersService = class OrdersService {
         if (dto.statut === index_1.OrderStatus.RETRIEVED) {
             order.date_recuperation = new Date();
         }
-        return this.orderRepo.save(order);
+        const saved = await this.orderRepo.save(order);
+        if (dto.statut === index_1.OrderStatus.READY && order.employe_id) {
+            await this.notifyUser(order.employe_id, {
+                titre: 'Commande prête 🍽️',
+                message: `Votre commande ${order.numero_commande} est prête à être récupérée.`,
+                pushTitle: 'Commande prête ! 🍽️',
+                pushBody: `${order.numero_commande} — venez récupérer votre repas.`,
+                data: { order_id: order.id, numero_commande: order.numero_commande },
+            });
+        }
+        if (dto.statut === index_1.OrderStatus.CANCELLED && order.employe_id) {
+            await this.notifyUser(order.employe_id, {
+                titre: 'Commande annulée',
+                message: `Votre commande ${order.numero_commande} a été annulée.`,
+                pushTitle: 'Commande annulée ❌',
+                pushBody: `${order.numero_commande} a été annulée.`,
+                data: { order_id: order.id, numero_commande: order.numero_commande },
+            });
+        }
+        return saved;
     }
     async cancel(id, userId) {
         const order = await this.findOne(id);
@@ -127,7 +179,17 @@ let OrdersService = class OrdersService {
             throw new common_1.BadRequestException("Vous ne pouvez annuler que vos propres commandes");
         }
         order.statut = index_1.OrderStatus.CANCELLED;
-        return this.orderRepo.save(order);
+        const saved = await this.orderRepo.save(order);
+        if (order.employe_id) {
+            await this.notifyUser(order.employe_id, {
+                titre: 'Commande annulée',
+                message: `Votre commande ${order.numero_commande} a été annulée.`,
+                pushTitle: 'Commande annulée',
+                pushBody: `${order.numero_commande} a été annulée.`,
+                data: { order_id: order.id },
+            });
+        }
+        return saved;
     }
     async retrieveByQrCode(dto) {
         const order = await this.findByQrCode(dto.qr_code_token);
@@ -187,6 +249,24 @@ let OrdersService = class OrdersService {
         });
         return this.orderRepo.save(order);
     }
+    async notifyUser(userId, opts) {
+        try {
+            await this.notificationRepo.save(this.notificationRepo.create({
+                titre: opts.titre,
+                message: opts.message,
+                user_id: userId,
+                canal: index_1.NotificationChannel.PUSH,
+            }));
+        }
+        catch { }
+        try {
+            const user = await this.userRepo.findOne({ where: { id: userId }, select: ['fcm_token'] });
+            if (user?.fcm_token) {
+                await this.pushService.sendToToken(user.fcm_token, opts.pushTitle, opts.pushBody, opts.data);
+            }
+        }
+        catch { }
+    }
     calculateSubvention(montant_total, org) {
         const valeur = Number(org.subvention_valeur);
         const plafond = org.subvention_plafond_mensuel ? Number(org.subvention_plafond_mensuel) : Infinity;
@@ -212,8 +292,14 @@ exports.OrdersService = OrdersService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(order_entity_1.Order)),
     __param(1, (0, typeorm_1.InjectRepository)(dish_entity_1.Dish)),
     __param(2, (0, typeorm_1.InjectRepository)(organisation_entity_1.Organisation)),
+    __param(3, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __param(4, (0, typeorm_1.InjectRepository)(notification_entity_1.Notification)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
+        wallet_service_1.WalletService,
+        push_service_1.PushService])
 ], OrdersService);
 //# sourceMappingURL=orders.service.js.map

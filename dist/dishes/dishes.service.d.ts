@@ -6,7 +6,7 @@ export declare class DishesService {
     constructor(dishRepo: Repository<Dish>);
     findAll(organisationId?: string): Promise<Dish[]>;
     findOne(id: string): Promise<Dish>;
-    create(dto: CreateDishDto): Promise<Dish>;
+    create(dto: CreateDishDto, organisationId?: string): Promise<Dish>;
     update(id: string, dto: UpdateDishDto): Promise<Dish>;
     remove(id: string): Promise<Dish>;
 }

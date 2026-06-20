@@ -4,7 +4,8 @@ export declare enum UserRole {
     ADMIN_CLIENT = "ADMIN_CLIENT",
     EMPLOYEE = "EMPLOYEE",
     COOK = "COOK",
-    PATIENT = "PATIENT"
+    PATIENT = "PATIENT",
+    SERVER = "SERVER"
 }
 export declare enum MenuMode {
     AUTONOME = "AUTONOME",

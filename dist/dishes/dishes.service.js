@@ -23,10 +23,10 @@ let DishesService = class DishesService {
         this.dishRepo = dishRepo;
     }
     findAll(organisationId) {
-        return this.dishRepo.find({
-            where: { is_active: true },
-            order: { nom: 'ASC' },
-        });
+        const where = { is_active: true };
+        if (organisationId)
+            where.organisation_id = organisationId;
+        return this.dishRepo.find({ where, order: { nom: 'ASC' } });
     }
     async findOne(id) {
         const dish = await this.dishRepo.findOne({ where: { id } });
@@ -34,8 +34,8 @@ let DishesService = class DishesService {
             throw new common_1.NotFoundException('Plat introuvable');
         return dish;
     }
-    create(dto) {
-        const dish = this.dishRepo.create(dto);
+    create(dto, organisationId) {
+        const dish = this.dishRepo.create({ ...dto, organisation_id: organisationId ?? undefined });
         return this.dishRepo.save(dish);
     }
     async update(id, dto) {

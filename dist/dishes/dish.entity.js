@@ -13,6 +13,7 @@ exports.Dish = void 0;
 const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const index_1 = require("../common/enums/index");
+const organisation_entity_1 = require("../organisations/organisation.entity");
 let Dish = class Dish {
     id;
     nom;
@@ -27,11 +28,13 @@ let Dish = class Dish {
     vegetarien;
     halal;
     allergenes;
+    organisation_id;
+    organisation;
     is_active;
     created_at;
     updated_at;
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String }, nom: { required: true, type: () => String }, description: { required: true, type: () => String }, photo_url: { required: true, type: () => String }, categorie: { required: true, enum: require("../common/enums/index").DishCategory }, prix: { required: true, type: () => Number }, sans_sel: { required: true, type: () => Boolean }, sans_gras: { required: true, type: () => Boolean }, sans_sucre: { required: true, type: () => Boolean }, sans_huile: { required: true, type: () => Boolean }, vegetarien: { required: true, type: () => Boolean }, halal: { required: true, type: () => Boolean }, allergenes: { required: true, type: () => [String] }, is_active: { required: true, type: () => Boolean }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => String }, nom: { required: true, type: () => String }, description: { required: true, type: () => String }, photo_url: { required: true, type: () => String }, categorie: { required: true, enum: require("../common/enums/index").DishCategory }, prix: { required: true, type: () => Number }, sans_sel: { required: true, type: () => Boolean }, sans_gras: { required: true, type: () => Boolean }, sans_sucre: { required: true, type: () => Boolean }, sans_huile: { required: true, type: () => Boolean }, vegetarien: { required: true, type: () => Boolean }, halal: { required: true, type: () => Boolean }, allergenes: { required: true, type: () => [String] }, organisation_id: { required: true, type: () => String }, organisation: { required: true, type: () => require("../organisations/organisation.entity").Organisation }, is_active: { required: true, type: () => Boolean }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
     }
 };
 exports.Dish = Dish;
@@ -87,6 +90,15 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'simple-array', nullable: true }),
     __metadata("design:type", Array)
 ], Dish.prototype, "allergenes", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Dish.prototype, "organisation_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => organisation_entity_1.Organisation, { nullable: true, onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'organisation_id' }),
+    __metadata("design:type", organisation_entity_1.Organisation)
+], Dish.prototype, "organisation", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)

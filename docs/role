@@ -1,0 +1,35 @@
+Matrice des rôles
+
+Route	SUPER_ADMIN	ADMIN_MMS	ADMIN_CLIENT	EMPLOYEE	COOK	SERVER
+Organisations						
+GET /my	✅	✅	✅	—	—	—
+PATCH /my/guest-mode	✅	✅	✅	—	—	—
+PATCH /:id (sa propre org)	✅	✅	✅	—	—	—
+GET / (toutes)	✅	✅	—	—	—	—
+POST / DELETE /:id	✅	—	—	—	—	—
+Utilisateurs						
+GET / (sa propre org)	✅	✅	✅	—	—	—
+POST / (EMPLOYEE/COOK/SERVER)	✅	✅	✅	—	—	—
+PATCH /:id, toggle-active	✅	✅	✅	—	—	—
+DELETE /:id	✅	—	—	—	—	—
+Plats						
+GET /	✅	✅	✅	✅	✅	✅
+POST / PATCH / DELETE	✅	✅	✅	—	—	—
+Menus						
+GET / daily / public	✅	✅	✅	✅	✅	✅
+POST / PUT / PATCH publish	✅	✅	✅	—	—	—
+DELETE /:id	✅	✅	✅	—	—	—
+Commandes						
+GET /my-orders	✅	✅	✅	✅	✅	✅
+GET / stats (sa propre org)	✅	✅	✅	—	—	—
+POST / (créer commande)	✅	—	—	✅	—	—
+PATCH/POST /:id/status	✅	✅	✅	—	✅	✅
+POST /retrieve (scan QR)	✅	✅	✅	—	—	✅
+PATCH /:id/cancel	✅	✅	✅	✅	—	—
+Wallet						
+GET / transactions	✅	✅	✅	✅	✅	✅
+POST /credit (ses utilisateurs)	✅	✅	✅	✅	—	—
+POST /debit	✅	✅	✅	—	—	—
+Paiements						
+GET / /:id	✅	✅	✅	✅	—	—
+PATCH /:id/refund	✅	—	—	—	—	—

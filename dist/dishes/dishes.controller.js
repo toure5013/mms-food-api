@@ -25,11 +25,15 @@ let DishesController = class DishesController {
     constructor(dishesService) {
         this.dishesService = dishesService;
     }
-    findAll() {
-        return this.dishesService.findAll();
+    findAll(req) {
+        const user = req.user;
+        const orgId = user?.role === index_1.UserRole.ADMIN_CLIENT ? user.organisation_id : undefined;
+        return this.dishesService.findAll(orgId);
     }
-    create(dto) {
-        return this.dishesService.create(dto);
+    create(dto, req) {
+        const user = req.user;
+        const orgId = user?.role === index_1.UserRole.ADMIN_CLIENT ? user.organisation_id : undefined;
+        return this.dishesService.create(dto, orgId);
     }
     findOne(id) {
         return this.dishesService.findOne(id);
@@ -46,8 +50,9 @@ __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Catalogue des plats', description: 'Retourne la liste complète des plats disponibles, avec leurs informations nutritionnelles et allergènes.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des plats retournée.' }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DishesController.prototype, "findAll", null);
 __decorate([
@@ -57,8 +62,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Plat créé avec succès.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dishes_dto_1.CreateDishDto]),
+    __metadata("design:paramtypes", [dishes_dto_1.CreateDishDto, Object]),
     __metadata("design:returntype", void 0)
 ], DishesController.prototype, "create", null);
 __decorate([
