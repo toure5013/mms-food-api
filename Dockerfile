@@ -47,7 +47,7 @@ FROM base AS runner
 
 
 ENV NODE_ENV=production
-ENV PORT=3001
+ENV PORT=80
 
 
 # Create non-root user
@@ -69,7 +69,7 @@ RUN mkdir -p /app/logs \
 USER nestjs
 
 
-EXPOSE 3001
+EXPOSE 80
 
 
 HEALTHCHECK \
@@ -77,7 +77,7 @@ HEALTHCHECK \
   --timeout=5s \
   --start-period=15s \
   --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/api/v1/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+  CMD node -e "require('http').get('http://localhost/api/v1/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
 
 
 CMD ["node", "dist/main.js"]
