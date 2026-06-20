@@ -34,6 +34,12 @@ let DishesController = class DishesController {
     findOne(id) {
         return this.dishesService.findOne(id);
     }
+    update(id, dto) {
+        return this.dishesService.update(id, dto);
+    }
+    remove(id) {
+        return this.dishesService.remove(id);
+    }
 };
 exports.DishesController = DishesController;
 __decorate([
@@ -46,7 +52,7 @@ __decorate([
 ], DishesController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.ADMIN_MMS),
     (0, swagger_1.ApiOperation)({ summary: 'Ajouter un plat', description: 'Crée un nouveau plat dans le catalogue avec ses caractéristiques (catégorie, prix, allergènes, régimes alimentaires).' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Plat créé avec succès.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
@@ -66,6 +72,31 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], DishesController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.ADMIN_MMS),
+    (0, swagger_1.ApiOperation)({ summary: 'Modifier un plat', description: 'Met à jour les informations d\'un plat existant.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du plat' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Plat mis à jour.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Plat non trouvé.' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, dishes_dto_1.UpdateDishDto]),
+    __metadata("design:returntype", void 0)
+], DishesController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.ADMIN_MMS),
+    (0, swagger_1.ApiOperation)({ summary: 'Désactiver un plat', description: 'Archive un plat (soft delete — is_active = false).' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du plat' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Plat désactivé.' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Plat non trouvé.' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DishesController.prototype, "remove", null);
 exports.DishesController = DishesController = __decorate([
     (0, swagger_1.ApiTags)('Dishes'),
     (0, swagger_1.ApiBearerAuth)('JWT-auth'),

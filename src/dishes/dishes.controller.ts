@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { DishesService } from './dishes.service';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums/index';
-import { CreateDishDto } from './dto/dishes.dto';
+import { CreateDishDto, UpdateDishDto } from './dto/dishes.dto';
 
 @ApiTags('Dishes')
 @ApiBearerAuth('JWT-auth')
@@ -19,7 +19,7 @@ export class DishesController {
   }
 
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT, UserRole.ADMIN_MMS)
   @ApiOperation({ summary: 'Ajouter un plat', description: 'Crée un nouveau plat dans le catalogue avec ses caractéristiques (catégorie, prix, allergènes, régimes alimentaires).' })
   @ApiResponse({ status: 201, description: 'Plat créé avec succès.' })
   @ApiResponse({ status: 400, description: 'Données invalides.' })
@@ -34,5 +34,25 @@ export class DishesController {
   @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
   findOne(@Param('id') id: string) {
     return this.dishesService.findOne(id);
+  }
+
+  @Patch(':id')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT, UserRole.ADMIN_MMS)
+  @ApiOperation({ summary: 'Modifier un plat', description: 'Met à jour les informations d\'un plat existant.' })
+  @ApiParam({ name: 'id', description: 'UUID du plat' })
+  @ApiResponse({ status: 200, description: 'Plat mis à jour.' })
+  @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
+  update(@Param('id') id: string, @Body() dto: UpdateDishDto) {
+    return this.dishesService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT, UserRole.ADMIN_MMS)
+  @ApiOperation({ summary: 'Désactiver un plat', description: 'Archive un plat (soft delete — is_active = false).' })
+  @ApiParam({ name: 'id', description: 'UUID du plat' })
+  @ApiResponse({ status: 200, description: 'Plat désactivé.' })
+  @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
+  remove(@Param('id') id: string) {
+    return this.dishesService.remove(id);
   }
 }

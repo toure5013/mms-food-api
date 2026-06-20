@@ -51,6 +51,9 @@ let OrdersController = class OrdersController {
     updateStatusPost(id, dto) {
         return this.ordersService.updateStatus(id, dto);
     }
+    cancel(id, req) {
+        return this.ordersService.cancel(id, req.user.id);
+    }
     retrieveByQrCode(dto) {
         return this.ordersService.retrieveByQrCode(dto);
     }
@@ -150,6 +153,18 @@ __decorate([
     __metadata("design:paramtypes", [String, orders_dto_1.UpdateOrderStatusDto]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "updateStatusPost", null);
+__decorate([
+    (0, common_1.Patch)(':id/cancel'),
+    (0, swagger_1.ApiOperation)({ summary: 'Annuler une commande', description: 'Annule une commande au statut PENDING ou CONFIRMED.' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de la commande' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Commande annulée.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Commande non annulable à ce statut.' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "cancel", null);
 __decorate([
     (0, common_1.Post)('retrieve'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),

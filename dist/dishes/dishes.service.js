@@ -22,7 +22,7 @@ let DishesService = class DishesService {
     constructor(dishRepo) {
         this.dishRepo = dishRepo;
     }
-    findAll() {
+    findAll(organisationId) {
         return this.dishRepo.find({
             where: { is_active: true },
             order: { nom: 'ASC' },
@@ -36,6 +36,16 @@ let DishesService = class DishesService {
     }
     create(dto) {
         const dish = this.dishRepo.create(dto);
+        return this.dishRepo.save(dish);
+    }
+    async update(id, dto) {
+        const dish = await this.findOne(id);
+        Object.assign(dish, dto);
+        return this.dishRepo.save(dish);
+    }
+    async remove(id) {
+        const dish = await this.findOne(id);
+        dish.is_active = false;
         return this.dishRepo.save(dish);
     }
 };

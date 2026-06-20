@@ -37,9 +37,13 @@ let AuthController = class AuthController {
     setPassword(dto) {
         return this.authService.setPassword(dto);
     }
+    refresh(dto) {
+        return this.authService.refresh(dto);
+    }
+    logout() {
+        return { message: 'Déconnexion réussie' };
+    }
     getProfile(user) {
-        console.log("CurrentUser");
-        console.log(user);
         return this.authService.getProfile(user.id);
     }
 };
@@ -48,8 +52,8 @@ __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Post)('login'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, swagger_1.ApiOperation)({ summary: 'Connexion email + mot de passe', description: 'Authentifie un utilisateur avec ses identifiants et retourne un token JWT.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Connexion réussie — retourne le token JWT et les infos utilisateur.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Connexion email + mot de passe' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Token JWT retourné.' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Identifiants invalides.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -60,8 +64,8 @@ __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Post)('otp/request'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, swagger_1.ApiOperation)({ summary: 'Demande d\'OTP par email', description: 'Envoie un code OTP à 6 chiffres par email pour la première connexion ou la réinitialisation du mot de passe.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'OTP envoyé avec succès.' }),
+    (0, swagger_1.ApiOperation)({ summary: "Demande d'OTP par email" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'OTP envoyé.' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Utilisateur non trouvé.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -72,8 +76,8 @@ __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Post)('otp/verify'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, swagger_1.ApiOperation)({ summary: 'Vérification du code OTP', description: 'Valide le code OTP reçu par email. Retourne un token temporaire pour définir le mot de passe.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'OTP vérifié avec succès.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Vérification du code OTP' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'OTP vérifié.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'OTP invalide ou expiré.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -84,8 +88,8 @@ __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Post)('password/set'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, swagger_1.ApiOperation)({ summary: 'Définir ou réinitialiser le mot de passe', description: 'Définit un nouveau mot de passe après validation de l\'OTP.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Mot de passe défini avec succès.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Définir ou réinitialiser le mot de passe' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Mot de passe défini.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'OTP invalide ou expiré.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -93,10 +97,32 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "setPassword", null);
 __decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Post)('refresh'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiOperation)({ summary: 'Rafraîchir le access_token via le refresh_token' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Nouveau access_token retourné.' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Refresh token invalide ou expiré.' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [auth_dto_1.RefreshTokenDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "refresh", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
+    (0, swagger_1.ApiOperation)({ summary: 'Déconnexion (invalide le token côté client)' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Déconnecté avec succès.' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "logout", null);
+__decorate([
     (0, common_1.Get)('profile'),
     (0, swagger_1.ApiBearerAuth)('JWT-auth'),
-    (0, swagger_1.ApiOperation)({ summary: 'Profil de l\'utilisateur connecté', description: 'Retourne les informations complètes de l\'utilisateur authentifié (nom, rôle, organisation, etc.).' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Profil utilisateur retourné.' }),
+    (0, swagger_1.ApiOperation)({ summary: "Profil de l'utilisateur connecté" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Profil retourné.' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Token JWT manquant ou invalide.' }),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),

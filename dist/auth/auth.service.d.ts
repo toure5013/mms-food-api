@@ -1,12 +1,14 @@
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/user.entity';
-import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto } from './dto/auth.dto';
-import { UserRole } from '../common/enums/index';
+import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto } from './dto/auth.dto';
+import { EmailService } from '../common/email/email.service';
 export declare class AuthService {
-    private userRepo;
-    private jwtService;
-    constructor(userRepo: Repository<User>, jwtService: JwtService);
+    private readonly userRepo;
+    private readonly jwtService;
+    private readonly emailService;
+    private readonly logger;
+    constructor(userRepo: Repository<User>, jwtService: JwtService, emailService: EmailService);
     login(dto: LoginDto): Promise<{
         access_token: string;
         refresh_token: string;
@@ -16,7 +18,7 @@ export declare class AuthService {
             email: string | undefined;
             prenom: string | undefined;
             nom: string | undefined;
-            role: UserRole | undefined;
+            role: import("../common/enums").UserRole | undefined;
             organisation_id: string | undefined;
             is_first_login: boolean | undefined;
             loyalty_points: number | undefined;
@@ -42,7 +44,7 @@ export declare class AuthService {
             email: string | undefined;
             prenom: string | undefined;
             nom: string | undefined;
-            role: UserRole | undefined;
+            role: import("../common/enums").UserRole | undefined;
             organisation_id: string | undefined;
             is_first_login: boolean | undefined;
             loyalty_points: number | undefined;
@@ -51,7 +53,11 @@ export declare class AuthService {
             } | null;
         };
     }>;
-    private generateTokens;
+    refresh(dto: RefreshTokenDto): Promise<{
+        access_token: string;
+        type_token: string;
+    }>;
     getProfile(userId: string): Promise<User>;
+    private generateTokens;
     private generateOtp;
 }

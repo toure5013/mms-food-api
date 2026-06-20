@@ -5,7 +5,7 @@ import { Order } from './order.entity';
 import { Dish } from '../dishes/dish.entity';
 import { Organisation } from '../organisations/organisation.entity';
 import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrderDto } from './dto/orders.dto';
-import { OrderStatus } from '../common/enums/index';
+import { OrderStatus, SubventionType } from '../common/enums/index';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -17,13 +17,13 @@ export class OrdersService {
     private readonly dishRepo: Repository<Dish>,
     @InjectRepository(Organisation)
     private readonly organisationRepo: Repository<Organisation>,
-  ) { }
+  ) {}
 
   findAll(organisationId?: string, employeId?: string, statut?: string) {
     const where: any = {};
     if (organisationId) where.organisation_id = organisationId;
     if (employeId) where.employe_id = employeId;
-    if (statut) where.statut = statut;
+    if (statut) where.statut = statut.toUpperCase();
 
     return this.orderRepo.find({
       where,
@@ -33,15 +33,11 @@ export class OrdersService {
   }
 
   async findMyOrders(employeId: string) {
-    const orders = await this.orderRepo.find({
+    return this.orderRepo.find({
       where: { employe_id: employeId },
-      // On conserve les mêmes relations que findOne pour que Flutter reçoive toutes les données
       relations: ['plats', 'employe', 'organisation'],
-      // On trie par date de création décroissante (de la plus récente à la plus ancienne)
       order: { created_at: 'DESC' },
     });
-
-    return orders;
   }
 
   async findOne(id: string) {
@@ -65,19 +61,17 @@ export class OrdersService {
   async create(dto: CreateOrderDto) {
     const { plats_ids, ...orderData } = dto;
 
-    // Récupérer les plats pour calculer le montant
-    const plats = await this.dishRepo.find({
-      where: { id: In(plats_ids) },
-    });
+    const plats = await this.dishRepo.find({ where: { id: In(plats_ids) } });
+    if (plats.length === 0) throw new BadRequestException('Aucun plat valide trouvé');
 
-    if (plats.length === 0) {
-      throw new BadRequestException('Aucun plat valide trouvé');
-    }
+    const org = await this.organisationRepo.findOneBy({ id: dto.organisation_id });
+    if (!org) throw new NotFoundException('Organisation introuvable');
+    if (!org.is_active) throw new BadRequestException('Organisation inactive');
 
-    // Calculer le montant total
-    const montant_total = plats.reduce((sum, dish) => sum + Number(dish.prix), 0);
+    const montant_total = plats.reduce((sum, d) => sum + Number(d.prix), 0);
+    const montant_subvention = this.calculateSubvention(montant_total, org);
+    const montant_employe = Math.max(0, montant_total - montant_subvention);
 
-    // Générer le numéro de commande et le QR code token
     const timestamp = Date.now().toString().slice(-6);
     const numero_commande = `MMS-${new Date().getFullYear()}-${timestamp}`;
     const qr_code_token = uuidv4();
@@ -87,10 +81,11 @@ export class OrdersService {
       numero_commande,
       qr_code_token,
       montant_total,
-      montant_employe: montant_total, // sera ajusté avec la subvention
+      montant_subvention,
+      montant_employe,
       plats,
       statut: OrderStatus.PENDING,
-      points_gagnes: Math.floor(montant_total / 1000), // 1 point pour 1000 FCFA
+      points_gagnes: Math.floor(montant_total / 1000),
     });
 
     return this.orderRepo.save(order);
@@ -99,7 +94,6 @@ export class OrdersService {
   async updateStatus(id: string, dto: UpdateOrderStatusDto) {
     const order = await this.findOne(id);
 
-    // Validation des transitions de statut
     const validTransitions: Record<string, string[]> = {
       [OrderStatus.PENDING]: [OrderStatus.CONFIRMED, OrderStatus.CANCELLED],
       [OrderStatus.CONFIRMED]: [OrderStatus.PAID, OrderStatus.CANCELLED],
@@ -111,16 +105,33 @@ export class OrdersService {
     const allowed = validTransitions[order.statut] || [];
     if (!allowed.includes(dto.statut)) {
       throw new BadRequestException(
-        `Transition invalide: ${order.statut} → ${dto.statut}. Transitions autorisées: ${allowed.join(', ')}`,
+        `Transition invalide: ${order.statut} → ${dto.statut}. Autorisées: ${allowed.join(', ')}`,
       );
     }
 
     order.statut = dto.statut;
-
     if (dto.statut === OrderStatus.RETRIEVED) {
       order.date_recuperation = new Date();
     }
 
+    return this.orderRepo.save(order);
+  }
+
+  async cancel(id: string, userId: string) {
+    const order = await this.findOne(id);
+
+    const cancellable = [OrderStatus.PENDING, OrderStatus.CONFIRMED];
+    if (!cancellable.includes(order.statut)) {
+      throw new BadRequestException(
+        `Impossible d'annuler une commande au statut ${order.statut}`,
+      );
+    }
+
+    if (order.employe_id && order.employe_id !== userId) {
+      throw new BadRequestException("Vous ne pouvez annuler que vos propres commandes");
+    }
+
+    order.statut = OrderStatus.CANCELLED;
     return this.orderRepo.save(order);
   }
 
@@ -129,15 +140,13 @@ export class OrdersService {
 
     if (order.statut !== OrderStatus.READY) {
       throw new BadRequestException(
-        `La commande n'est pas prête pour le retrait (statut actuel: ${order.statut})`,
+        `La commande n'est pas prête (statut: ${order.statut})`,
       );
     }
 
     order.statut = OrderStatus.RETRIEVED;
     order.date_recuperation = new Date();
-    if (dto.recupere_par) {
-      order.recupere_par = dto.recupere_par;
-    }
+    if (dto.recupere_par) order.recupere_par = dto.recupere_par;
 
     return this.orderRepo.save(order);
   }
@@ -146,11 +155,13 @@ export class OrdersService {
     const qb = this.orderRepo.createQueryBuilder('order');
     qb.where('order.organisation_id = :organisationId', { organisationId });
 
-    const total = await qb.getCount();
-    const pending = await qb.clone().andWhere('order.statut = :s', { s: OrderStatus.PENDING }).getCount();
-    const confirmed = await qb.clone().andWhere('order.statut = :s', { s: OrderStatus.CONFIRMED }).getCount();
-    const retrieved = await qb.clone().andWhere('order.statut = :s', { s: OrderStatus.RETRIEVED }).getCount();
-    const cancelled = await qb.clone().andWhere('order.statut = :s', { s: OrderStatus.CANCELLED }).getCount();
+    const [total, pending, confirmed, retrieved, cancelled] = await Promise.all([
+      qb.getCount(),
+      qb.clone().andWhere('order.statut = :s', { s: OrderStatus.PENDING }).getCount(),
+      qb.clone().andWhere('order.statut = :s', { s: OrderStatus.CONFIRMED }).getCount(),
+      qb.clone().andWhere('order.statut = :s', { s: OrderStatus.RETRIEVED }).getCount(),
+      qb.clone().andWhere('order.statut = :s', { s: OrderStatus.CANCELLED }).getCount(),
+    ]);
 
     return { total, pending, confirmed, retrieved, cancelled };
   }
@@ -158,43 +169,33 @@ export class OrdersService {
   async createGuestOrder(dto: CreateGuestOrderDto) {
     const org = await this.organisationRepo.findOneBy({ id: dto.organisation_id });
     if (!org) throw new NotFoundException('Organisation introuvable');
-
     if (!org.is_guest_order_enabled) {
       throw new BadRequestException('Les commandes invités sont désactivées pour cette organisation');
     }
 
-    // Validation du créneau horaire
     const now = new Date();
     const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
     if (org.guest_order_start_time && currentTime < org.guest_order_start_time) {
-      throw new BadRequestException(`Les commandes ne sont pas encore ouvertes (Ouverture à ${org.guest_order_start_time})`);
+      throw new BadRequestException(`Commandes pas encore ouvertes (Ouverture: ${org.guest_order_start_time})`);
     }
-
     if (org.guest_order_end_time && currentTime > org.guest_order_end_time) {
-      throw new BadRequestException(`Les commandes sont fermées (Fermeture à ${org.guest_order_end_time})`);
+      throw new BadRequestException(`Commandes fermées (Fermeture: ${org.guest_order_end_time})`);
     }
 
     const { plats_ids, ...orderData } = dto;
+    const plats = await this.dishRepo.find({ where: { id: In(plats_ids) } });
+    if (plats.length === 0) throw new BadRequestException('Aucun plat valide trouvé');
 
-    const plats = await this.dishRepo.find({
-      where: { id: In(plats_ids) },
-    });
-
-    if (plats.length === 0) {
-      throw new BadRequestException('Aucun plat valide trouvé');
-    }
-
-    const montant_total = plats.reduce((sum, dish) => sum + Number(dish.prix), 0);
+    const montant_total = plats.reduce((sum, d) => sum + Number(d.prix), 0);
     const timestamp = Date.now().toString().slice(-6);
-    const numero_commande = `GUEST-${new Date().getFullYear()}-${timestamp}`;
-    const qr_code_token = uuidv4();
 
     const order = this.orderRepo.create({
       ...orderData,
-      numero_commande,
-      qr_code_token,
+      numero_commande: `GUEST-${new Date().getFullYear()}-${timestamp}`,
+      qr_code_token: uuidv4(),
       montant_total,
+      montant_subvention: 0,
       montant_employe: montant_total,
       plats,
       statut: OrderStatus.PENDING,
@@ -203,5 +204,31 @@ export class OrdersService {
     });
 
     return this.orderRepo.save(order);
+  }
+
+  private calculateSubvention(montant_total: number, org: Organisation): number {
+    const valeur = Number(org.subvention_valeur);
+    const plafond = org.subvention_plafond_mensuel ? Number(org.subvention_plafond_mensuel) : Infinity;
+
+    switch (org.subvention_type) {
+      case SubventionType.FIXED:
+        return Math.min(valeur, montant_total);
+
+      case SubventionType.PERCENTAGE:
+        return Math.min((montant_total * valeur) / 100, montant_total);
+
+      case SubventionType.CAPPED:
+        return Math.min((montant_total * valeur) / 100, plafond, montant_total);
+
+      case SubventionType.HYBRID:
+        // Montant fixe + % sur le reste, plafonné
+        return Math.min(valeur + (montant_total * 0.1), plafond, montant_total);
+
+      case SubventionType.FULL:
+        return montant_total;
+
+      default:
+        return 0;
+    }
   }
 }

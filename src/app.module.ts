@@ -14,6 +14,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EmailModule } from './common/email/email.module';
 
 // Entities
 import { User } from './users/user.entity';
@@ -81,15 +82,18 @@ import { RolesGuard } from './common/guards/roles.guard';
         type: 'postgres',
         host: config.get('DB_HOST', 'localhost'),
         port: config.get<number>('DB_PORT', 5432),
-        database: config.get('DB_NAME', 'mms_db'),
+        database: config.get('DB_DATABASE', 'mms_db'),
         username: config.get('DB_USER', 'postgres'),
         password: config.get('DB_PASS', 'postgres'),
         entities: [User, Organisation, Dish, Menu, Order, Payment, Wallet, WalletTransaction, Notification, LoyaltyTransaction, Settings],
-        synchronize: config.get('NODE_ENV') !== 'production', // migrations en prod
-        logging: 'all',
+        synchronize: config.get('NODE_ENV') !== 'production',
+        logging: config.get('DB_LOG_QUERIES') === 'true' ? 'all' : false,
         logger: new TypeOrmWinstonLogger(),
       }),
     }),
+
+    // Modules globaux
+    EmailModule,
 
     // Feature modules
     AuthModule,

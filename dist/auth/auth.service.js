@@ -44,6 +44,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var AuthService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
@@ -52,12 +53,16 @@ const typeorm_2 = require("typeorm");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = __importStar(require("bcrypt"));
 const user_entity_1 = require("../users/user.entity");
-let AuthService = class AuthService {
+const email_service_1 = require("../common/email/email.service");
+let AuthService = AuthService_1 = class AuthService {
     userRepo;
     jwtService;
-    constructor(userRepo, jwtService) {
+    emailService;
+    logger = new common_1.Logger(AuthService_1.name);
+    constructor(userRepo, jwtService, emailService) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
     async login(dto) {
         const user = await this.userRepo.findOne({
@@ -65,20 +70,18 @@ let AuthService = class AuthService {
             select: ['id', 'email', 'password_hash', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login', 'loyalty_points'],
             relations: ['organisation', 'wallet'],
         });
-        if (!user) {
+        if (!user)
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
-        }
         if (!user.password_hash) {
-            throw new common_1.UnauthorizedException('Compte non activé. Veuillez utiliser votre lien d\'invitation.');
+            throw new common_1.UnauthorizedException("Compte non activé. Utilisez le lien d'invitation.");
         }
         const isValid = await bcrypt.compare(dto.password, user.password_hash);
-        if (!isValid) {
+        if (!isValid)
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
-        }
         if (user.organisation && !user.organisation.is_active) {
-            throw new common_1.UnauthorizedException('Votre entreprise est actuellement bloquée. Contactez le super-administrateur.');
+            throw new common_1.UnauthorizedException('Votre entreprise est bloquée. Contactez le super-administrateur.');
         }
-        console.log(`[AUTH] Connexion réussie pour: ${user.email}`);
+        this.logger.log(`Connexion: ${user.email} (${user.role})`);
         return this.generateTokens(user);
     }
     async requestOtp(dto) {
@@ -87,11 +90,8 @@ let AuthService = class AuthService {
             throw new common_1.NotFoundException('Aucun compte associé à cet email');
         const otpCode = this.generateOtp();
         const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
-        await this.userRepo.update(user.id, {
-            otp_code: otpCode,
-            otp_expires_at: expiresAt,
-        });
-        console.log(`[OTP] ${user.email} → ${otpCode}`);
+        await this.userRepo.update(user.id, { otp_code: otpCode, otp_expires_at: expiresAt });
+        await this.emailService.sendOtp(user.email, otpCode, user.prenom);
         return { message: 'Code OTP envoyé par email', expires_in_minutes: 10 };
     }
     async verifyOtp(dto) {
@@ -112,16 +112,52 @@ let AuthService = class AuthService {
     async setPassword(dto) {
         await this.verifyOtp({ email: dto.email, otp: dto.otp });
         const user = await this.userRepo.findOne({ where: { email: dto.email } });
-        const hash = await bcrypt.hash(dto.password, 12);
         if (!user)
             throw new common_1.NotFoundException('Compte introuvable');
+        const hash = await bcrypt.hash(dto.password, 12);
         await this.userRepo.update(user.id, {
             password_hash: hash,
-            otp_code: undefined,
-            otp_expires_at: undefined,
+            otp_code: null,
+            otp_expires_at: null,
             is_first_login: false,
         });
         return this.generateTokens(user);
+    }
+    async refresh(dto) {
+        let payload;
+        try {
+            payload = this.jwtService.verify(dto.refresh_token);
+        }
+        catch {
+            throw new common_1.UnauthorizedException('Refresh token invalide ou expiré');
+        }
+        const user = await this.userRepo.findOne({
+            where: { id: payload.sub, is_active: true },
+            select: ['id', 'email', 'role', 'organisation_id', 'prenom', 'nom', 'is_first_login', 'loyalty_points'],
+        });
+        if (!user)
+            throw new common_1.UnauthorizedException('Utilisateur introuvable');
+        const newPayload = {
+            sub: user.id,
+            email: user.email,
+            role: user.role,
+            organisation_id: user.organisation_id ?? null,
+        };
+        return {
+            access_token: this.jwtService.sign(newPayload, { expiresIn: '15m' }),
+            type_token: 'Bearer',
+        };
+    }
+    async getProfile(userId) {
+        if (!userId)
+            throw new common_1.BadRequestException('ID utilisateur manquant');
+        const user = await this.userRepo.findOne({
+            where: { id: userId },
+            relations: ['organisation', 'wallet'],
+        });
+        if (!user)
+            throw new common_1.NotFoundException('Utilisateur introuvable');
+        return user;
     }
     generateTokens(user) {
         const payload = {
@@ -133,7 +169,7 @@ let AuthService = class AuthService {
         return {
             access_token: this.jwtService.sign(payload, { expiresIn: '15m' }),
             refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
-            type_token: "Bearer",
+            type_token: 'Bearer',
             user: {
                 id: user.id,
                 email: user.email,
@@ -147,28 +183,16 @@ let AuthService = class AuthService {
             },
         };
     }
-    async getProfile(userId) {
-        if (!userId) {
-            throw new common_1.BadRequestException('ID utilisateur manquant');
-        }
-        const user = await this.userRepo.findOne({
-            where: { id: userId },
-            relations: ['organisation', 'wallet'],
-        });
-        if (!user) {
-            throw new common_1.NotFoundException('Utilisateur introuvable');
-        }
-        return user;
-    }
     generateOtp() {
         return Math.floor(100000 + Math.random() * 900000).toString();
     }
 };
 exports.AuthService = AuthService;
-exports.AuthService = AuthService = __decorate([
+exports.AuthService = AuthService = AuthService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        email_service_1.EmailService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

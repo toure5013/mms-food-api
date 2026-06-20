@@ -21,6 +21,7 @@ const all_exceptions_filter_1 = require("./common/filters/all-exceptions.filter"
 const logging_interceptor_1 = require("./common/interceptors/logging.interceptor");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const email_module_1 = require("./common/email/email.module");
 const user_entity_1 = require("./users/user.entity");
 const organisation_entity_1 = require("./organisations/organisation.entity");
 const dish_entity_1 = require("./dishes/dish.entity");
@@ -75,15 +76,16 @@ exports.AppModule = AppModule = __decorate([
                     type: 'postgres',
                     host: config.get('DB_HOST', 'localhost'),
                     port: config.get('DB_PORT', 5432),
-                    database: config.get('DB_NAME', 'mms_db'),
+                    database: config.get('DB_DATABASE', 'mms_db'),
                     username: config.get('DB_USER', 'postgres'),
                     password: config.get('DB_PASS', 'postgres'),
                     entities: [user_entity_1.User, organisation_entity_1.Organisation, dish_entity_1.Dish, menu_entity_1.Menu, order_entity_1.Order, payment_entity_1.Payment, wallet_entity_1.Wallet, wallet_transaction_entity_1.WalletTransaction, notification_entity_1.Notification, loyalty_transaction_entity_1.LoyaltyTransaction, settings_entity_1.Settings],
                     synchronize: config.get('NODE_ENV') !== 'production',
-                    logging: 'all',
+                    logging: config.get('DB_LOG_QUERIES') === 'true' ? 'all' : false,
                     logger: new typeorm_logger_1.TypeOrmWinstonLogger(),
                 }),
             }),
+            email_module_1.EmailModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             organisations_module_1.OrganisationsModule,

@@ -94,6 +94,15 @@ export class OrdersController {
   }
 
 
+  @Patch(':id/cancel')
+  @ApiOperation({ summary: 'Annuler une commande', description: 'Annule une commande au statut PENDING ou CONFIRMED.' })
+  @ApiParam({ name: 'id', description: 'UUID de la commande' })
+  @ApiResponse({ status: 200, description: 'Commande annulée.' })
+  @ApiResponse({ status: 400, description: 'Commande non annulable à ce statut.' })
+  cancel(@Param('id') id: string, @Req() req: any) {
+    return this.ordersService.cancel(id, req.user.id);
+  }
+
   @Post('retrieve')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS)
   @ApiOperation({ summary: 'Retrait par scan QR code', description: 'Marque une commande comme récupérée en utilisant le token du QR code.' })

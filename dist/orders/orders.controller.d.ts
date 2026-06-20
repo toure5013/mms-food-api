@@ -17,5 +17,6 @@ export declare class OrdersController {
     createGuest(dto: CreateGuestOrderDto): Promise<import("./order.entity").Order>;
     updateStatusPatch(id: string, dto: UpdateOrderStatusDto): Promise<import("./order.entity").Order>;
     updateStatusPost(id: string, dto: UpdateOrderStatusDto): Promise<import("./order.entity").Order>;
+    cancel(id: string, req: any): Promise<import("./order.entity").Order>;
     retrieveByQrCode(dto: RetrieveOrderDto): Promise<import("./order.entity").Order>;
 }

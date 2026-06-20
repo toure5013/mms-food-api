@@ -14,6 +14,7 @@ export declare class OrdersService {
     findByQrCode(qrCodeToken: string): Promise<Order>;
     create(dto: CreateOrderDto): Promise<Order>;
     updateStatus(id: string, dto: UpdateOrderStatusDto): Promise<Order>;
+    cancel(id: string, userId: string): Promise<Order>;
     retrieveByQrCode(dto: RetrieveOrderDto): Promise<Order>;
     getStats(organisationId: string): Promise<{
         total: number;
@@ -23,4 +24,5 @@ export declare class OrdersService {
         cancelled: number;
     }>;
     createGuestOrder(dto: CreateGuestOrderDto): Promise<Order>;
+    private calculateSubvention;
 }

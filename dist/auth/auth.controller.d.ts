@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto } from './dto/auth.dto';
+import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto } from './dto/auth.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -47,5 +47,12 @@ export declare class AuthController {
             } | null;
         };
     }>;
+    refresh(dto: RefreshTokenDto): Promise<{
+        access_token: string;
+        type_token: string;
+    }>;
+    logout(): {
+        message: string;
+    };
     getProfile(user: any): Promise<import("../users/user.entity").User>;
 }

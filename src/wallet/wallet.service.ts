@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Wallet } from './wallet.entity';
 import { WalletTransaction, TransactionType } from './wallet-transaction.entity';
 import { CreditWalletDto, DebitWalletDto } from './dto/wallet.dto';
@@ -12,70 +12,78 @@ export class WalletService {
     private readonly walletRepo: Repository<Wallet>,
     @InjectRepository(WalletTransaction)
     private readonly transactionRepo: Repository<WalletTransaction>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async getOrCreateWallet(userId: string): Promise<Wallet> {
     let wallet = await this.walletRepo.findOne({ where: { user_id: userId } });
     if (!wallet) {
-      wallet = this.walletRepo.create({
-        user_id: userId,
-        solde: 0,
-        is_active: true,
-      });
+      wallet = this.walletRepo.create({ user_id: userId, solde: 0, is_active: true });
       wallet = await this.walletRepo.save(wallet);
     }
     return wallet;
   }
 
   async getWallet(userId: string) {
-    const wallet = await this.getOrCreateWallet(userId);
-    return wallet;
+    return this.getOrCreateWallet(userId);
   }
 
   async credit(userId: string, dto: CreditWalletDto) {
-    const wallet = await this.getOrCreateWallet(userId);
+    return this.dataSource.transaction(async (manager) => {
+      const wallet = await manager.findOne(Wallet, {
+        where: { user_id: userId },
+        lock: { mode: 'pessimistic_write' },
+      });
 
-    const newSolde = Number(wallet.solde) + dto.montant;
-    wallet.solde = newSolde;
-    await this.walletRepo.save(wallet);
+      const current = wallet ?? manager.create(Wallet, { user_id: userId, solde: 0, is_active: true });
+      const newSolde = Number(current.solde) + dto.montant;
+      current.solde = newSolde;
+      const savedWallet = await manager.save(Wallet, current);
 
-    // Enregistrer la transaction
-    const transaction = this.transactionRepo.create({
-      type: TransactionType.CREDIT,
-      montant: dto.montant,
-      solde_apres: newSolde,
-      description: `Rechargement via ${dto.methode_paiement}`,
-      wallet_id: wallet.id,
+      const transaction = manager.create(WalletTransaction, {
+        type: TransactionType.CREDIT,
+        montant: dto.montant,
+        solde_apres: newSolde,
+        description: `Rechargement via ${dto.methode_paiement}`,
+        wallet_id: savedWallet.id,
+      });
+      const savedTx = await manager.save(WalletTransaction, transaction);
+
+      return { wallet: savedWallet, transaction: savedTx };
     });
-    await this.transactionRepo.save(transaction);
-
-    return { wallet, transaction };
   }
 
   async debit(userId: string, dto: DebitWalletDto) {
-    const wallet = await this.getOrCreateWallet(userId);
+    return this.dataSource.transaction(async (manager) => {
+      const wallet = await manager.findOne(Wallet, {
+        where: { user_id: userId },
+        lock: { mode: 'pessimistic_write' },
+      });
 
-    if (Number(wallet.solde) < dto.montant) {
-      throw new BadRequestException(
-        `Solde insuffisant. Solde actuel: ${wallet.solde} FCFA, montant demandé: ${dto.montant} FCFA`,
-      );
-    }
+      if (!wallet) throw new BadRequestException('Portefeuille introuvable');
 
-    const newSolde = Number(wallet.solde) - dto.montant;
-    wallet.solde = newSolde;
-    await this.walletRepo.save(wallet);
+      if (Number(wallet.solde) < dto.montant) {
+        throw new BadRequestException(
+          `Solde insuffisant. Solde: ${wallet.solde} FCFA, demandé: ${dto.montant} FCFA`,
+        );
+      }
 
-    const transaction = this.transactionRepo.create({
-      type: TransactionType.DEBIT,
-      montant: dto.montant,
-      solde_apres: newSolde,
-      description: dto.description || 'Paiement commande',
-      reference: dto.reference,
-      wallet_id: wallet.id,
+      const newSolde = Number(wallet.solde) - dto.montant;
+      wallet.solde = newSolde;
+      const savedWallet = await manager.save(Wallet, wallet);
+
+      const transaction = manager.create(WalletTransaction, {
+        type: TransactionType.DEBIT,
+        montant: dto.montant,
+        solde_apres: newSolde,
+        description: dto.description || 'Paiement commande',
+        reference: dto.reference,
+        wallet_id: savedWallet.id,
+      });
+      const savedTx = await manager.save(WalletTransaction, transaction);
+
+      return { wallet: savedWallet, transaction: savedTx };
     });
-    await this.transactionRepo.save(transaction);
-
-    return { wallet, transaction };
   }
 
   async getTransactions(userId: string) {
