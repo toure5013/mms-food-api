@@ -13,8 +13,9 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }
 
   @Get()
-  @ApiOperation({ summary: 'Liste des commandes', description: 'Retourne la liste des commandes, filtrable par organisation, employé et statut.' })
-  @ApiQuery({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.COOK, UserRole.SERVER)
+  @ApiOperation({ summary: 'Liste des commandes', description: 'Retourne la liste des commandes. Un ADMIN_CLIENT ne voit que les commandes de son organisation.' })
+  @ApiQuery({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation — SUPER_ADMIN/ADMIN_MMS uniquement' })
   @ApiQuery({ name: 'employe_id', required: false, description: 'UUID de l\'employé' })
   @ApiQuery({ name: 'statut', required: false, description: 'Filtrer par statut (PENDING, CONFIRMED, PAID, etc.)' })
   @ApiResponse({ status: 200, description: 'Liste des commandes retournée.' })
@@ -22,12 +23,20 @@ export class OrdersController {
     @Query('organisation_id') organisationId?: string,
     @Query('employe_id') employeId?: string,
     @Query('statut') statut?: string,
+    @Req() req?: any,
   ) {
+    const user = req?.user;
+    if (user?.role === UserRole.ADMIN_CLIENT) {
+      return this.ordersService.findAll(user.organisation_id, employeId, statut);
+    }
+    if (user?.role === UserRole.COOK || user?.role === UserRole.SERVER) {
+      return this.ordersService.findAll(user.organisation_id, undefined, statut);
+    }
     return this.ordersService.findAll(organisationId, employeId, statut);
   }
 
   @Get('stats/:organisationId')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Statistiques des commandes', description: 'Retourne les statistiques de commandes pour une organisation donnée (Total, Aujourd\'hui, etc.).' })
   @ApiParam({ name: 'organisationId', description: 'UUID de l\'organisation' })
   @ApiResponse({ status: 200, description: 'Statistiques retournées.' })

@@ -86,8 +86,8 @@ __decorate([
 ], NotificationsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Envoyer une notification', description: 'Envoie manuellement une notification à un utilisateur (admin uniquement).' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Envoyer une notification', description: 'Envoie manuellement une notification à un utilisateur. Un ADMIN_CLIENT peut notifier les membres de son organisation.' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Notification envoyée.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

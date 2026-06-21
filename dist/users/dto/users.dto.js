@@ -19,6 +19,7 @@ class CreateUserDto {
     nom;
     email;
     role;
+    password;
     organisation_id;
     telephone;
     avatar_url;
@@ -26,7 +27,7 @@ class CreateUserDto {
     regimes;
     allergies;
     static _OPENAPI_METADATA_FACTORY() {
-        return { prenom: { required: true, type: () => String }, nom: { required: true, type: () => String }, email: { required: true, type: () => String, format: "email" }, role: { required: true, enum: require("../../common/enums/index").UserRole }, organisation_id: { required: false, type: () => String, format: "uuid" }, telephone: { required: false, type: () => String }, avatar_url: { required: false, type: () => String }, service: { required: false, type: () => String }, regimes: { required: false, type: () => [String] }, allergies: { required: false, type: () => [String] } };
+        return { prenom: { required: true, type: () => String }, nom: { required: true, type: () => String }, email: { required: true, type: () => String, format: "email" }, role: { required: true, enum: require("../../common/enums/index").UserRole }, password: { required: false, type: () => String, minLength: 6 }, organisation_id: { required: false, type: () => String, format: "uuid" }, telephone: { required: false, type: () => String }, avatar_url: { required: false, type: () => String }, service: { required: false, type: () => String }, regimes: { required: false, type: () => [String] }, allergies: { required: false, type: () => [String] } };
     }
 }
 exports.CreateUserDto = CreateUserDto;
@@ -52,6 +53,16 @@ __decorate([
     (0, class_validator_1.IsEnum)(index_1.UserRole),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "role", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Mot de passe de l\'utilisateur',
+        required: false
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.MinLength)(6),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "password", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 'uuid-organisation' }),
     (0, class_validator_1.IsOptional)(),

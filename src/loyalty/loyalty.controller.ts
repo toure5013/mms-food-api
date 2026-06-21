@@ -36,8 +36,8 @@ export class LoyaltyController {
   }
 
   @Post('add')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS)
-  @ApiOperation({ summary: 'Ajouter des points (Admin)', description: 'Crédite manuellement des points à un utilisateur (récompense exceptionnelle, etc.).' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
+  @ApiOperation({ summary: 'Ajouter des points (Admin)', description: 'Crédite manuellement des points à un utilisateur (récompense exceptionnelle, etc.). Un ADMIN_CLIENT peut récompenser les membres de son organisation.' })
   @ApiResponse({ status: 201, description: 'Points ajoutés.' })
   @ApiResponse({ status: 403, description: 'Interdit.' })
   addPoints(@Body() dto: AddPointsDto) {

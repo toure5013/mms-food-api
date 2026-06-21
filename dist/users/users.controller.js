@@ -51,9 +51,9 @@ let UsersController = class UsersController {
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Liste des utilisateurs', description: 'Retourne la liste des utilisateurs. Un Admin Client ne voit que les membres de son organisation.' }),
-    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'Filtrer par organisation — SUPER_ADMIN uniquement (UUID)' }),
+    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'Filtrer par organisation — SUPER_ADMIN/ADMIN_MMS uniquement (UUID)' }),
     (0, swagger_1.ApiQuery)({ name: 'role', required: false, enum: index_1.UserRole, description: 'Filtrer par rôle (ex: SERVER, COOK, EMPLOYEE)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste retournée avec succès.' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'Accès refusé — rôle insuffisant.' }),
@@ -66,7 +66,7 @@ __decorate([
 ], UsersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Créer / inviter un utilisateur', description: 'Crée un nouvel utilisateur et envoie un OTP par email pour la première connexion. Un ADMIN_CLIENT ne peut créer que des EMPLOYEE, COOK ou SERVER dans sa propre organisation.' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Utilisateur créé avec succès — OTP envoyé par email.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
@@ -91,7 +91,7 @@ __decorate([
 ], UsersController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un utilisateur', description: 'Un Admin Client ne peut modifier que les membres de sa propre organisation.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Utilisateur mis à jour.' }),
@@ -105,7 +105,7 @@ __decorate([
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Patch)(':id/toggle-active'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Activer / désactiver un utilisateur', description: 'Bascule l\'état actif/inactif d\'un membre. Un Admin Client ne peut agir que sur les membres de sa propre organisation.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID de l\'utilisateur' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut basculé.' }),

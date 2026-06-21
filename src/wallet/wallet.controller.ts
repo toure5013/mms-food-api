@@ -21,24 +21,20 @@ export class WalletController {
   }
 
   @Post('credit')
-  @ApiOperation({ summary: 'Recharger un porte-monnaie', description: 'Initie une recharge via Mobile Money ou par un admin.' })
+  @ApiOperation({ summary: 'Recharger un porte-monnaie', description: 'Recharge son propre wallet ou celui d\'un utilisateur de son organisation (admin uniquement).' })
   @ApiResponse({ status: 201, description: 'Recharge effectuée.' })
   @ApiResponse({ status: 400, description: 'Données invalides.' })
   credit(@Req() req: any, @Body() dto: CreditWalletDto, @Query('target_user_id') targetUserId?: string) {
     const caller = req.user;
     const callerId = caller?.id || caller?.sub;
+    const isAdmin = [UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT].includes(caller.role);
 
-    // Si un targetUserId est fourni et que l'appelant est admin, on crédite le target
-    let userId = callerId;
-    if (targetUserId && (caller.role === UserRole.SUPER_ADMIN || caller.role === UserRole.ADMIN_MMS)) {
-      userId = targetUserId;
-    }
-
+    const userId = (targetUserId && isAdmin) ? targetUserId : callerId;
     return this.walletService.credit(userId, dto);
   }
 
   @Post('debit')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Débiter le porte-monnaie', description: 'Effectue un débit manuel sur le solde d\'un utilisateur (usage administratif).' })
   @ApiResponse({ status: 201, description: 'Débit effectué.' })
   @ApiResponse({ status: 403, description: 'Interdit.' })

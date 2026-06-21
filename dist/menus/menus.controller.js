@@ -100,7 +100,7 @@ __decorate([
 ], MenusController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Créer un menu', description: 'Crée un nouveau menu pour une date et un créneau donné, et associe les plats sélectionnés.' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Menu créé avec succès.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides (date passée, créneau invalide, etc.).' }),
@@ -112,7 +112,7 @@ __decorate([
 ], MenusController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Mettre à jour un menu', description: 'Remplace entièrement la configuration d\'un menu existant.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Menu mis à jour.' }),
@@ -125,7 +125,7 @@ __decorate([
 ], MenusController.prototype, "update", null);
 __decorate([
     (0, common_1.Patch)(':id/publish'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Publier / dépublier un menu', description: 'Change la visibilité d\'un menu. Un menu publié est visible par les employés pour passer commande.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Statut de publication mis à jour.' }),
@@ -138,7 +138,7 @@ __decorate([
 ], MenusController.prototype, "publish", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Supprimer un menu', description: 'Supprime définitivement un menu et ses associations aux plats.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du menu' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Menu supprimé.' }),

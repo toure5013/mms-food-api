@@ -26,7 +26,14 @@ let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
     }
-    findAll(organisationId, employeId, statut) {
+    findAll(organisationId, employeId, statut, req) {
+        const user = req?.user;
+        if (user?.role === index_1.UserRole.ADMIN_CLIENT) {
+            return this.ordersService.findAll(user.organisation_id, employeId, statut);
+        }
+        if (user?.role === index_1.UserRole.COOK || user?.role === index_1.UserRole.SERVER) {
+            return this.ordersService.findAll(user.organisation_id, undefined, statut);
+        }
         return this.ordersService.findAll(organisationId, employeId, statut);
     }
     getStats(organisationId) {
@@ -62,21 +69,23 @@ let OrdersController = class OrdersController {
 exports.OrdersController = OrdersController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Liste des commandes', description: 'Retourne la liste des commandes, filtrable par organisation, employé et statut.' }),
-    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.COOK, index_1.UserRole.SERVER),
+    (0, swagger_1.ApiOperation)({ summary: 'Liste des commandes', description: 'Retourne la liste des commandes. Un ADMIN_CLIENT ne voit que les commandes de son organisation.' }),
+    (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation — SUPER_ADMIN/ADMIN_MMS uniquement' }),
     (0, swagger_1.ApiQuery)({ name: 'employe_id', required: false, description: 'UUID de l\'employé' }),
     (0, swagger_1.ApiQuery)({ name: 'statut', required: false, description: 'Filtrer par statut (PENDING, CONFIRMED, PAID, etc.)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des commandes retournée.' }),
     __param(0, (0, common_1.Query)('organisation_id')),
     __param(1, (0, common_1.Query)('employe_id')),
     __param(2, (0, common_1.Query)('statut')),
+    __param(3, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, String, String, Object]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('stats/:organisationId'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_CLIENT),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Statistiques des commandes', description: 'Retourne les statistiques de commandes pour une organisation donnée (Total, Aujourd\'hui, etc.).' }),
     (0, swagger_1.ApiParam)({ name: 'organisationId', description: 'UUID de l\'organisation' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Statistiques retournées.' }),

@@ -75,8 +75,8 @@ __decorate([
 ], LoyaltyController.prototype, "getLeaderboard", null);
 __decorate([
     (0, common_1.Post)('add'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
-    (0, swagger_1.ApiOperation)({ summary: 'Ajouter des points (Admin)', description: 'Crédite manuellement des points à un utilisateur (récompense exceptionnelle, etc.).' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
+    (0, swagger_1.ApiOperation)({ summary: 'Ajouter des points (Admin)', description: 'Crédite manuellement des points à un utilisateur (récompense exceptionnelle, etc.). Un ADMIN_CLIENT peut récompenser les membres de son organisation.' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Points ajoutés.' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'Interdit.' }),
     __param(0, (0, common_1.Body)()),

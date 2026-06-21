@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Query, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto, WebhookPaymentDto } from './dto/payments.dto';
@@ -7,25 +7,31 @@ import { Public } from '../common/decorators/public.decorator';
 import { UserRole } from '../common/enums/index';
 
 @ApiTags('Payments')
+@ApiBearerAuth('JWT-auth')
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Get()
-  @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Liste des paiements', description: 'Retourne l\'historique des paiements, filtrable par commande ou utilisateur.' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.EMPLOYEE)
+  @ApiOperation({ summary: 'Liste des paiements', description: 'Retourne l\'historique des paiements. EMPLOYEE ne voit que ses propres paiements. ADMIN_CLIENT filtre par user_id ou order_id dans son organisation.' })
   @ApiQuery({ name: 'order_id', required: false, description: 'UUID de la commande' })
   @ApiQuery({ name: 'user_id', required: false, description: 'UUID de l\'utilisateur' })
   @ApiResponse({ status: 200, description: 'Liste des paiements retournée.' })
   findAll(
     @Query('order_id') orderId?: string,
     @Query('user_id') userId?: string,
+    @Req() req?: any,
   ) {
+    const user = req?.user;
+    if (user?.role === UserRole.EMPLOYEE) {
+      return this.paymentsService.findAll(orderId, user.id);
+    }
     return this.paymentsService.findAll(orderId, userId);
   }
 
   @Get(':id')
-  @ApiBearerAuth('JWT-auth')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.EMPLOYEE)
   @ApiOperation({ summary: 'Détails d\'un paiement', description: 'Retourne les informations d\'une transaction spécifique.' })
   @ApiParam({ name: 'id', description: 'UUID du paiement' })
   @ApiResponse({ status: 200, description: 'Paiement trouvé.' })
@@ -35,7 +41,6 @@ export class PaymentsController {
   }
 
   @Post()
-  @ApiBearerAuth('JWT-auth')
   @Roles(UserRole.EMPLOYEE, UserRole.ADMIN_CLIENT, UserRole.SUPER_ADMIN)
   @ApiOperation({ summary: 'Initier un paiement', description: 'Crée une transaction de paiement pour une commande (Wave, Orange Money, etc.).' })
   @ApiResponse({ status: 201, description: 'Paiement initié.' })

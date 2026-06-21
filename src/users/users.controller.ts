@@ -12,9 +12,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Liste des utilisateurs', description: 'Retourne la liste des utilisateurs. Un Admin Client ne voit que les membres de son organisation.' })
-  @ApiQuery({ name: 'organisation_id', required: false, description: 'Filtrer par organisation — SUPER_ADMIN uniquement (UUID)' })
+  @ApiQuery({ name: 'organisation_id', required: false, description: 'Filtrer par organisation — SUPER_ADMIN/ADMIN_MMS uniquement (UUID)' })
   @ApiQuery({ name: 'role', required: false, enum: UserRole, description: 'Filtrer par rôle (ex: SERVER, COOK, EMPLOYEE)' })
   @ApiResponse({ status: 200, description: 'Liste retournée avec succès.' })
   @ApiResponse({ status: 403, description: 'Accès refusé — rôle insuffisant.' })
@@ -27,7 +27,7 @@ export class UsersController {
   }
 
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Créer / inviter un utilisateur', description: 'Crée un nouvel utilisateur et envoie un OTP par email pour la première connexion. Un ADMIN_CLIENT ne peut créer que des EMPLOYEE, COOK ou SERVER dans sa propre organisation.' })
   @ApiResponse({ status: 201, description: 'Utilisateur créé avec succès — OTP envoyé par email.' })
   @ApiResponse({ status: 400, description: 'Données invalides.' })
@@ -47,7 +47,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Mettre à jour un utilisateur', description: 'Un Admin Client ne peut modifier que les membres de sa propre organisation.' })
   @ApiParam({ name: 'id', description: 'UUID de l\'utilisateur' })
   @ApiResponse({ status: 200, description: 'Utilisateur mis à jour.' })
@@ -57,7 +57,7 @@ export class UsersController {
   }
 
   @Patch(':id/toggle-active')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Activer / désactiver un utilisateur', description: 'Bascule l\'état actif/inactif d\'un membre. Un Admin Client ne peut agir que sur les membres de sa propre organisation.' })
   @ApiParam({ name: 'id', description: 'UUID de l\'utilisateur' })
   @ApiResponse({ status: 200, description: 'Statut basculé.' })

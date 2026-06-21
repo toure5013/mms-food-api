@@ -3,7 +3,7 @@ import { CreatePaymentDto, WebhookPaymentDto } from './dto/payments.dto';
 export declare class PaymentsController {
     private readonly paymentsService;
     constructor(paymentsService: PaymentsService);
-    findAll(orderId?: string, userId?: string): Promise<import("./payment.entity").Payment[]>;
+    findAll(orderId?: string, userId?: string, req?: any): Promise<import("./payment.entity").Payment[]>;
     findOne(id: string): Promise<import("./payment.entity").Payment>;
     create(dto: CreatePaymentDto): Promise<{
         checkout_url: string;

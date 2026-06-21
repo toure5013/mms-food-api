@@ -54,7 +54,7 @@ export class MenusController {
   }
 
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Créer un menu', description: 'Crée un nouveau menu pour une date et un créneau donné, et associe les plats sélectionnés.' })
   @ApiResponse({ status: 201, description: 'Menu créé avec succès.' })
   @ApiResponse({ status: 400, description: 'Données invalides (date passée, créneau invalide, etc.).' })
@@ -64,7 +64,7 @@ export class MenusController {
   }
 
   @Put(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Mettre à jour un menu', description: 'Remplace entièrement la configuration d\'un menu existant.' })
   @ApiParam({ name: 'id', description: 'UUID du menu' })
   @ApiResponse({ status: 200, description: 'Menu mis à jour.' })
@@ -74,7 +74,7 @@ export class MenusController {
   }
 
   @Patch(':id/publish')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_CLIENT)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Publier / dépublier un menu', description: 'Change la visibilité d\'un menu. Un menu publié est visible par les employés pour passer commande.' })
   @ApiParam({ name: 'id', description: 'UUID du menu' })
   @ApiResponse({ status: 200, description: 'Statut de publication mis à jour.' })
@@ -84,7 +84,7 @@ export class MenusController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
   @ApiOperation({ summary: 'Supprimer un menu', description: 'Supprime définitivement un menu et ses associations aux plats.' })
   @ApiParam({ name: 'id', description: 'UUID du menu' })
   @ApiResponse({ status: 200, description: 'Menu supprimé.' })

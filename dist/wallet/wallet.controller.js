@@ -32,10 +32,8 @@ let WalletController = class WalletController {
     credit(req, dto, targetUserId) {
         const caller = req.user;
         const callerId = caller?.id || caller?.sub;
-        let userId = callerId;
-        if (targetUserId && (caller.role === index_1.UserRole.SUPER_ADMIN || caller.role === index_1.UserRole.ADMIN_MMS)) {
-            userId = targetUserId;
-        }
+        const isAdmin = [index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT].includes(caller.role);
+        const userId = (targetUserId && isAdmin) ? targetUserId : callerId;
         return this.walletService.credit(userId, dto);
     }
     debit(req, dto) {
@@ -60,7 +58,7 @@ __decorate([
 ], WalletController.prototype, "getWallet", null);
 __decorate([
     (0, common_1.Post)('credit'),
-    (0, swagger_1.ApiOperation)({ summary: 'Recharger un porte-monnaie', description: 'Initie une recharge via Mobile Money ou par un admin.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Recharger un porte-monnaie', description: 'Recharge son propre wallet ou celui d\'un utilisateur de son organisation (admin uniquement).' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Recharge effectuée.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Données invalides.' }),
     __param(0, (0, common_1.Req)()),
@@ -72,7 +70,7 @@ __decorate([
 ], WalletController.prototype, "credit", null);
 __decorate([
     (0, common_1.Post)('debit'),
-    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT),
     (0, swagger_1.ApiOperation)({ summary: 'Débiter le porte-monnaie', description: 'Effectue un débit manuel sur le solde d\'un utilisateur (usage administratif).' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Débit effectué.' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'Interdit.' }),

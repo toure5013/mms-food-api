@@ -3,7 +3,7 @@ import { CreateOrderDto, CreateGuestOrderDto, UpdateOrderStatusDto, RetrieveOrde
 export declare class OrdersController {
     private readonly ordersService;
     constructor(ordersService: OrdersService);
-    findAll(organisationId?: string, employeId?: string, statut?: string): Promise<import("./order.entity").Order[]>;
+    findAll(organisationId?: string, employeId?: string, statut?: string, req?: any): Promise<import("./order.entity").Order[]>;
     getStats(organisationId: string): Promise<{
         total: number;
         pending: number;

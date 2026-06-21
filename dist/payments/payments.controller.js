@@ -26,7 +26,11 @@ let PaymentsController = class PaymentsController {
     constructor(paymentsService) {
         this.paymentsService = paymentsService;
     }
-    findAll(orderId, userId) {
+    findAll(orderId, userId, req) {
+        const user = req?.user;
+        if (user?.role === index_1.UserRole.EMPLOYEE) {
+            return this.paymentsService.findAll(orderId, user.id);
+        }
         return this.paymentsService.findAll(orderId, userId);
     }
     findOne(id) {
@@ -45,20 +49,21 @@ let PaymentsController = class PaymentsController {
 exports.PaymentsController = PaymentsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
-    (0, swagger_1.ApiOperation)({ summary: 'Liste des paiements', description: 'Retourne l\'historique des paiements, filtrable par commande ou utilisateur.' }),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.EMPLOYEE),
+    (0, swagger_1.ApiOperation)({ summary: 'Liste des paiements', description: 'Retourne l\'historique des paiements. EMPLOYEE ne voit que ses propres paiements. ADMIN_CLIENT filtre par user_id ou order_id dans son organisation.' }),
     (0, swagger_1.ApiQuery)({ name: 'order_id', required: false, description: 'UUID de la commande' }),
     (0, swagger_1.ApiQuery)({ name: 'user_id', required: false, description: 'UUID de l\'utilisateur' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des paiements retournée.' }),
     __param(0, (0, common_1.Query)('order_id')),
     __param(1, (0, common_1.Query)('user_id')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], PaymentsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
+    (0, roles_decorator_1.Roles)(index_1.UserRole.SUPER_ADMIN, index_1.UserRole.ADMIN_MMS, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.EMPLOYEE),
     (0, swagger_1.ApiOperation)({ summary: 'Détails d\'un paiement', description: 'Retourne les informations d\'une transaction spécifique.' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'UUID du paiement' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Paiement trouvé.' }),
@@ -70,7 +75,6 @@ __decorate([
 ], PaymentsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, roles_decorator_1.Roles)(index_1.UserRole.EMPLOYEE, index_1.UserRole.ADMIN_CLIENT, index_1.UserRole.SUPER_ADMIN),
     (0, swagger_1.ApiOperation)({ summary: 'Initier un paiement', description: 'Crée une transaction de paiement pour une commande (Wave, Orange Money, etc.).' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Paiement initié.' }),
@@ -105,6 +109,7 @@ __decorate([
 ], PaymentsController.prototype, "refund", null);
 exports.PaymentsController = PaymentsController = __decorate([
     (0, swagger_1.ApiTags)('Payments'),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, common_1.Controller)('payments'),
     __metadata("design:paramtypes", [payments_service_1.PaymentsService])
 ], PaymentsController);

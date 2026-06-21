@@ -37,8 +37,8 @@ export class NotificationsController {
   }
 
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS)
-  @ApiOperation({ summary: 'Envoyer une notification', description: 'Envoie manuellement une notification à un utilisateur (admin uniquement).' })
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT)
+  @ApiOperation({ summary: 'Envoyer une notification', description: 'Envoie manuellement une notification à un utilisateur. Un ADMIN_CLIENT peut notifier les membres de son organisation.' })
   @ApiResponse({ status: 201, description: 'Notification envoyée.' })
   create(@Body() dto: CreateNotificationDto) {
     return this.notificationsService.create(dto);
