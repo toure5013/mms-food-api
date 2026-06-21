@@ -18,21 +18,23 @@ export class OrdersController {
   @ApiQuery({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation — SUPER_ADMIN/ADMIN_MMS uniquement' })
   @ApiQuery({ name: 'employe_id', required: false, description: 'UUID de l\'employé' })
   @ApiQuery({ name: 'statut', required: false, description: 'Filtrer par statut (PENDING, CONFIRMED, PAID, etc.)' })
+  @ApiQuery({ name: 'date', required: false, description: 'Filtrer par date_livraison (YYYY-MM-DD)' })
   @ApiResponse({ status: 200, description: 'Liste des commandes retournée.' })
   findAll(
     @Query('organisation_id') organisationId?: string,
     @Query('employe_id') employeId?: string,
     @Query('statut') statut?: string,
+    @Query('date') date?: string,
     @Req() req?: any,
   ) {
     const user = req?.user;
     if (user?.role === UserRole.ADMIN_CLIENT) {
-      return this.ordersService.findAll(user.organisation_id, employeId, statut);
+      return this.ordersService.findAll(user.organisation_id, employeId, statut, date);
     }
     if (user?.role === UserRole.COOK || user?.role === UserRole.SERVER) {
-      return this.ordersService.findAll(user.organisation_id, undefined, statut);
+      return this.ordersService.findAll(user.organisation_id, undefined, statut, date);
     }
-    return this.ordersService.findAll(organisationId, employeId, statut);
+    return this.ordersService.findAll(organisationId, employeId, statut, date);
   }
 
   @Get('stats/:organisationId')

@@ -29,11 +29,12 @@ export class OrdersService {
     private readonly pushService: PushService,
   ) {}
 
-  findAll(organisationId?: string, employeId?: string, statut?: string) {
+  findAll(organisationId?: string, employeId?: string, statut?: string, date?: string) {
     const where: any = {};
     if (organisationId) where.organisation_id = organisationId;
     if (employeId) where.employe_id = employeId;
     if (statut) where.statut = statut.toUpperCase();
+    if (date) where.date_livraison = date;
 
     return this.orderRepo.find({
       where,

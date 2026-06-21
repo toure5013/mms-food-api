@@ -16,7 +16,7 @@ export declare class OrdersService {
     private readonly walletService;
     private readonly pushService;
     constructor(orderRepo: Repository<Order>, dishRepo: Repository<Dish>, organisationRepo: Repository<Organisation>, userRepo: Repository<User>, notificationRepo: Repository<Notification>, walletService: WalletService, pushService: PushService);
-    findAll(organisationId?: string, employeId?: string, statut?: string): Promise<Order[]>;
+    findAll(organisationId?: string, employeId?: string, statut?: string, date?: string): Promise<Order[]>;
     findMyOrders(employeId: string): Promise<Order[]>;
     findOne(id: string): Promise<Order>;
     findByQrCode(qrCodeToken: string): Promise<Order>;

@@ -42,7 +42,7 @@ let OrdersService = class OrdersService {
         this.walletService = walletService;
         this.pushService = pushService;
     }
-    findAll(organisationId, employeId, statut) {
+    findAll(organisationId, employeId, statut, date) {
         const where = {};
         if (organisationId)
             where.organisation_id = organisationId;
@@ -50,6 +50,8 @@ let OrdersService = class OrdersService {
             where.employe_id = employeId;
         if (statut)
             where.statut = statut.toUpperCase();
+        if (date)
+            where.date_livraison = date;
         return this.orderRepo.find({
             where,
             relations: ['plats', 'employe', 'organisation'],
