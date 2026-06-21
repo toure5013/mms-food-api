@@ -2855,3 +2855,4 @@
 {"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/agents [404] - Warning: {\"message\":\"Cannot GET /api/v1/agents\",\"error\":\"Not Found\",\"statusCode\":404}","timestamp":"2026-06-21T11:06:00.254Z"}
 {"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/incidents/active [404] - Warning: {\"message\":\"Cannot GET /api/v1/incidents/active\",\"error\":\"Not Found\",\"statusCode\":404}","timestamp":"2026-06-21T11:06:30.249Z"}
 {"context":"ExceptionFilter","level":"warn","message":"GET /api/v1/agents [404] - Warning: {\"message\":\"Cannot GET /api/v1/agents\",\"error\":\"Not Found\",\"statusCode\":404}","timestamp":"2026-06-21T11:06:30.270Z"}
+{"context":"ExceptionFilter","level":"warn","message":"GET /socket.io/?EIO=4&transport=websocket [404] - Warning: {\"message\":\"Cannot GET /socket.io/?EIO=4&transport=websocket\",\"error\":\"Not Found\",\"statusCode\":404}","timestamp":"2026-06-21T11:06:38.223Z"}
