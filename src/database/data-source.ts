@@ -13,6 +13,6 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'mms_cantine',
   entities: [path.resolve(__dirname, '../**/*.entity.ts')],
   migrations: [path.resolve(__dirname, './migrations/*.ts')],
-  synchronize: false,
-  logging: false,
+  synchronize: true,
+  logging: true,
 });
