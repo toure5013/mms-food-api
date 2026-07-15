@@ -38,6 +38,8 @@ const typeorm_1 = require("typeorm");
 const dotenv = __importStar(require("dotenv"));
 const path = __importStar(require("path"));
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+const isCompiled = __filename.endsWith('.js');
+const ext = isCompiled ? '.js' : '.ts';
 exports.AppDataSource = new typeorm_1.DataSource({
     type: 'postgres',
     host: process.env.DB_HOST || 'localhost',
@@ -45,9 +47,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'mms_cantine',
-    entities: [path.resolve(__dirname, '../**/*.entity.ts')],
-    migrations: [path.resolve(__dirname, './migrations/*.ts')],
+    entities: [path.resolve(__dirname, `../**/*.entity${ext}`)],
+    migrations: [path.resolve(__dirname, `./migrations/*${ext}`)],
     synchronize: false,
-    logging: false,
+    logging: true,
 });
 //# sourceMappingURL=data-source.js.map

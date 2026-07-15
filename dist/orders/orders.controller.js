@@ -26,15 +26,15 @@ let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
     }
-    findAll(organisationId, employeId, statut, req) {
+    findAll(organisationId, employeId, statut, date, req) {
         const user = req?.user;
         if (user?.role === index_1.UserRole.ADMIN_CLIENT) {
-            return this.ordersService.findAll(user.organisation_id, employeId, statut);
+            return this.ordersService.findAll(user.organisation_id, employeId, statut, date);
         }
         if (user?.role === index_1.UserRole.COOK || user?.role === index_1.UserRole.SERVER) {
-            return this.ordersService.findAll(user.organisation_id, undefined, statut);
+            return this.ordersService.findAll(user.organisation_id, undefined, statut, date);
         }
-        return this.ordersService.findAll(organisationId, employeId, statut);
+        return this.ordersService.findAll(organisationId, employeId, statut, date);
     }
     getStats(organisationId) {
         return this.ordersService.getStats(organisationId);
@@ -74,13 +74,15 @@ __decorate([
     (0, swagger_1.ApiQuery)({ name: 'organisation_id', required: false, description: 'UUID de l\'organisation — SUPER_ADMIN/ADMIN_MMS uniquement' }),
     (0, swagger_1.ApiQuery)({ name: 'employe_id', required: false, description: 'UUID de l\'employé' }),
     (0, swagger_1.ApiQuery)({ name: 'statut', required: false, description: 'Filtrer par statut (PENDING, CONFIRMED, PAID, etc.)' }),
+    (0, swagger_1.ApiQuery)({ name: 'date', required: false, description: 'Filtrer par date_livraison (YYYY-MM-DD)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Liste des commandes retournée.' }),
     __param(0, (0, common_1.Query)('organisation_id')),
     __param(1, (0, common_1.Query)('employe_id')),
     __param(2, (0, common_1.Query)('statut')),
-    __param(3, (0, common_1.Req)()),
+    __param(3, (0, common_1.Query)('date')),
+    __param(4, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String, Object]),
+    __metadata("design:paramtypes", [String, String, String, String, Object]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "findAll", null);
 __decorate([

@@ -6,29 +6,9 @@
     "auditLog": "logs/.96955a1d7a853f962de4231724c674a6292b3d8f-audit.json",
     "files": [
         {
-            "date": 1781010162243,
-            "name": "logs/mms-api-2026-06-09.log",
-            "hash": "7df2c71853dfe4b6a2f67d476288baba8997cfed56d56c9d2e52f7d409b8213e"
-        },
-        {
-            "date": 1781182792340,
-            "name": "logs/mms-api-2026-06-11.log",
-            "hash": "cdeead7510c751470198064c35abeb2a2ea161281f3d94f9511beded84ff1184"
-        },
-        {
-            "date": 1781282693915,
-            "name": "logs/mms-api-2026-06-12.log",
-            "hash": "876ab676ebccd53ec00e13cb5bf4bf201856cc9d89372ee0d125827033337f9c"
-        },
-        {
-            "date": 1781954839885,
-            "name": "logs/mms-api-2026-06-20.log",
-            "hash": "28fe0126730d8ce40254b9a054415599396a3c847c674587c8238b92db4edc7e"
-        },
-        {
-            "date": 1782032337822,
-            "name": "logs/mms-api-2026-06-21.log",
-            "hash": "a6f037d86bea395586e32c61c0a2cd3ef818ed87cb6bfbf8e1fe2d6a5d33dc01"
+            "date": 1784107625409,
+            "name": "logs/mms-api-2026-07-15.log",
+            "hash": "bade059928bd8741d2b2040729b1aa58d3d28aa47759431ddee4b3b53cce3e23"
         }
     ],
     "hashType": "sha256"
