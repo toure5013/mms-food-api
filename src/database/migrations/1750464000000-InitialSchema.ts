@@ -189,17 +189,17 @@ export class InitialSchema1750464000000 implements MigrationInterface {
     // ─── menu_dishes (junction) ───────────────────────────────────────────────
     await queryRunner.query(`
       CREATE TABLE "menu_dishes" (
-        "menus_id"  uuid NOT NULL,
-        "dishes_id" uuid NOT NULL,
-        CONSTRAINT "PK_menu_dishes" PRIMARY KEY ("menus_id", "dishes_id"),
-        CONSTRAINT "FK_menu_dishes_menu"  FOREIGN KEY ("menus_id")
+        "menusId"  uuid NOT NULL,
+        "dishesId" uuid NOT NULL,
+        CONSTRAINT "PK_menu_dishes" PRIMARY KEY ("menusId", "dishesId"),
+        CONSTRAINT "FK_menu_dishes_menu"  FOREIGN KEY ("menusId")
           REFERENCES "menus"("id")  ON DELETE CASCADE ON UPDATE CASCADE,
-        CONSTRAINT "FK_menu_dishes_dish"  FOREIGN KEY ("dishes_id")
+        CONSTRAINT "FK_menu_dishes_dish"  FOREIGN KEY ("dishesId")
           REFERENCES "dishes"("id") ON DELETE CASCADE ON UPDATE CASCADE
       )
     `);
-    await queryRunner.query(`CREATE INDEX "IDX_menu_dishes_menus_id"  ON "menu_dishes" ("menus_id")`);
-    await queryRunner.query(`CREATE INDEX "IDX_menu_dishes_dishes_id" ON "menu_dishes" ("dishes_id")`);
+    await queryRunner.query(`CREATE INDEX "IDX_menu_dishes_menusId"  ON "menu_dishes" ("menusId")`);
+    await queryRunner.query(`CREATE INDEX "IDX_menu_dishes_dishesId" ON "menu_dishes" ("dishesId")`);
 
     // ─── orders ───────────────────────────────────────────────────────────────
     await queryRunner.query(`
@@ -236,17 +236,17 @@ export class InitialSchema1750464000000 implements MigrationInterface {
     // ─── order_dishes (junction) ──────────────────────────────────────────────
     await queryRunner.query(`
       CREATE TABLE "order_dishes" (
-        "orders_id" uuid NOT NULL,
-        "dishes_id" uuid NOT NULL,
-        CONSTRAINT "PK_order_dishes" PRIMARY KEY ("orders_id", "dishes_id"),
-        CONSTRAINT "FK_order_dishes_order" FOREIGN KEY ("orders_id")
+        "ordersId" uuid NOT NULL,
+        "dishesId" uuid NOT NULL,
+        CONSTRAINT "PK_order_dishes" PRIMARY KEY ("ordersId", "dishesId"),
+        CONSTRAINT "FK_order_dishes_order" FOREIGN KEY ("ordersId")
           REFERENCES "orders"("id")  ON DELETE CASCADE ON UPDATE CASCADE,
-        CONSTRAINT "FK_order_dishes_dish"  FOREIGN KEY ("dishes_id")
+        CONSTRAINT "FK_order_dishes_dish"  FOREIGN KEY ("dishesId")
           REFERENCES "dishes"("id") ON DELETE CASCADE ON UPDATE CASCADE
       )
     `);
-    await queryRunner.query(`CREATE INDEX "IDX_order_dishes_orders_id" ON "order_dishes" ("orders_id")`);
-    await queryRunner.query(`CREATE INDEX "IDX_order_dishes_dishes_id" ON "order_dishes" ("dishes_id")`);
+    await queryRunner.query(`CREATE INDEX "IDX_order_dishes_ordersId" ON "order_dishes" ("ordersId")`);
+    await queryRunner.query(`CREATE INDEX "IDX_order_dishes_dishesId" ON "order_dishes" ("dishesId")`);
 
     // ─── payments ─────────────────────────────────────────────────────────────
     await queryRunner.query(`

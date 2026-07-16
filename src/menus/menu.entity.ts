@@ -37,7 +37,11 @@ export class Menu {
   organisation_id: string;
 
   @ManyToMany(() => Dish, { eager: true })
-  @JoinTable({ name: 'menu_dishes' })
+  @JoinTable({
+    name: 'menu_dishes',
+    joinColumn: { name: 'menusId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'dishesId', referencedColumnName: 'id' },
+  })
   plats: Dish[];
 
   @CreateDateColumn()

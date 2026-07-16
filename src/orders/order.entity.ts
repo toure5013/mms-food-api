@@ -74,7 +74,11 @@ export class Order {
   organisation_id: string;
 
   @ManyToMany(() => Dish, { eager: true })
-  @JoinTable({ name: 'order_dishes' })
+  @JoinTable({
+    name: 'order_dishes',
+    joinColumn: { name: 'ordersId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'dishesId', referencedColumnName: 'id' },
+  })
   plats: Dish[];
 
   @CreateDateColumn()
