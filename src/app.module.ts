@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as path from 'path';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -43,6 +44,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
 import { StorageModule } from './storage/storage.module';
 import { SettingsModule } from './settings/settings.module';
+import { AdminModule } from './admin/admin.module';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
@@ -87,6 +89,7 @@ import { RolesGuard } from './common/guards/roles.guard';
         username: config.get('DB_USER', 'postgres'),
         password: config.get('DB_PASS', 'postgres'),
         entities: [User, Organisation, Dish, Menu, Order, Payment, Wallet, WalletTransaction, Notification, LoyaltyTransaction, Settings],
+        migrations: [path.resolve(__dirname, './database/migrations/*.{ts,js}')],
         synchronize: config.get('NODE_ENV') !== 'production',
         logging: config.get('DB_LOG_QUERIES') === 'true' ? 'all' : false,
         logger: new TypeOrmWinstonLogger(),
@@ -110,6 +113,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     LoyaltyModule,
     StorageModule,
     SettingsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
