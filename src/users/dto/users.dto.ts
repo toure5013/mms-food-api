@@ -96,4 +96,10 @@ export class UpdateUserDto {
   @IsArray()
   @IsString({ each: true })
   allergies?: string[];
+
+  @ApiPropertyOptional({ description: 'Définir / réinitialiser le mot de passe (admin seulement)', minLength: 6 })
+  @IsOptional()
+  @IsString()
+  @MinLength(6)
+  password?: string;
 }

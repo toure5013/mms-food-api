@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, ConflictException } 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { CreateUserDto } from './dto/users.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/users.dto';
 import { UserRole } from '../common/enums/index';
 import * as bcrypt from 'bcrypt';
 
@@ -71,14 +71,19 @@ export class UsersService {
     return this.userRepo.save(user);
   }
 
-  async update(id: string, dto: any, currentUser?: User) {
+  async update(id: string, dto: UpdateUserDto, currentUser?: User) {
     const user = await this.findOne(id);
     if (currentUser?.role === UserRole.ADMIN_CLIENT) {
       if (user.organisation_id !== currentUser.organisation_id) {
         throw new ForbiddenException('Accès refusé — cet utilisateur n\'appartient pas à votre organisation');
       }
     }
-    Object.assign(user, dto);
+    const { password, ...rest } = dto;
+    Object.assign(user, rest);
+    if (password) {
+      user.password_hash = await bcrypt.hash(password, 12);
+      user.is_first_login = false;
+    }
     return this.userRepo.save(user);
   }
 
