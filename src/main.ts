@@ -29,6 +29,10 @@ async function bootstrap() {
   });
 
   // Swagger Documentation
+  const isProduction = process.env.NODE_ENV === 'production';
+  const localUrl = `http://localhost:${process.env.PORT ?? 3001}`;
+  const prodUrl = process.env.APP_BASE_URL ?? 'https://mms-api.sissos.togoom.com';
+
   const config = new DocumentBuilder()
     .setTitle('🍽 MMS API — Matin Midi Soir')
     .setDescription(
@@ -64,8 +68,17 @@ MMS API est le backend de la plateforme **Matin Midi Soir**, une solution SaaS d
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', description: 'Entrez votre token JWT' },
       'JWT-auth',
-    )
-    .addServer(`http://localhost:${process.env.PORT ?? 3001}`, '🖥 Serveur Local (Développement)')
+    );
+
+  if (isProduction) {
+    config.addServer(prodUrl, '☁️ Serveur Production');
+    config.addServer(localUrl, '🖥 Serveur Local (Développement)');
+  } else {
+    config.addServer(localUrl, '🖥 Serveur Local (Développement)');
+    config.addServer(prodUrl, '☁️ Serveur Production');
+  }
+
+  const swaggerConfig = config
     .addTag('Auth', '🔐 Authentification JWT + OTP — Connexion, inscription, reset mot de passe')
     .addTag('Organisations', '🏢 Gestion multi-tenant des entreprises clientes (config menus, subventions, branding)')
     .addTag('Users', '👥 Gestion des utilisateurs — CRUD, invitation par email, rôles')
@@ -79,7 +92,7 @@ MMS API est le backend de la plateforme **Matin Midi Soir**, une solution SaaS d
     .addTag('Storage', '📦 Stockage fichiers — Upload images (plats, avatars, logos) vers MinIO')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'MMS API — Documentation',
     customfavIcon: 'https://matinmidisoir.ci/favicon.ico',
