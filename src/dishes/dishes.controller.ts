@@ -15,9 +15,7 @@ export class DishesController {
   @ApiOperation({ summary: 'Catalogue des plats', description: 'Retourne la liste complète des plats disponibles, avec leurs informations nutritionnelles et allergènes.' })
   @ApiResponse({ status: 200, description: 'Liste des plats retournée.' })
   findAll(@Req() req: any) {
-    const user = req.user;
-    const orgId = user?.role === UserRole.ADMIN_CLIENT ? user.organisation_id : undefined;
-    return this.dishesService.findAll(orgId);
+    return this.dishesService.findAll(req.user);
   }
 
   @Post()
@@ -36,8 +34,8 @@ export class DishesController {
   @ApiParam({ name: 'id', description: 'UUID du plat' })
   @ApiResponse({ status: 200, description: 'Plat trouvé.' })
   @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
-  findOne(@Param('id') id: string) {
-    return this.dishesService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: any) {
+    return this.dishesService.findOne(id, req.user);
   }
 
   @Patch(':id')
@@ -46,8 +44,8 @@ export class DishesController {
   @ApiParam({ name: 'id', description: 'UUID du plat' })
   @ApiResponse({ status: 200, description: 'Plat mis à jour.' })
   @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
-  update(@Param('id') id: string, @Body() dto: UpdateDishDto) {
-    return this.dishesService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateDishDto, @Req() req: any) {
+    return this.dishesService.update(id, dto, req.user);
   }
 
   @Delete(':id')
@@ -56,7 +54,7 @@ export class DishesController {
   @ApiParam({ name: 'id', description: 'UUID du plat' })
   @ApiResponse({ status: 200, description: 'Plat désactivé.' })
   @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
-  remove(@Param('id') id: string) {
-    return this.dishesService.remove(id);
+  remove(@Param('id') id: string, @Req() req: any) {
+    return this.dishesService.remove(id, req.user);
   }
 }

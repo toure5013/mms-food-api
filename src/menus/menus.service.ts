@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Menu } from './menu.entity';
 import { Dish } from '../dishes/dish.entity';
 import { Organisation } from '../organisations/organisation.entity';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menus.dto';
-import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class MenusService {
@@ -48,10 +47,7 @@ export class MenusService {
     const menu = this.menuRepo.create(menuData);
 
     if (plats_ids?.length) {
-      const plats = await this.dishRepo.find({
-        where: { id: In(plats_ids) },
-      });
-      menu.plats = plats;
+      menu.plats = await this.resolveDishesForOrganisation(plats_ids, dto.organisation_id);
     }
 
     return this.menuRepo.save(menu);
@@ -64,13 +60,29 @@ export class MenusService {
     Object.assign(menu, updateData);
 
     if (plats_ids) {
-      const plats = await this.dishRepo.find({
-        where: { id: In(plats_ids) },
-      });
-      menu.plats = plats;
+      menu.plats = await this.resolveDishesForOrganisation(plats_ids, menu.organisation_id);
     }
 
     return this.menuRepo.save(menu);
+  }
+
+  /**
+   * Un menu ne peut être composé que des plats globaux (créés par le super admin)
+   * et des plats appartenant à sa propre organisation — jamais des plats d'une
+   * autre organisation.
+   */
+  private async resolveDishesForOrganisation(platsIds: string[], organisationId: string) {
+    const plats = await this.dishRepo.find({ where: { id: In(platsIds) } });
+    if (plats.length !== platsIds.length) {
+      throw new NotFoundException('Un ou plusieurs plats sont introuvables');
+    }
+    const invalid = plats.find((p) => p.organisation_id && p.organisation_id !== organisationId);
+    if (invalid) {
+      throw new BadRequestException(
+        `Le plat "${invalid.nom}" appartient à une autre organisation et ne peut pas être utilisé dans ce menu`,
+      );
+    }
+    return plats;
   }
 
   async publish(id: string, isPublished: boolean) {
