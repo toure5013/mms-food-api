@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { Dish } from './dish.entity';
-import { CreateDishDto, UpdateDishDto } from './dto/dishes.dto';
+import { CreateDishDto, UpdateDishDto, CloneDishDto } from './dto/dishes.dto';
 import { UserRole } from '../common/enums/index';
 
 interface RequestUser {
@@ -20,14 +20,25 @@ export class DishesService {
     private readonly dishRepo: Repository<Dish>,
   ) {}
 
-  findAll(user?: RequestUser) {
-    // SUPER_ADMIN / ADMIN_MMS gèrent le catalogue global: ils voient tout.
+  findAll(user?: RequestUser, filterOrganisationId?: string) {
+    // SUPER_ADMIN / ADMIN_MMS gèrent le catalogue global: ils voient tout par défaut,
+    // et peuvent filtrer sur une entreprise précise (ses plats + les plats globaux).
     if (isPlatformAdmin(user) || !user?.organisation_id) {
+      if (filterOrganisationId) {
+        return this.dishRepo.find({
+          where: [
+            { is_active: true, organisation_id: IsNull() },
+            { is_active: true, organisation_id: filterOrganisationId },
+          ],
+          order: { nom: 'ASC' },
+        });
+      }
       return this.dishRepo.find({ where: { is_active: true }, order: { nom: 'ASC' } });
     }
     // Les autres rôles (dont ADMIN_CLIENT) voient les plats globaux (créés par le
     // super admin) ainsi que les plats de leur propre organisation, jamais ceux
-    // d'une autre organisation.
+    // d'une autre organisation. Un éventuel filtre passé en query est ignoré: on
+    // ne peut pas usurper une autre organisation.
     return this.dishRepo.find({
       where: [
         { is_active: true, organisation_id: IsNull() },
@@ -61,6 +72,35 @@ export class DishesService {
     this.assertEditable(dish, user);
     dish.is_active = false;
     return this.dishRepo.save(dish);
+  }
+
+  async clone(id: string, dto: CloneDishDto, user?: RequestUser) {
+    if (!user?.organisation_id) {
+      throw new ForbiddenException('Seule une entreprise peut copier un plat dans son propre catalogue');
+    }
+    const source = await this.dishRepo.findOne({ where: { id } });
+    if (!source) throw new NotFoundException('Plat introuvable');
+    if (source.organisation_id) {
+      throw new ForbiddenException('Seuls les plats du catalogue commun MMS peuvent être copiés');
+    }
+
+    const clone = this.dishRepo.create({
+      nom: source.nom,
+      description: source.description,
+      photo_url: source.photo_url,
+      categorie: source.categorie,
+      allergenes: source.allergenes,
+      vegetarien: source.vegetarien,
+      halal: source.halal,
+      prix: dto.prix ?? source.prix,
+      sans_sel: dto.sans_sel ?? source.sans_sel,
+      sans_gras: dto.sans_gras ?? source.sans_gras,
+      sans_sucre: dto.sans_sucre ?? source.sans_sucre,
+      sans_huile: dto.sans_huile ?? source.sans_huile,
+      organisation_id: user.organisation_id,
+      is_active: true,
+    });
+    return this.dishRepo.save(clone);
   }
 
   private assertVisible(dish: Dish, user?: RequestUser) {

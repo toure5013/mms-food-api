@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, Req } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { DishesService } from './dishes.service';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums/index';
-import { CreateDishDto, UpdateDishDto } from './dto/dishes.dto';
+import { CreateDishDto, UpdateDishDto, CloneDishDto } from './dto/dishes.dto';
 
 @ApiTags('Dishes')
 @ApiBearerAuth('JWT-auth')
@@ -13,9 +13,10 @@ export class DishesController {
 
   @Get()
   @ApiOperation({ summary: 'Catalogue des plats', description: 'Retourne la liste complète des plats disponibles, avec leurs informations nutritionnelles et allergènes.' })
+  @ApiQuery({ name: 'organisation_id', required: false, description: 'Filtrer par entreprise (réservé SUPER_ADMIN / ADMIN_MMS — ignoré pour les autres rôles)' })
   @ApiResponse({ status: 200, description: 'Liste des plats retournée.' })
-  findAll(@Req() req: any) {
-    return this.dishesService.findAll(req.user);
+  findAll(@Req() req: any, @Query('organisation_id') organisationId?: string) {
+    return this.dishesService.findAll(req.user, organisationId);
   }
 
   @Post()
@@ -56,5 +57,19 @@ export class DishesController {
   @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
   remove(@Param('id') id: string, @Req() req: any) {
     return this.dishesService.remove(id, req.user);
+  }
+
+  @Post(':id/clone')
+  @Roles(UserRole.ADMIN_CLIENT)
+  @ApiOperation({
+    summary: 'Copier un plat du catalogue MMS',
+    description: 'Duplique un plat du catalogue commun (MMS) dans le catalogue de l\'entreprise, avec un prix et des caractéristiques diététiques propres à celle-ci.',
+  })
+  @ApiParam({ name: 'id', description: 'UUID du plat MMS à copier' })
+  @ApiResponse({ status: 201, description: 'Plat copié dans le catalogue de l\'entreprise.' })
+  @ApiResponse({ status: 403, description: 'Seuls les plats du catalogue commun MMS peuvent être copiés.' })
+  @ApiResponse({ status: 404, description: 'Plat non trouvé.' })
+  clone(@Param('id') id: string, @Body() dto: CloneDishDto, @Req() req: any) {
+    return this.dishesService.clone(id, dto, req.user);
   }
 }

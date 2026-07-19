@@ -133,3 +133,31 @@ export class UpdateDishDto {
   @IsBoolean()
   is_active?: boolean;
 }
+
+export class CloneDishDto {
+  @ApiPropertyOptional({ example: 3500, description: 'Prix propre à l\'entreprise — sinon reprend le prix du plat MMS d\'origine' })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  prix?: number;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  sans_sel?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  sans_gras?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  sans_sucre?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  sans_huile?: boolean;
+}
