@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto } from './dto/auth.dto';
+import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto, ChangePasswordDto } from './dto/auth.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
@@ -58,6 +58,16 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Refresh token invalide ou expiré.' })
   refresh(@Body() dto: RefreshTokenDto) {
     return this.authService.refresh(dto);
+  }
+
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Modifier son mot de passe (utilisateur connecté)' })
+  @ApiResponse({ status: 200, description: 'Mot de passe modifié.' })
+  @ApiResponse({ status: 401, description: 'Mot de passe actuel incorrect.' })
+  changePassword(@CurrentUser() user: any, @Body() dto: ChangePasswordDto) {
+    return this.authService.changePassword(user.id, dto);
   }
 
   @Post('logout')

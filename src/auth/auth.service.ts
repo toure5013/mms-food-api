@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/user.entity';
-import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto } from './dto/auth.dto';
+import { LoginDto, RequestOtpDto, VerifyOtpDto, SetPasswordDto, RefreshTokenDto, ChangePasswordDto } from './dto/auth.dto';
 import { EmailService } from '../common/email/email.service';
 import { SettingsService } from '../settings/settings.service';
 
@@ -99,6 +99,22 @@ export class AuthService {
     });
 
     return this.generateTokens(user);
+  }
+
+  async changePassword(userId: string, dto: ChangePasswordDto) {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      select: ['id', 'email', 'password_hash'],
+    });
+    if (!user) throw new NotFoundException('Utilisateur introuvable');
+
+    const isValid = await bcrypt.compare(dto.current_password, user.password_hash);
+    if (!isValid) throw new UnauthorizedException('Mot de passe actuel incorrect');
+
+    const hash = await bcrypt.hash(dto.new_password, 12);
+    await this.userRepo.update(user.id, { password_hash: hash, is_first_login: false });
+
+    return { message: 'Mot de passe mis à jour avec succès' };
   }
 
   async refresh(dto: RefreshTokenDto) {

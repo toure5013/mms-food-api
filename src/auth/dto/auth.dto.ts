@@ -45,6 +45,18 @@ export class SetPasswordDto {
   password: string;
 }
 
+export class ChangePasswordDto {
+  @ApiProperty({ example: 'password123', description: 'Mot de passe actuel' })
+  @IsString()
+  @IsNotEmpty()
+  current_password: string;
+
+  @ApiProperty({ example: 'NouveauMotDePasse123!', description: 'Nouveau mot de passe' })
+  @IsString()
+  @MinLength(8)
+  new_password: string;
+}
+
 export class RefreshTokenDto {
   @ApiProperty()
   @IsString()

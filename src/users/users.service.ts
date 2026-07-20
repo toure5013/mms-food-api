@@ -6,6 +6,8 @@ import { CreateUserDto, UpdateUserDto } from './dto/users.dto';
 import { UserRole } from '../common/enums/index';
 import * as bcrypt from 'bcrypt';
 
+const DEFAULT_PASSWORD = 'password123';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -52,7 +54,7 @@ export class UsersService {
       }
     }
 
-    const hash = dto.password ? await bcrypt.hash(dto.password, 12) : undefined;
+    const hash = await bcrypt.hash(dto.password || DEFAULT_PASSWORD, 12);
     const user = this.userRepo.create({
       prenom: dto.prenom,
       nom: dto.nom,
