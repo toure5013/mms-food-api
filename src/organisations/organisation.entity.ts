@@ -67,6 +67,9 @@ export class Organisation {
   @Column({ default: 0 })
   order_day_offset: number; // 0 for today, 1 for tomorrow
 
+  @Column({ type: 'simple-array', default: 'MORNING,NOON,EVENING,SNACK' })
+  creneaux_actifs: string[]; // créneaux (MealSlot) réellement proposés par l'entreprise
+
   @OneToMany(() => User, (user) => user.organisation)
   users: User[];
 

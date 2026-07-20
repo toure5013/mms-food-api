@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsOptional, IsEnum, IsHexColor, IsNumber, IsArray, Min, IsBoolean } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { MenuMode, SubventionType, DishCategory, FinancialMode } from '../../common/enums/index';
+import { MenuMode, SubventionType, DishCategory, FinancialMode, MealSlot } from '../../common/enums/index';
 
 export class CreateOrganisationDto {
   @ApiProperty({ example: 'BMCE Bank' })
@@ -105,6 +105,12 @@ export class CreateOrganisationDto {
   @IsOptional()
   @IsNumber()
   order_day_offset?: number;
+
+  @ApiPropertyOptional({ enum: MealSlot, isArray: true, example: [MealSlot.NOON] })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(MealSlot, { each: true })
+  creneaux_actifs?: MealSlot[];
 }
 
 export class UpdateOrganisationDto {
@@ -210,6 +216,12 @@ export class UpdateOrganisationDto {
   @IsOptional()
   @IsNumber()
   order_day_offset?: number;
+
+  @ApiPropertyOptional({ enum: MealSlot, isArray: true, example: [MealSlot.NOON] })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(MealSlot, { each: true })
+  creneaux_actifs?: MealSlot[];
 }
 
 export class UpdateGuestModeDto {

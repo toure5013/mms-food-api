@@ -16,8 +16,14 @@ export class MenusController {
   @Get('public/:organisationId')
   @ApiOperation({ summary: 'Menu du jour public', description: 'Retourne les plats disponibles pour une organisation (vue publique).' })
   @ApiParam({ name: 'organisationId', description: 'UUID de l\'organisation' })
-  findDailyPublic(@Param('organisationId') organisationId: string) {
-    return this.menusService.findDailyPublic(organisationId);
+  @ApiQuery({ name: 'date', required: false, description: 'Date au format YYYY-MM-DD (défaut: calculée depuis order_day_offset)' })
+  @ApiQuery({ name: 'creneau', required: false, description: 'Filtrer par créneau (MORNING, NOON, EVENING, SNACK)' })
+  findDailyPublic(
+    @Param('organisationId') organisationId: string,
+    @Query('date') date?: string,
+    @Query('creneau') creneau?: string,
+  ) {
+    return this.menusService.findDailyPublic(organisationId, date, creneau);
   }
 
   @Get('daily')

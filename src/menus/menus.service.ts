@@ -99,9 +99,10 @@ export class MenusService {
     return this.menuRepo.remove(menu);
   }
 
-  async findDailyDishes(date: string, organisationId?: string) {
+  async findDailyDishes(date: string, organisationId?: string, creneau?: string) {
     const where: any = { date, is_published: true };
     if (organisationId) where.organisation_id = organisationId;
+    if (creneau) where.creneau = creneau;
 
     const menus = await this.menuRepo.find({
       where,
@@ -117,16 +118,19 @@ export class MenusService {
     return uniqueDishes;
   }
 
-  async findDailyPublic(organisationId: string) {
+  async findDailyPublic(organisationId: string, date?: string, creneau?: string) {
     const org = await this.orgRepo.findOne({ where: { id: organisationId } });
     if (!org) throw new NotFoundException('Organisation introuvable');
 
-    const date = new Date();
-    if (org.order_day_offset) {
-      date.setDate(date.getDate() + org.order_day_offset);
+    let dateStr = date;
+    if (!dateStr) {
+      const computedDate = new Date();
+      if (org.order_day_offset) {
+        computedDate.setDate(computedDate.getDate() + org.order_day_offset);
+      }
+      dateStr = computedDate.toISOString().split('T')[0];
     }
-    const dateStr = date.toISOString().split('T')[0];
 
-    return this.findDailyDishes(dateStr, organisationId);
+    return this.findDailyDishes(dateStr, organisationId, creneau);
   }
 }
