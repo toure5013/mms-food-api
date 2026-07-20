@@ -22,7 +22,10 @@ export class Dish {
   @Column({ type: 'enum', enum: DishCategory, nullable: true })
   categorie: DishCategory;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({
+    type: 'decimal', precision: 10, scale: 2,
+    transformer: { to: (v: number) => v, from: (v: string) => v === null ? null : Number.parseFloat(v) },
+  })
   prix: number; // en FCFA
 
   // Attributs nutritionnels / spéciaux
