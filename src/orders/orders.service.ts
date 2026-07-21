@@ -43,6 +43,21 @@ export class OrdersService {
     });
   }
 
+  // Historique invité — pas de compte, donc identifié par numéro de
+  // téléphone (clé fixe 'numero_telephone' dans guest_info, voir
+  // OrganisationsService.DEFAULT_GUEST_FIELDS) au sein d'une organisation.
+  async findGuestHistory(organisationId: string, phone: string) {
+    return this.orderRepo
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.plats', 'plats')
+      .where('order.organisation_id = :organisationId', { organisationId })
+      .andWhere('order.is_guest = true')
+      .andWhere("order.guest_info->>'numero_telephone' = :phone", { phone })
+      .orderBy('order.date_livraison', 'DESC')
+      .addOrderBy('order.created_at', 'DESC')
+      .getMany();
+  }
+
   async findMyOrders(employeId: string) {
     return this.orderRepo.find({
       where: { employe_id: employeId },

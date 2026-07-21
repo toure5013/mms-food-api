@@ -4,6 +4,15 @@ import { Repository } from 'typeorm';
 import { Organisation } from './organisation.entity';
 import { CreateOrganisationDto, UpdateGuestModeDto } from './dto/organisations.dto';
 
+// Champs par défaut du formulaire invité — id fixes pour que le nom et le
+// téléphone restent identifiables (ex: recherche d'historique par téléphone)
+// même si l'admin n'a jamais configuré guest_config. L'admin peut ensuite
+// renommer, retirer ces champs ou en ajouter d'autres depuis le backoffice.
+const DEFAULT_GUEST_FIELDS = [
+  { id: 'nom', label: 'Nom', type: 'text', required: true },
+  { id: 'numero_telephone', label: 'Téléphone', type: 'text', required: true },
+];
+
 @Injectable()
 export class OrganisationsService {
   constructor(
@@ -29,6 +38,9 @@ export class OrganisationsService {
       select: ['id', 'nom', 'slug', 'logo_url', 'couleur_primaire', 'couleur_secondaire', 'guest_config', 'is_guest_order_enabled', 'guest_order_start_time', 'guest_order_end_time', 'order_day_offset', 'creneaux_actifs']
     });
     if (!org) throw new NotFoundException('Organisation introuvable');
+    if (!org.guest_config?.fields?.length) {
+      org.guest_config = { ...org.guest_config, fields: DEFAULT_GUEST_FIELDS };
+    }
     return org;
   }
 

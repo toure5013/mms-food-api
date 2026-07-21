@@ -86,6 +86,20 @@ export class OrdersController {
     return this.ordersService.createGuestOrder(dto);
   }
 
+  @Public()
+  @Get('guest/history')
+  @ApiOperation({ summary: 'Historique des commandes invité', description: 'Retourne les commandes passées par un invité (sans compte) pour une organisation, identifié par son numéro de téléphone.' })
+  @ApiQuery({ name: 'organisation_id', required: true, description: 'UUID de l\'organisation' })
+  @ApiQuery({ name: 'phone', required: true, description: 'Numéro de téléphone saisi par l\'invité' })
+  @ApiResponse({ status: 200, description: 'Liste des commandes retournée (vide si aucune trouvée).' })
+  findGuestHistory(
+    @Query('organisation_id') organisationId: string,
+    @Query('phone') phone: string,
+  ) {
+    if (!organisationId || !phone) return [];
+    return this.ordersService.findGuestHistory(organisationId, phone);
+  }
+
   @Patch(':id/status')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN_MMS, UserRole.ADMIN_CLIENT, UserRole.COOK, UserRole.SERVER)
   @ApiOperation({ summary: 'Mettre à jour le statut (PATCH)', description: 'Modifie le statut d\'une commande (ex: passer de READY à RETRIEVED). Accessible aux admins et au personnel de distribution.' })
