@@ -2,7 +2,7 @@ import {
   Entity, PrimaryGeneratedColumn, Column,
   CreateDateColumn, UpdateDateColumn, OneToMany,
 } from 'typeorm';
-import { MenuMode, SubventionType, DishCategory, FinancialMode } from '../common/enums/index';
+import { MenuMode, SubventionType, DishCategory, FinancialMode, OrderStatusDisplay } from '../common/enums/index';
 import { User } from '../users/user.entity';
 
 @Entity('organisations')
@@ -69,6 +69,9 @@ export class Organisation {
 
   @Column({ type: 'simple-array', default: 'MORNING,NOON,EVENING,SNACK' })
   creneaux_actifs: string[]; // créneaux (MealSlot) réellement proposés par l'entreprise
+
+  @Column({ type: 'enum', enum: OrderStatusDisplay, default: OrderStatusDisplay.DETAILED })
+  order_status_display: OrderStatusDisplay;
 
   @OneToMany(() => User, (user) => user.organisation)
   users: User[];

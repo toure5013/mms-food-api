@@ -47,6 +47,13 @@ export enum OrderStatus {
   CANCELLED = 'CANCELLED',
 }
 
+// Mode d'affichage du statut de commande, par entreprise — regroupement
+// purement visuel des OrderStatus réels, aucun impact sur la logique métier.
+export enum OrderStatusDisplay {
+  DETAILED = 'DETAILED',
+  SIMPLIFIED = 'SIMPLIFIED',
+}
+
 export enum PaymentMethod {
   WAVE = 'WAVE',
   ORANGE_MONEY = 'ORANGE_MONEY',
